@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adam Troy - Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention.">
+    <meta name="author" content="Adam Troy">
+    <title>Adam Troy | Public Health Consultant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Network Canvas Background -->
+    <canvas id="networkCanvas" aria-hidden="true"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="container nav-content">
+            <div class="nav-brand">
+                <a href="#hero" class="logo">Adam Troy</a>
+            </div>
+            <div class="nav-links">
+                <a href="#expertise">Expertise</a>
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero" role="banner">
+        <div class="container hero-content">
+            <h1 class="hero-title">Adam Troy</h1>
+            <p class="hero-subtitle">Evidence-Based Public Health Professional</p>
+            <p class="hero-tagline">Bridging research and real-world impact through strategic evaluation, innovative design, and community-centered solutions.</p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                <a href="#expertise" class="btn btn-secondary">View Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section id="expertise" class="expertise section">
+        <div class="container">
+            <h2 class="section-title">Expertise</h2>
+            <p class="section-intro">Comprehensive public health consulting services rooted in evidence and driven by impact.</p>
+
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <div class="card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Public Health Strategy & Evaluation</h3>
+                    <p>Plan, implement, and measure programs that improve health outcomes and advance equity. From logic models to impact assessments, I bring clarity to complexity.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3>Curriculum & Educational Design</h3>
+                    <p>Design engaging, accessible training and learning experiences for professionals and adult learners. From e-learning to workshops, I create content that resonates.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Facilitation & Strategic Planning</h3>
+                    <p>From board retreats to community visioning sessions, I help teams move forward with purpose. Inclusive facilitation creates space for real conversations and actionable plans.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="card-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                            <line x1="7" y1="2" x2="7" y2="22"></line>
+                            <line x1="17" y1="2" x2="17" y2="22"></line>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <line x1="2" y1="7" x2="7" y2="7"></line>
+                            <line x1="2" y1="17" x2="7" y2="17"></line>
+                            <line x1="17" y1="17" x2="22" y2="17"></line>
+                            <line x1="17" y1="7" x2="22" y2="7"></line>
+                        </svg>
+                    </div>
+                    <h3>Multimedia & Creative Communications</h3>
+                    <p>Craft videos, infographics, toolkits, and more to communicate complex ideas clearly and compellingly. Visual storytelling that brings your work to life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container">
+            <h2 class="section-title">About</h2>
+
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Who I Am</h3>
+                    <p>I'm a public health professional, educator, and strategist dedicated to advancing equity, improving population health, and supporting organizations working for social good. I combine evidence-based methods with creative communication to help partners make real-world impact.</p>
+
+                    <h3>My Approach</h3>
+                    <p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p>
+
+                    <h3>The Story Behind the Name</h3>
+                    <p>Inspired by Carl Sagan's iconic reflection on Earth as a "pale blue dot," my consulting work reminds us that every decision should be grounded in care for humanity and our shared future. I approach challenges with humility, urgency, and scientific rigor.</p>
+                </div>
+
+                <div class="about-credentials">
+                    <div class="credential-box">
+                        <h4>Education</h4>
+                        <ul>
+                            <li><strong>DrPH Candidate</strong> | Johns Hopkins Bloomberg School of Public Health</li>
+                            <li><strong>MPH, Epidemiology</strong> | Florida International University</li>
+                            <li><strong>BA, Anthropology</strong> | University of Florida</li>
+                        </ul>
+                    </div>
+                    <div class="credential-box">
+                        <h4>Certifications</h4>
+                        <ul>
+                            <li>Certified in Public Health (CPH)</li>
+                            <li>Becoming an Ally to All</li>
+                            <li>Leadership: Practical Skills</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Press Section -->
+    <section id="press" class="press section">
+        <div class="container">
+            <h2 class="section-title">In the News</h2>
+            <p class="section-intro">Featured commentary and interviews on public health initiatives.</p>
+
+            <div class="press-grid">
+                <article class="press-card">
+                    <div class="press-source">Orlando Sentinel</div>
+                    <h3><a href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/" target="_blank" rel="noopener noreferrer">Kinship Caregivers and the Opioid Epidemic</a></h3>
+                    <p class="press-date">March 29, 2025</p>
+                    <p>Nearly 200,000 Florida children now live with relatives after parental substance use derailed their families. Opioid settlement funds should be used to help these caregivers.</p>
+                    <a href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/" class="press-link" target="_blank" rel="noopener noreferrer">Read Article →</a>
+                </article>
+
+                <article class="press-card">
+                    <div class="press-source">Orlando Sentinel</div>
+                    <h3><a href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/" target="_blank" rel="noopener noreferrer">Orange County's New Needle Exchange Program</a></h3>
+                    <p class="press-date">June 14, 2021</p>
+                    <p>Orange County's first-ever needle exchange program launched to help contain fatal overdoses and HIV spread through harm reduction strategies.</p>
+                    <a href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/" class="press-link" target="_blank" rel="noopener noreferrer">Read Article →</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games/Creative Work Section -->
+    <section id="games" class="games section">
+        <div class="container">
+            <h2 class="section-title">Creative Work</h2>
+            <p class="section-intro">Interactive tools and games for public health education.</p>
+
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-image-placeholder" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="12" x2="2" y2="12"></line>
+                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                            <line x1="6" y1="16" x2="6.01" y2="16"></line>
+                            <line x1="10" y1="16" x2="10.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h3>Stop the Outbreak</h3>
+                    <p>An educational game designed to teach epidemic response strategies and public health decision-making through interactive gameplay.</p>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image-placeholder" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
+                    <h3>Games for Public Health</h3>
+                    <p>A collection of interactive learning tools that make complex public health concepts accessible and engaging for diverse audiences.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Timeline Section -->
+    <section id="experience" class="experience section">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <p class="section-intro">A career dedicated to public health impact and community-centered solutions.</p>
+
+            <div id="timeline" class="timeline">
+                <!-- Timeline will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-intro">Let's collaborate on creating evidence-based solutions for public health challenges.</p>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:adamtroy0@gmail.com">adamtroy0@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                        <div>
+                            <h4>LinkedIn</h4>
+                            <a href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Orlando, Florida</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required aria-required="true">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required aria-required="true">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required aria-required="true"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-text">
+                <p>&copy; 2026 Adam Troy. All rights reserved.</p>
+                <p class="footer-tagline">Inspired by Carl Sagan's "Pale Blue Dot" — a reminder of our shared humanity.</p>
+            </div>
+            <div class="footer-links">
+                <a href="mailto:adamtroy0@gmail.com" aria-label="Email Adam Troy">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="network-hero.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
