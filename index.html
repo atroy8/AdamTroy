@@ -5,13 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Adam Troy - Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention.">
     <meta name="author" content="Adam Troy">
+    
+    <!-- Security -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Adam Troy | Public Health Consultant">
+    <meta property="og:description" content="Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://atroy8.github.io/AdamTroy">
+    <meta property="og:image" content="https://atroy8.github.io/AdamTroy/og-image.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Adam Troy | Public Health Consultant">
+    <meta name="twitter:description" content="Evidence-Based Public Health Professional">
+    
     <title>Adam Troy | Public Health Consultant</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="network-hero.js" as="script">
+    
+    <!-- DNS prefetch for external links -->
+    <link rel="dns-prefetch" href="https://www.orlandosentinel.com">
+    <link rel="dns-prefetch" href="https://www.linkedin.com">
+    <link rel="dns-prefetch" href="https://formspree.io">
+    
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhancements.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 </head>
 <body>
+    <!-- Skip to main content link -->
+    <a href="#hero" class="skip-link">Skip to main content</a>
+    
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar" id="scrollProgress"></div>
+    </div>
+
     <!-- Network Canvas Background -->
     <canvas id="networkCanvas" aria-hidden="true"></canvas>
 
@@ -139,7 +181,9 @@
                     <h3>My Approach</h3>
                     <p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p>
 
-                  </div>
+                    <h3>The Story Behind the Name</h3>
+                    <p>Inspired by Carl Sagan's iconic reflection on Earth as a "pale blue dot," my consulting work reminds us that every decision should be grounded in care for humanity and our shared future. I approach challenges with humility, urgency, and scientific rigor.</p>
+                </div>
 
                 <div class="about-credentials">
                     <div class="credential-box">
@@ -279,20 +323,26 @@
                     </div>
                 </div>
 
-                <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="contact">
+                    <input type="hidden" name="bot-field">
+                    
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required aria-required="true">
+                        <label for="name">Name <span aria-label="required">*</span></label>
+                        <input type="text" id="name" name="name" required aria-required="true" aria-describedby="name-error">
+                        <span id="name-error" class="error-message" role="alert"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required aria-required="true">
+                        <label for="email">Email <span aria-label="required">*</span></label>
+                        <input type="email" id="email" name="email" required aria-required="true" aria-describedby="email-error">
+                        <span id="email-error" class="error-message" role="alert"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="5" required aria-required="true"></textarea>
+                        <label for="message">Message <span aria-label="required">*</span></label>
+                        <textarea id="message" name="message" rows="5" required aria-required="true" aria-describedby="message-error"></textarea>
+                        <span id="message-error" class="error-message" role="alert"></span>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Send Message</button>
@@ -326,7 +376,7 @@
         </div>
     </footer>
 
-    <script src="network-hero.js"></script>
-    <script src="script.js"></script>
+    <script src="network-hero.js" defer></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
