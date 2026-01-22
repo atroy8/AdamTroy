@@ -7,10 +7,16 @@
 class NetworkHero {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) {
+            console.warn(`Canvas element with id "${canvasId}" not found`);
+            return;
+        }
+        
         this.ctx = this.canvas.getContext('2d');
         this.nodes = [];
         this.mouse = { x: null, y: null };
         this.animationId = null;
+        this.resizeTimeout = null;
         
         // Configuration
         this.config = {
@@ -60,9 +66,13 @@ class NetworkHero {
     }
     
     attachEventListeners() {
+        // Debounced resize handler to prevent memory leaks
         window.addEventListener('resize', () => {
-            this.setCanvasSize();
-            this.createNodes();
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                this.setCanvasSize();
+                this.createNodes();
+            }, 250);
         });
         
         window.addEventListener('mousemove', (e) => {
@@ -165,8 +175,9 @@ class NetworkHero {
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
         }
-        window.removeEventListener('resize', this.setCanvasSize);
-        window.removeEventListener('mousemove', () => {});
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
     }
 }
 
