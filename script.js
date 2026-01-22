@@ -13,7 +13,9 @@ class ThemeManager {
     
     init() {
         this.applyTheme();
-        this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        if (this.themeToggle) {
+            this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
     }
     
     applyTheme() {
@@ -47,6 +49,13 @@ class MobileNav {
                 if (this.isOpen) this.toggleMenu();
             });
         });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && !this.toggle.contains(e.target) && !this.navLinks.contains(e.target)) {
+                this.toggleMenu();
+            }
+        });
     }
     
     toggleMenu() {
@@ -54,19 +63,22 @@ class MobileNav {
         this.toggle.classList.toggle('active');
         this.navLinks.classList.toggle('active');
         
-        // Update mobile styles
+        // Update mobile styles with proper CSS
         if (this.isOpen) {
-            this.navLinks.style.display = 'flex';
-            this.navLinks.style.flexDirection = 'column';
-            this.navLinks.style.position = 'absolute';
-            this.navLinks.style.top = '100%';
-            this.navLinks.style.left = '0';
-            this.navLinks.style.right = '0';
-            this.navLinks.style.background = 'var(--nav-bg)';
-            this.navLinks.style.padding = '1rem';
-            this.navLinks.style.borderTop = '1px solid var(--border-color)';
+            this.navLinks.style.cssText = `
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--nav-bg);
+                padding: 1rem;
+                border-top: 1px solid var(--border-color);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            `;
         } else {
-            this.navLinks.style.display = '';
+            this.navLinks.style.cssText = '';
         }
     }
 }
@@ -79,13 +91,19 @@ class ExperienceTimeline {
     }
     
     async init() {
+        if (!this.container) return;
+        
+        // Show loading state
+        this.container.innerHTML = '<div class="timeline-loading" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Loading experience...</div>';
+        
         try {
             const response = await fetch('src/data/experience.json');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
             this.renderTimeline(data.experience);
         } catch (error) {
             console.error('Error loading experience data:', error);
-            this.renderError();
+            this.renderError(error.message);
         }
     }
     
@@ -116,10 +134,11 @@ class ExperienceTimeline {
         this.container.innerHTML = html;
     }
     
-    renderError() {
+    renderError(message) {
         this.container.innerHTML = `
-            <div class="timeline-error">
-                <p>Unable to load experience data. Please check the console for details.</p>
+            <div class="timeline-error" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                <p>Unable to load experience data.</p>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7;">Error: ${message}</p>
             </div>
         `;
     }
@@ -150,6 +169,57 @@ class SmoothScroll {
     }
 }
 
+// Scroll Progress Indicator
+class ScrollProgress {
+    constructor() {
+        this.progressBar = document.getElementById('scrollProgress');
+        this.init();
+    }
+    
+    init() {
+        if (!this.progressBar) return;
+        
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            this.progressBar.style.width = scrolled + '%';
+        });
+    }
+}
+
+// Active Navigation State
+class ActiveNav {
+    constructor() {
+        this.sections = document.querySelectorAll('section[id]');
+        this.navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        this.init();
+    }
+    
+    init() {
+        if (this.sections.length === 0 || this.navLinks.length === 0) return;
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            this.sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            this.navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    }
+}
+
 // Form Handler
 class ContactForm {
     constructor() {
@@ -161,9 +231,12 @@ class ContactForm {
         if (!this.form) return;
         
         this.form.addEventListener('submit', (e) => {
-            // If using Formspree or similar, the default action will handle submission
+            // Netlify Forms will handle submission automatically
             // Add custom validation or tracking here if needed
             console.log('Form submitted');
+            
+            // Show success message (optional)
+            // You can add a success message div in your HTML and show it here
         });
     }
 }
@@ -205,6 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new MobileNav();
     new ExperienceTimeline();
     new SmoothScroll();
+    new ScrollProgress();
+    new ActiveNav();
     new ContactForm();
     
     // Only add scroll animations if user doesn't prefer reduced motion
