@@ -323,8 +323,8 @@ a:focus {
 
 .expertise-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(280px, 360px));m;
+       gap: 2rem;
 }
 
 .expertise-card {
