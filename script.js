@@ -121,7 +121,7 @@ class ExperienceTimeline {
                             <span>${exp.location}</span>
                         </div>
                     </div>
-                    <p class="timeline-description">${exp.description}</p>
+${exp.description ? `                    <p class="timeline-description">${exp.description}</p>` : ''}
                     ${exp.highlights && exp.highlights.length > 0 ? `
                         <ul class="timeline-highlights">
                             ${exp.highlights.map(h => `<li>${h}</li>`).join('')}
