@@ -332,6 +332,7 @@ a:focus {
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: var(--shadow-sm);
+       max-width: 400px;
     transition: all 0.3s ease;
     border: 1px solid var(--border-color);
 }
