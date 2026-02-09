@@ -323,9 +323,10 @@ a:focus {
 
 .expertise-grid {
     display: grid;
-  grid-template-columns: repeat(3, 1fr);}
+  grid-template-columns: repeat(3, 1fr)}
   gap: 2rem;
 
+}
 .expertise-card {
     background: var(--card-bg);
     padding: 2rem;
