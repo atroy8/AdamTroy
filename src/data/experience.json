@@ -15,6 +15,13 @@
       "endDate": "Present"
     },
     {
+      "title": "Visiting Professor",
+      "organization": "University of Central Florida",
+      "location": "Orlando, FL",
+      "startDate": "August 2018",
+      "endDate": "May 2019"
+    },
+    {
       "title": "Prevention Director",
       "organization": "Hope and Help Center of Central Florida",
       "location": "Orlando, FL",
@@ -22,18 +29,46 @@
       "endDate": "December 2021"
     },
     {
-      "title": "Public Health Research Fellow",
-      "organization": "Johns Hopkins University",
-      "location": "Baltimore, MD",
-      "startDate": "August 2016",
-      "endDate": "June 2019"
+      "title": "Population Health Coordinator",
+      "organization": "Orlando Health",
+      "location": "Orlando, FL",
+      "startDate": "January 2018",
+      "endDate": "August 2018"
     },
     {
-      "title": "Graduate Research Assistant",
-      "organization": "University of Central Florida",
-      "location": "Orlando, FL",
-      "startDate": "August 2014",
-      "endDate": "May 2016"
+      "title": "Health Educator",
+      "organization": "University of Miami",
+      "location": "Coral Gables, FL",
+      "startDate": "July 2013",
+      "endDate": "July 2017"
+    },
+    {
+      "title": "Program Data Management Specialist",
+      "organization": "FoundCare, Inc.",
+      "location": "Florida",
+      "startDate": "February 2013",
+      "endDate": "June 2013"
+    },
+    {
+      "title": "Health Education Specialist",
+      "organization": "Peace Corps",
+      "location": "International",
+      "startDate": "June 2010",
+      "endDate": "August 2012"
+    },
+    {
+      "title": "Health Promotion Specialist",
+      "organization": "Comprehensive AIDS Program of Palm Beach County",
+      "location": "Florida",
+      "startDate": "February 2010",
+      "endDate": "May 2010"
+    },
+    {
+      "title": "Internship",
+      "organization": "Broward County Health Department",
+      "location": "Florida",
+      "startDate": "August 2009",
+      "endDate": "December 2009"
     }
   ]
 }
