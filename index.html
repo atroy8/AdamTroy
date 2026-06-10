@@ -1,396 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Adam Troy - Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention.">
-    <meta name="author" content="Adam Troy">
-    
-    <!-- Security -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-    
-    <!-- Open Graph for social sharing -->
-    <meta property="og:title" content="Adam Troy | Public Health Consultant">
-    <meta property="og:description" content="Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://atroy8.github.io/AdamTroy">
-    <meta property="og:image" content="https://atroy8.github.io/AdamTroy/og-image.jpg">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Adam Troy | Public Health Consultant">
-    <meta name="twitter:description" content="Evidence-Based Public Health Professional">
-    
-    <title>Adam Troy | Public Health Consultant</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="script.js" as="script">
-    <link rel="preload" href="network-hero.js" as="script">
-    
-    <!-- DNS prefetch for external links -->
-    <link rel="dns-prefetch" href="https://www.orlandosentinel.com">
-    <link rel="dns-prefetch" href="https://www.linkedin.com">
-    <link rel="dns-prefetch" href="https://formspree.io">
-    
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="enhancements.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adam Troy | Public Health Consultant</title>
+<meta name="author" content="Adam Troy" />
+<meta name="description" content="Adam Troy - Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention." />
+<meta property="og:title" content="Adam Troy | Public Health Consultant" />
+<meta property="og:description" content="Evidence-Based Public Health Professional specializing in strategy, evaluation, and community violence prevention." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://atroy8.github.io/AdamTroy" />
+<meta property="og:image" content="https://atroy8.github.io/AdamTroy/og-image.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Adam Troy | Public Health Consultant" />
+<meta name="twitter:description" content="Evidence-Based Public Health Professional" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#03050e;
+    --bg-2:#070b1c;
+    --ink:#eaf1ff;
+    --muted:#9fb0d4;
+    --faint:#6b7aa3;
+    --blue:#4da3ff;
+    --blue-bright:#7fc0ff;
+    --cyan:#74f0e0;
+    --violet:#9b8cff;
+    --gold:#ffd27f;
+    --card:rgba(255,255,255,.04);
+    --card-border:rgba(125,160,255,.16);
+    --glass-blur:saturate(150%) blur(14px);
+    --maxw:1180px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;line-height:1.1;font-weight:600;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:rgba(77,163,255,.35)}
+
+  /* ---------- cosmic background canvas ---------- */
+  #starfield{position:fixed;inset:0;width:100%;height:100%;z-index:-3;display:block}
+  .space-haze{
+    position:fixed;inset:-20%;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 18% 12%, rgba(77,103,255,.22), transparent 60%),
+      radial-gradient(55% 50% at 85% 20%, rgba(155,140,255,.18), transparent 60%),
+      radial-gradient(70% 60% at 70% 90%, rgba(116,240,224,.10), transparent 60%),
+      radial-gradient(60% 60% at 12% 85%, rgba(255,210,127,.08), transparent 60%);
+    filter:blur(20px);
+    animation:drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift{to{transform:translate3d(2.5%,-2%,0) scale(1.06)}}
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.4;
+    background:radial-gradient(circle at 50% 0%, transparent 55%, rgba(0,0,0,.55) 100%)}
+
+  /* glow cursor */
+  .cursor-glow{position:fixed;top:0;left:0;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle,rgba(77,163,255,.10),transparent 65%);
+    transform:translate(-50%,-50%);pointer-events:none;z-index:0;transition:opacity .4s}
+
+  /* ---------- nav ---------- */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,5vw,56px);
+    transition:background .4s var(--ease),padding .4s var(--ease),border-color .4s;
+    border-bottom:1px solid transparent}
+  header.nav.scrolled{background:rgba(4,7,18,.72);backdrop-filter:var(--glass-blur);
+    border-bottom:1px solid rgba(125,160,255,.12);padding:12px clamp(20px,5vw,56px)}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:600;font-size:1.05rem}
+  .brand .dot{width:11px;height:11px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#bfe0ff,#4da3ff 55%,#1a4fb0);
+    box-shadow:0 0 14px 2px rgba(77,163,255,.8);animation:pulse 3.6s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 22px 5px rgba(77,163,255,.55)}}
+  nav.links{display:flex;gap:30px}
+  nav.links a{font-size:.9rem;color:var(--muted);position:relative;transition:color .25s}
+  nav.links a::after{content:'';position:absolute;left:0;bottom:-6px;height:1.5px;width:0;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s var(--ease)}
+  nav.links a:hover{color:#fff}
+  nav.links a:hover::after{width:100%}
+  .nav-toggle{display:none;background:none;border:0;color:var(--ink);cursor:pointer;font-size:1.5rem}
+
+  /* ---------- layout ---------- */
+  section{position:relative;padding:clamp(80px,11vw,150px) clamp(20px,5vw,56px)}
+  .wrap{max-width:var(--maxw);margin:0 auto;position:relative;z-index:2}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:'Space Grotesk';
+    font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-bright);
+    margin-bottom:18px}
+  .eyebrow::before{content:'';width:26px;height:1px;background:linear-gradient(90deg,var(--blue),transparent)}
+  .section-title{font-size:clamp(2rem,4.6vw,3.3rem);margin-bottom:18px;
+    background:linear-gradient(120deg,#fff 30%,#9fc4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);max-width:60ch;font-size:1.08rem}
+
+  /* ---------- hero ---------- */
+  #hero{min-height:100vh;display:flex;align-items:center;padding-top:120px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;width:100%}
+  .hero-copy{max-width:640px}
+  .hero-copy h1{font-size:clamp(2.8rem,7vw,5.4rem);font-weight:700;letter-spacing:-.03em;line-height:.98}
+  .hero-copy h1 .grad{background:linear-gradient(115deg,#cfe2ff,#4da3ff 45%,#9b8cff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-role{font-family:'Space Grotesk';font-size:clamp(1.05rem,2.4vw,1.5rem);color:var(--cyan);
+    margin-top:18px;font-weight:500}
+  .hero-sub{color:var(--muted);font-size:1.12rem;margin-top:22px;max-width:52ch}
+  .cta-row{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:999px;
+    font-family:'Space Grotesk';font-weight:500;font-size:.98rem;cursor:pointer;
+    transition:transform .25s var(--ease),box-shadow .3s,background .3s;border:1px solid transparent}
+  .btn-primary{background:linear-gradient(120deg,#4da3ff,#7c6bff);color:#04122e;
+    box-shadow:0 10px 30px -8px rgba(77,163,255,.6)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px -8px rgba(77,163,255,.8)}
+  .btn-ghost{border-color:rgba(125,160,255,.3);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{transform:translateY(-3px);border-color:var(--blue);background:rgba(77,163,255,.08)}
+
+  /* pale blue dot visual */
+  .dot-stage{position:relative;aspect-ratio:1;max-width:460px;margin-inline:auto;width:100%}
+  .sunbeam{position:absolute;top:50%;left:50%;width:160%;height:42%;
+    transform:translate(-50%,-50%) rotate(-22deg);
+    background:linear-gradient(90deg,rgba(255,225,170,.0),rgba(255,221,150,.16) 45%,rgba(255,210,130,.05) 70%,transparent);
+    filter:blur(8px);border-radius:50%;animation:beam 7s ease-in-out infinite alternate}
+  @keyframes beam{to{opacity:.55;transform:translate(-50%,-50%) rotate(-19deg) scaleX(1.04)}}
+  .orbit{position:absolute;inset:0;border:1px solid rgba(125,160,255,.14);border-radius:50%;
+    animation:spin 40s linear infinite}
+  .orbit.o2{inset:14%;border-color:rgba(155,140,255,.16);animation-duration:28s;animation-direction:reverse}
+  .orbit.o3{inset:30%;border-color:rgba(116,240,224,.14);animation-duration:18s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .orbit .sat{position:absolute;top:-4px;left:50%;width:8px;height:8px;border-radius:50%;
+    background:#bfe0ff;box-shadow:0 0 12px 2px rgba(127,192,255,.9)}
+  .o2 .sat{background:#cdbcff;box-shadow:0 0 12px 2px rgba(155,140,255,.9)}
+  .o3 .sat{background:#9af3e6;box-shadow:0 0 12px 2px rgba(116,240,224,.9)}
+  .globe{position:absolute;top:50%;left:50%;width:74%;aspect-ratio:1;
+    transform:translate(-50%,-50%);cursor:grab;touch-action:none;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%, #2f74d8, #123f86 58%, #08245a 82%, #051634);
+    animation:floaty 8s ease-in-out infinite}
+  .globe::before{content:'';position:absolute;inset:-15%;border-radius:50%;z-index:-1;
+    background:radial-gradient(circle, rgba(77,163,255,.30), rgba(116,240,224,.06) 55%, transparent 72%);
+    filter:blur(7px)}
+  .globe canvas{display:block;border-radius:50%}
+  .globe.grabbing{cursor:grabbing}
+  @keyframes floaty{50%{transform:translate(-50%,calc(-50% - 12px))}}
+  .dot-caption{position:absolute;bottom:-6%;left:50%;transform:translateX(-50%);
+    font-family:'Space Grotesk';font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--faint);white-space:nowrap;transition:opacity .5s ease;pointer-events:none}
+  .scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--faint);font-size:.72rem;
+    letter-spacing:.2em;text-transform:uppercase;z-index:3}
+  .scroll-cue .mouse{width:22px;height:36px;border:1.5px solid var(--faint);border-radius:12px;position:relative}
+  .scroll-cue .mouse::after{content:'';position:absolute;top:6px;left:50%;width:3px;height:7px;border-radius:2px;
+    transform:translateX(-50%);background:var(--blue-bright);animation:wheel 1.8s ease-in-out infinite}
+  @keyframes wheel{50%{transform:translate(-50%,9px);opacity:.3}}
+
+  /* ---------- reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+  .reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:46px}
+  .glass{background:var(--card);border:1px solid var(--card-border);border-radius:20px;
+    backdrop-filter:var(--glass-blur);padding:34px 32px;position:relative;overflow:hidden;
+    transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+  .glass::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;
+    background:linear-gradient(140deg,rgba(125,160,255,.5),transparent 40%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+  .glass:hover{transform:translateY(-6px);box-shadow:0 24px 50px -20px rgba(0,20,70,.8)}
+  .glass:hover::before{opacity:1}
+  .glass h3{font-size:1.35rem;margin-bottom:12px;color:#fff}
+  .glass p{color:var(--muted)}
+
+  /* ---------- expertise constellation ---------- */
+  .exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px}
+  .exp-card{background:var(--card);border:1px solid var(--card-border);border-radius:18px;
+    padding:30px 26px;position:relative;overflow:hidden;
+    transition:transform .4s var(--ease),border-color .4s,background .4s}
+  .exp-card .num{font-family:'Space Grotesk';font-size:.8rem;color:var(--blue);letter-spacing:.2em}
+  .exp-card .ico{width:50px;height:50px;border-radius:13px;display:grid;place-items:center;margin:16px 0 18px;
+    background:linear-gradient(140deg,rgba(77,163,255,.18),rgba(155,140,255,.12));
+    border:1px solid rgba(125,160,255,.25)}
+  .exp-card .ico svg{width:25px;height:25px;stroke:var(--blue-bright)}
+  .exp-card h3{font-size:1.18rem;margin-bottom:10px;color:#fff;line-height:1.25}
+  .exp-card p{color:var(--muted);font-size:.95rem}
+  .exp-card::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;
+    top:-90px;right:-70px;background:radial-gradient(circle,rgba(77,163,255,.16),transparent 70%);
+    opacity:0;transition:opacity .45s}
+  .exp-card:hover{transform:translateY(-7px);border-color:rgba(125,160,255,.45);background:rgba(77,163,255,.05)}
+  .exp-card:hover::after{opacity:1}
+
+  /* ---------- news ---------- */
+  .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px}
+  .news-card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--card-border);
+    border-radius:18px;overflow:hidden;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+  .news-card:hover{transform:translateY(-7px);border-color:rgba(125,160,255,.45);box-shadow:0 24px 50px -22px rgba(0,20,70,.8)}
+  .news-top{height:6px;background:linear-gradient(90deg,var(--blue),var(--violet),var(--cyan))}
+  .news-body{padding:26px 24px;display:flex;flex-direction:column;flex:1}
+  .news-src{font-family:'Space Grotesk';font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+  .news-card h3{font-size:1.12rem;margin:12px 0 10px;color:#fff;line-height:1.3}
+  .news-date{font-size:.82rem;color:var(--faint);margin-bottom:12px}
+  .news-card p{color:var(--muted);font-size:.92rem;flex:1}
+  .news-link{margin-top:18px;font-family:'Space Grotesk';font-size:.9rem;color:var(--blue-bright);
+    display:inline-flex;align-items:center;gap:7px;transition:gap .3s}
+  .news-card:hover .news-link{gap:13px}
+
+  /* ---------- creative work ---------- */
+  .creative-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:50px}
+  .creative-card{position:relative;border-radius:20px;overflow:hidden;padding:46px 38px;min-height:230px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    border:1px solid var(--card-border);transition:transform .4s var(--ease),border-color .4s}
+  .creative-card .bg{position:absolute;inset:0;z-index:0;
+    background-size:cover;background-position:center;opacity:.5;transition:transform .7s var(--ease),opacity .5s}
+  .creative-card .bg.c1{background-image:linear-gradient(160deg,rgba(8,20,55,.4),rgba(3,5,14,.85)),url('https://images.unsplash.com/photo-1614728263952-84ea256ec346?auto=format&fit=crop&w=900&q=70')}
+  .creative-card .bg.c2{background-image:linear-gradient(160deg,rgba(8,20,55,.4),rgba(3,5,14,.85)),url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=70')}
+  .creative-card::before{content:'';position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,transparent,rgba(3,5,14,.7))}
+  .creative-card:hover{transform:translateY(-7px);border-color:rgba(125,160,255,.5)}
+  .creative-card:hover .bg{transform:scale(1.08);opacity:.65}
+  .creative-card>*{position:relative;z-index:2}
+  .creative-card .tag{font-family:'Space Grotesk';font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--cyan);margin-bottom:12px}
+  .creative-card h3{font-size:1.5rem;color:#fff;margin-bottom:10px}
+  .creative-card p{color:var(--muted);font-size:.96rem;max-width:42ch}
+
+  /* ---------- experience / credentials ---------- */
+  .cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:46px}
+  .cred-block h4{font-family:'Space Grotesk';font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--blue-bright);margin-bottom:22px}
+  .timeline{position:relative;padding-left:26px}
+  .timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;
+    background:linear-gradient(180deg,var(--blue),var(--violet),transparent)}
+  .titem{position:relative;margin-bottom:24px}
+  .titem::before{content:'';position:absolute;left:-25px;top:6px;width:11px;height:11px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#cfe2ff,#4da3ff);box-shadow:0 0 12px 2px rgba(77,163,255,.6)}
+  .titem .deg{font-family:'Space Grotesk';font-weight:600;color:#fff;font-size:1.04rem}
+  .titem .org{color:var(--muted);font-size:.92rem}
+  .chips{display:flex;flex-wrap:wrap;gap:12px}
+  .chip{padding:11px 18px;border-radius:999px;border:1px solid var(--card-border);background:var(--card);
+    color:var(--ink);font-size:.9rem;font-family:'Space Grotesk';transition:border-color .3s,transform .3s,background .3s}
+  .chip:hover{border-color:var(--blue);transform:translateY(-3px);background:rgba(77,163,255,.08)}
+
+  /* ---------- contact ---------- */
+  #contact{text-align:center}
+  .contact-card{max-width:760px;margin:46px auto 0;padding:clamp(36px,5vw,56px);
+    border-radius:26px;border:1px solid var(--card-border);background:var(--card);backdrop-filter:var(--glass-blur);
+    position:relative;overflow:hidden}
+  .contact-card::after{content:'';position:absolute;width:320px;height:320px;border-radius:50%;top:-160px;left:50%;
+    transform:translateX(-50%);background:radial-gradient(circle,rgba(77,163,255,.22),transparent 70%)}
+  .contact-methods{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:34px}
+  .cmethod{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:170px;padding:24px 22px;
+    border-radius:16px;border:1px solid rgba(125,160,255,.14);background:rgba(255,255,255,.02);
+    transition:transform .3s var(--ease),border-color .3s,background .3s}
+  .cmethod:hover{transform:translateY(-5px);border-color:var(--blue);background:rgba(77,163,255,.07)}
+  .cmethod .lbl{font-family:'Space Grotesk';font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .cmethod .val{color:#fff;font-size:.98rem;word-break:break-word}
+  .cmethod svg{width:24px;height:24px;stroke:var(--blue-bright);margin-bottom:6px}
+
+  /* ---------- footer / pale blue dot finale ---------- */
+  footer{position:relative;padding:clamp(70px,9vw,120px) clamp(20px,5vw,56px) 60px;text-align:center;overflow:hidden}
+  .palequote{max-width:680px;margin:0 auto 50px;font-family:'Space Grotesk';font-weight:400;
+    font-size:clamp(1.1rem,2.6vw,1.55rem);line-height:1.5;color:#dce7ff}
+  .palequote .accent{color:var(--blue-bright)}
+  .pale-attr{color:var(--faint);font-size:.86rem;margin-top:18px;letter-spacing:.04em}
+  .foot-row{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--faint);font-size:.86rem;margin-top:40px;
+    border-top:1px solid rgba(125,160,255,.1);padding-top:34px}
+  .foot-links{display:flex;gap:22px;margin-bottom:6px}
+  .foot-links a{color:var(--muted);transition:color .25s}
+  .foot-links a:hover{color:var(--blue-bright)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:50px}
+    .dot-stage{max-width:340px;order:-1}
+    .exp-grid,.news-grid{grid-template-columns:1fr 1fr}
+    nav.links{display:none}
+    nav.links.open{display:flex;position:absolute;top:100%;right:0;left:0;flex-direction:column;
+      gap:0;background:rgba(4,7,18,.96);backdrop-filter:var(--glass-blur);padding:14px 24px 22px;
+      border-bottom:1px solid rgba(125,160,255,.14)}
+    nav.links.open a{padding:13px 0;border-bottom:1px solid rgba(125,160,255,.08)}
+    .nav-toggle{display:block}
+  }
+  @media (max-width:680px){
+    .about-grid,.exp-grid,.news-grid,.creative-grid,.cred-grid{grid-template-columns:1fr}
+    .hero-copy h1{font-size:2.9rem}
+  }
+  /* ---------- floating section decorations ---------- */
+  .deco{position:absolute;z-index:1;pointer-events:none;
+    filter:drop-shadow(0 10px 26px rgba(0,12,45,.55))}
+  .deco svg,.deco use{display:block}
+  .float-a{animation:floatA 7s ease-in-out infinite}
+  .float-b{animation:floatB 9s ease-in-out infinite}
+  .float-flip{animation:floatF 8s ease-in-out infinite}
+  @keyframes floatA{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+  @keyframes floatB{0%,100%{transform:translateY(0) rotate(3deg)}50%{transform:translateY(-14px) rotate(-3deg)}}
+  @keyframes floatF{0%,100%{transform:scaleX(-1) translateY(0) rotate(3deg)}50%{transform:scaleX(-1) translateY(-16px) rotate(-3deg)}}
+  .deco-astro{width:clamp(86px,9vw,128px)}
+  .deco-dipper{width:clamp(150px,16vw,212px)}
+  .deco-sat{width:clamp(116px,12vw,156px)}
+  .twk{animation:twk 3s ease-in-out infinite}
+  .twk2{animation:twk 3s ease-in-out infinite .7s}
+  .twk3{animation:twk 3s ease-in-out infinite 1.4s}
+  @keyframes twk{0%,100%{opacity:.45}50%{opacity:1}}
+  .blink{animation:blink 1.6s steps(1,end) infinite}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.12}}
+  /* mini game */
+  .deco-game{position:absolute;z-index:3;pointer-events:auto;width:178px;border-radius:16px;overflow:hidden;
+    border:1px solid var(--card-border);background:rgba(6,10,26,.72);backdrop-filter:var(--glass-blur);
+    box-shadow:0 18px 44px -18px rgba(0,16,60,.85)}
+  .deco-game canvas{display:block;width:100%;height:auto;background:transparent;cursor:crosshair;touch-action:none}
+  .deco-game .ghud{display:flex;justify-content:space-between;align-items:center;padding:6px 11px;
+    font-family:'Space Grotesk';font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+    border-bottom:1px solid rgba(125,160,255,.12)}
+  .deco-game .gscore{color:var(--cyan)}
+  .gstart{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center;
+    background:rgba(4,7,18,.8);color:#fff;font-family:'Space Grotesk';font-size:.85rem;cursor:pointer;text-align:center;padding:12px}
+  .gstart small{color:var(--faint);font-size:.6rem;letter-spacing:.06em;line-height:1.7}
+  .gstart .play{width:36px;height:36px;border-radius:50%;border:1px solid var(--blue);display:grid;place-items:center;color:var(--blue-bright)}
+  /* placement per section */
+  #about .deco{top:7%;right:4%}
+  #expertise .deco{top:5%;right:4%}
+  #news .deco{top:6%;right:4%}
+  #creative .deco-game{top:8%;right:3%}
+  #experience .deco{top:8%;right:5%}
+  #contact .deco{top:5%;right:8%}
+  @media(max-width:1000px){.deco,.deco-game{display:none}}
+  /* globe marker tooltip */
+  .globe-tip{position:fixed;z-index:60;pointer-events:none;transform:translate(14px,14px);
+    background:rgba(8,14,32,.93);border:1px solid var(--card-border);border-radius:12px;padding:9px 13px;
+    backdrop-filter:var(--glass-blur);max-width:230px;opacity:0;transition:opacity .18s ease;
+    box-shadow:0 14px 34px -12px rgba(0,12,45,.85)}
+  .globe-tip.show{opacity:1}
+  .globe-tip b{display:block;font-family:'Space Grotesk';font-size:.92rem;margin-bottom:2px}
+  .globe-tip span{color:var(--muted);font-size:.82rem;line-height:1.4}
+
+  /* ---------- card background imagery ---------- */
+  .exp-card::before,.news-card::before,.cred-block::before,.about-grid .glass::after{
+    content:'';position:absolute;inset:0;z-index:0;border-radius:inherit;
+    background:linear-gradient(160deg,rgba(6,10,26,.78),rgba(3,5,14,.92)), var(--img,none);
+    background-size:cover;background-position:center;
+    transition:transform .6s var(--ease),opacity .45s}
+  .exp-card>*,.news-card>*,.cred-block>*{position:relative;z-index:1}
+  .about-grid .glass>*{position:relative;z-index:2}
+  .glass::before{z-index:3}
+  .exp-card:hover::before,.news-card:hover::before,.cred-block:hover::before,.about-grid .glass:hover::after{transform:scale(1.07)}
+  /* experience blocks become cards */
+  .cred-block{position:relative;overflow:hidden;border-radius:18px;padding:30px 28px;
+    border:1px solid var(--card-border);background:var(--card);
+    transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+  .cred-block:hover{transform:translateY(-6px);border-color:rgba(125,160,255,.4);box-shadow:0 24px 50px -22px rgba(0,20,70,.8)}
+  /* expertise — topic-relevant */
+  .exp-grid .exp-card:nth-child(1){--img:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=70')}
+  .exp-grid .exp-card:nth-child(2){--img:url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=70')}
+  .exp-grid .exp-card:nth-child(3){--img:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=900&q=70')}
+  .exp-grid .exp-card:nth-child(4){--img:url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=70')}
+  .exp-grid .exp-card:nth-child(5){--img:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=70')}
+  .exp-grid .exp-card:nth-child(6){--img:url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=70')}
+  /* in the news — press/research */
+  .news-grid .news-card:nth-child(1){--img:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70')}
+  .news-grid .news-card:nth-child(2){--img:url('https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=70')}
+  .news-grid .news-card:nth-child(3){--img:url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=70')}
+  /* about — cosmic */
+  .about-grid .glass:nth-child(1){--img:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70')}
+  .about-grid .glass:nth-child(2){--img:url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=70')}
+  /* experience — campus + cosmic */
+  .cred-grid .cred-block:nth-child(1){--img:url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=70')}
+  .cred-grid .cred-block:nth-child(2){--img:url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=900&q=70')}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
 </head>
 <body>
-    <!-- Skip to main content link -->
-    <a href="#hero" class="skip-link">Skip to main content</a>
-    
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar" id="scrollProgress"></div>
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="space-haze" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="globe-tip" id="globeTip" aria-hidden="true"></div>
+
+<!-- shared astronaut graphic -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="suit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c4d0e6"/>
+    </linearGradient>
+    <radialGradient id="visor" cx="40%" cy="35%" r="72%">
+      <stop offset="0" stop-color="#2b5ea0"/><stop offset="55%" stop-color="#11244c"/><stop offset="100%" stop-color="#070f24"/>
+    </radialGradient>
+  </defs>
+  <symbol id="astronaut" viewBox="0 0 100 130">
+    <rect x="30" y="44" width="40" height="50" rx="12" fill="#aebcd6"/>
+    <rect x="16" y="52" width="17" height="42" rx="8.5" fill="url(#suit)" transform="rotate(20 24 73)"/>
+    <rect x="67" y="52" width="17" height="42" rx="8.5" fill="url(#suit)" transform="rotate(-20 76 73)"/>
+    <rect x="35" y="88" width="14" height="36" rx="7" fill="url(#suit)" transform="rotate(9 42 106)"/>
+    <rect x="51" y="88" width="14" height="36" rx="7" fill="url(#suit)" transform="rotate(-9 58 106)"/>
+    <ellipse cx="38" cy="124" rx="9" ry="6" fill="#9fb0d4" transform="rotate(9 38 124)"/>
+    <ellipse cx="62" cy="124" rx="9" ry="6" fill="#9fb0d4" transform="rotate(-9 62 124)"/>
+    <circle cx="18" cy="92" r="7" fill="#eef3fb"/>
+    <circle cx="82" cy="92" r="7" fill="#eef3fb"/>
+    <rect x="32" y="52" width="36" height="46" rx="16" fill="url(#suit)"/>
+    <rect x="41" y="62" width="18" height="13" rx="3" fill="#7f93bd"/>
+    <circle cx="46" cy="68" r="2" fill="#74f0e0"/><circle cx="53" cy="68" r="2" fill="#ffd27f"/>
+    <circle cx="50" cy="34" r="24" fill="#eef3fb"/>
+    <circle cx="50" cy="35" r="17.5" fill="url(#visor)"/>
+    <ellipse cx="43" cy="28" rx="6.5" ry="4" fill="#ffffff" opacity=".55"/>
+    <line x1="50" y1="10" x2="50" y2="3" stroke="#aebcd6" stroke-width="2"/><circle cx="50" cy="2.5" r="2.5" fill="#74f0e0"/>
+  </symbol>
+</svg>
+
+<a href="#hero" class="sr-only" style="position:absolute;left:-9999px">Skip to main content</a>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a href="#hero" class="brand"><span class="dot"></span>Adam Troy</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  <nav class="links" id="navLinks">
+    <a href="#about">About</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#news">In the News</a>
+    <a href="#creative">Creative</a>
+    <a href="#experience">Credentials</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow reveal">Public Health Consultant</span>
+      <h1 class="reveal d1">Evidence,<br><span class="grad">made human.</span></h1>
+      <p class="hero-role reveal d2">Adam Troy — Evidence-Based Public Health Professional</p>
+      <p class="hero-sub reveal d3">Bridging research and real-world impact through strategic evaluation, innovative design, and community-centered solutions.</p>
+      <div class="cta-row reveal d4">
+        <a href="#contact" class="btn btn-primary">Get in Touch →</a>
+        <a href="#expertise" class="btn btn-ghost">View Services</a>
+      </div>
     </div>
+    <div class="dot-stage reveal d2">
+      <div class="sunbeam" aria-hidden="true"></div>
+      <div class="orbit" aria-hidden="true"><span class="sat"></span></div>
+      <div class="orbit o2" aria-hidden="true"><span class="sat"></span></div>
+      <div class="orbit o3" aria-hidden="true"><span class="sat"></span></div>
+      <div class="globe" id="globe" title="Drag to rotate" role="img" aria-label="Interactive 3D globe of Earth"></div>
+      <div class="dot-caption" id="dotHint">Drag to spin ↔</div>
+    </div>
+  </div>
+  <a href="#about" class="scroll-cue" aria-label="Scroll down">
+    <span class="mouse"></span>Scroll
+  </a>
+</section>
 
-    <!-- Network Canvas Background -->
-    <canvas id="networkCanvas" aria-hidden="true"></canvas>
+<!-- ABOUT -->
+<section id="about">
+  <svg class="deco deco-astro float-a" viewBox="0 0 100 130" aria-hidden="true"><use href="#astronaut"/></svg>
+  <div class="wrap">
+    <span class="eyebrow reveal">About</span>
+    <h2 class="section-title reveal d1">Research with a pulse.</h2>
+    <p class="lead reveal d2">A public health professional, educator, and strategist working at the intersection of evidence and equity.</p>
+    <div class="about-grid">
+      <div class="glass reveal d2">
+        <h3>Who I Am</h3>
+        <p>I'm a public health professional, educator, and strategist dedicated to advancing equity, improving population health, and supporting organizations working for social good. I combine evidence-based methods with creative communication to help partners make real-world impact.</p>
+      </div>
+      <div class="glass reveal d3">
+        <h3>My Approach</h3>
+        <p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Navigation -->
-    <nav class="nav" role="navigation" aria-label="Main navigation">
-        <div class="container nav-content">
-            <div class="nav-brand">
-                <a href="#hero" class="logo">Adam Troy</a>
-            </div>
-            <div class="nav-links">
-                <a href="#expertise">Expertise</a>
-                <a href="#about">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#contact">Contact</a>
-                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
-                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                </button>
-            </div>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+<!-- EXPERTISE -->
+<section id="expertise">
+  <svg class="deco deco-dipper" viewBox="0 0 220 130" aria-hidden="true">
+    <defs><filter id="starGlow"><feGaussianBlur stdDeviation="3"/></filter></defs>
+    <path d="M168 30 L172 86 L112 96 L116 46 Z M116 46 L82 40 L50 52 L18 40" fill="none" stroke="rgba(125,160,255,.3)" stroke-width="1.5" stroke-linejoin="round"/>
+    <g fill="#9fd0ff" filter="url(#starGlow)" opacity=".8">
+      <circle cx="168" cy="30" r="6"/><circle cx="172" cy="86" r="4.5"/><circle cx="112" cy="96" r="4.5"/>
+      <circle cx="116" cy="46" r="4"/><circle cx="82" cy="40" r="4.5"/><circle cx="50" cy="52" r="6"/><circle cx="18" cy="40" r="6"/>
+    </g>
+    <g fill="#f3f8ff">
+      <circle class="twk" cx="168" cy="30" r="4.5"/><circle class="twk2" cx="172" cy="86" r="3.6"/>
+      <circle class="twk3" cx="112" cy="96" r="3.4"/><circle class="twk" cx="116" cy="46" r="3"/>
+      <circle class="twk2" cx="82" cy="40" r="3.4"/><circle class="twk3" cx="50" cy="52" r="4"/><circle class="twk" cx="18" cy="40" r="4.2"/>
+    </g>
+    <text x="106" y="122" text-anchor="middle" fill="rgba(159,176,212,.45)" font-family="'Space Grotesk',sans-serif" font-size="9" letter-spacing="3">BIG DIPPER</text>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow reveal">Expertise</span>
+    <h2 class="section-title reveal d1">A constellation of services.</h2>
+    <p class="lead reveal d2">Comprehensive public health consulting services rooted in evidence and driven by impact.</p>
+    <div class="exp-grid">
+      <article class="exp-card reveal d1">
+        <span class="num">01</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+        <h3>Public Health Strategy &amp; Evaluation</h3>
+        <p>Plan, implement, and measure programs that improve health outcomes and advance equity. From logic models to impact assessments, I bring clarity to complexity.</p>
+      </article>
+      <article class="exp-card reveal d2">
+        <span class="num">02</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>Curriculum &amp; Educational Design</h3>
+        <p>Design engaging, accessible training and learning experiences for professionals and adult learners. From e-learning to workshops, I create content that resonates.</p>
+      </article>
+      <article class="exp-card reveal d3">
+        <span class="num">03</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M22 21v-1a5 5 0 0 0-3-4.58"/></svg></div>
+        <h3>Facilitation &amp; Strategic Planning</h3>
+        <p>From board retreats to community visioning sessions, I help teams move forward with purpose. Inclusive facilitation creates space for real conversations and actionable plans.</p>
+      </article>
+      <article class="exp-card reveal d1">
+        <span class="num">04</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+        <h3>Multimedia &amp; Creative Communications</h3>
+        <p>Craft videos, infographics, toolkits, and more to communicate complex ideas clearly and compellingly. Visual storytelling that brings your work to life.</p>
+      </article>
+      <article class="exp-card reveal d2">
+        <span class="num">05</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+        <h3>Grant Writing &amp; Funding Development</h3>
+        <p>Develop compelling grant proposals and funding strategies to secure resources for public health programs. From federal grants to foundation funding, I help organizations translate their vision into fundable projects that drive community impact.</p>
+      </article>
+      <article class="exp-card reveal d3">
+        <span class="num">06</span>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Participatory Action Research &amp; Evaluation</h3>
+        <p>Partner with communities to co-create research and evaluation projects that center lived experience and drive meaningful change. Using participatory methods, I help organizations engage stakeholders as partners in knowledge generation and program improvement.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- IN THE NEWS -->
+<section id="news">
+  <svg class="deco deco-sat float-b" viewBox="0 0 150 130" aria-hidden="true">
+    <defs>
+      <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b5ea0"/><stop offset="1" stop-color="#11244c"/></linearGradient>
+      <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6edf8"/><stop offset="1" stop-color="#8392b5"/></linearGradient>
+    </defs>
+    <line x1="40" y1="65" x2="62" y2="65" stroke="#8392b5" stroke-width="3"/>
+    <line x1="88" y1="65" x2="110" y2="65" stroke="#8392b5" stroke-width="3"/>
+    <g>
+      <rect x="6" y="48" width="36" height="34" rx="2" fill="url(#panel)" stroke="#4da3ff" stroke-width="1"/>
+      <line x1="18" y1="48" x2="18" y2="82" stroke="#4da3ff" stroke-width=".8"/><line x1="30" y1="48" x2="30" y2="82" stroke="#4da3ff" stroke-width=".8"/>
+      <line x1="6" y1="65" x2="42" y2="65" stroke="#4da3ff" stroke-width=".8"/>
+    </g>
+    <g>
+      <rect x="108" y="48" width="36" height="34" rx="2" fill="url(#panel)" stroke="#4da3ff" stroke-width="1"/>
+      <line x1="120" y1="48" x2="120" y2="82" stroke="#4da3ff" stroke-width=".8"/><line x1="132" y1="48" x2="132" y2="82" stroke="#4da3ff" stroke-width=".8"/>
+      <line x1="108" y1="65" x2="144" y2="65" stroke="#4da3ff" stroke-width=".8"/>
+    </g>
+    <rect x="62" y="50" width="26" height="36" rx="5" fill="url(#metal)" stroke="#6b7aa3" stroke-width="1"/>
+    <rect x="66" y="56" width="18" height="6" rx="2" fill="#11244c"/>
+    <ellipse cx="75" cy="34" rx="14" ry="9" fill="#cdd8ec" stroke="#8392b5" stroke-width="1"/>
+    <line x1="75" y1="34" x2="75" y2="50" stroke="#8392b5" stroke-width="2"/>
+    <circle cx="75" cy="34" r="2.5" fill="#6b7aa3"/>
+    <circle class="blink" cx="75" cy="92" r="3" fill="#74f0e0"/>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow reveal">In the News</span>
+    <h2 class="section-title reveal d1">Featured commentary.</h2>
+    <p class="lead reveal d2">Commentary and interviews on public health initiatives.</p>
+    <div class="news-grid">
+      <a class="news-card reveal d1" href="https://www.healthaffairs.org/doi/10.1377/hlthaff.2025.00960" target="_blank" rel="noopener">
+        <div class="news-top"></div>
+        <div class="news-body">
+          <span class="news-src">Health Affairs</span>
+          <h3>Empowering A New Kind Of Research Team To Study Substance Use</h3>
+          <span class="news-date">September 2, 2025</span>
+          <p>Hoping to improve substance use research, a new group has committed to providing key training and access to people with lived and living experience using drugs. Features commentary from Adam Troy on his work with the People with Lived(-ing) Experience as Researchers Board.</p>
+          <span class="news-link">Read Article →</span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero" role="banner">
-        <div class="container hero-content">
-                        <img src="01_introduction.png" alt="Adam Troy - Public Health Professional" class="hero-image" />
-            <h1 class="hero-title">Adam Troy</h1>
-            <p class="hero-subtitle">Evidence-Based Public Health Professional</p>
-            <p class="hero-tagline">Bridging research and real-world impact through strategic evaluation, innovative design, and community-centered solutions.</p>
-            <div class="hero-cta">
-                <a href="#contact" class="btn btn-primary">Get in Touch</a>
-                <a href="#expertise" class="btn btn-secondary">View Services</a>
-            </div>
+      </a>
+      <a class="news-card reveal d2" href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/" target="_blank" rel="noopener">
+        <div class="news-top"></div>
+        <div class="news-body">
+          <span class="news-src">Orlando Sentinel</span>
+          <h3>Kinship Caregivers and the Opioid Epidemic</h3>
+          <span class="news-date">March 29, 2025</span>
+          <p>Nearly 200,000 Florida children now live with relatives after parental substance use derailed their families. Opioid settlement funds should be used to help these caregivers.</p>
+          <span class="news-link">Read Article →</span>
         </div>
-    </section>
-
-    <!-- Expertise Section -->
-    <section id="expertise" class="expertise section">
-        <div class="container">
-            <h2 class="section-title">Expertise</h2>
-            <p class="section-intro">Comprehensive public health consulting services rooted in evidence and driven by impact.</p>
-                        <img src="02_expertise.png" alt="Public Health Expertise" class="section-image" />
-
-            <div class="expertise-grid">
-                <div class="expertise-card">
-                    <div class="card-icon" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Public Health Strategy & Evaluation</h3>
-                    <p>Plan, implement, and measure programs that improve health outcomes and advance equity. From logic models to impact assessments, I bring clarity to complexity.</p>
-                </div>
-
-                <div class="expertise-card">
-                    <div class="card-icon" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                        </svg>
-                    </div>
-                    <h3>Curriculum & Educational Design</h3>
-                    <p>Design engaging, accessible training and learning experiences for professionals and adult learners. From e-learning to workshops, I create content that resonates.</p>
-                </div>
-
-                <div class="expertise-card">
-                    <div class="card-icon" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                    </div>
-                    <h3>Facilitation & Strategic Planning</h3>
-                    <p>From board retreats to community visioning sessions, I help teams move forward with purpose. Inclusive facilitation creates space for real conversations and actionable plans.</p>
-                </div>
-
-                <div class="expertise-card">
-                    <div class="card-icon" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-                            <line x1="7" y1="2" x2="7" y2="22"></line>
-                            <line x1="17" y1="2" x2="17" y2="22"></line>
-                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                            <line x1="2" y1="7" x2="7" y2="7"></line>
-                            <line x1="2" y1="17" x2="7" y2="17"></line>
-                            <line x1="17" y1="17" x2="22" y2="17"></line>
-                            <line x1="17" y1="7" x2="22" y2="7"></line>
-                        </svg>
-                    </div>
-                    <h3>Multimedia & Creative Communications</h3>
-                    <p>Craft videos, infographics, toolkits, and more to communicate complex ideas clearly and compellingly. Visual storytelling that brings your work to life.</p>
-                </div>
-
-                        <div class="expertise-card">
-                <div class="card-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                </div>
-                <h3>Grant Writing & Funding Development</h3>
-                <p>Develop compelling grant proposals and funding strategies to secure resources for public health programs. From federal grants to foundation funding, I help organizations translate their vision into fundable projects that drive community impact.</p>
-            </div>
-
-                        <div class="expertise-card">
-                <div class="card-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"></path>
-                    </svg>
-                </div>
-                <h3>Participatory Action Research & Evaluation</h3>
-                <p>Partner with communities to co-create research and evaluation projects that center lived experience and drive meaningful change. Using participatory methods, I help organizations engage stakeholders as partners in knowledge generation and program improvement.</p>
-            </div>
-                        </div>
-                    </div>
+      </a>
+      <a class="news-card reveal d3" href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/" target="_blank" rel="noopener">
+        <div class="news-top"></div>
+        <div class="news-body">
+          <span class="news-src">Orlando Sentinel</span>
+          <h3>Orange County's New Needle Exchange Program</h3>
+          <span class="news-date">June 14, 2021</span>
+          <p>Orange County's first-ever needle exchange program launched to help contain fatal overdoses and HIV spread through harm reduction strategies.</p>
+          <span class="news-link">Read Article →</span>
         </div>
-    </section>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <!-- About Section -->
-    <section id="about" class="about section">
-        <div class="container">
-            <h2 class="section-title">About</h2>
-                        <img src="03_about.png" alt="About Adam Troy" class="section-image" />
+<!-- CREATIVE WORK -->
+<section id="creative">
+  <div class="deco-game" id="game">
+    <div class="ghud"><span>Astro Shooter</span><span class="gscore">0</span></div>
+    <div class="gwrap" style="position:relative">
+      <canvas width="178" height="196"></canvas>
+      <div class="gstart"><span class="play">▶</span><span class="gtxt">Play</span><small>move to aim · auto-fire<br>← → · space</small></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <span class="eyebrow reveal">Creative Work</span>
+    <h2 class="section-title reveal d1">Play as a teaching tool.</h2>
+    <p class="lead reveal d2">Interactive tools and games for public health education.</p>
+    <div class="creative-grid">
+      <article class="creative-card reveal d1">
+        <div class="bg c1"></div>
+        <span class="tag">Educational Game</span>
+        <h3>Stop the Outbreak</h3>
+        <p>An educational game designed to teach epidemic response strategies and public health decision-making through interactive gameplay.</p>
+      </article>
+      <article class="creative-card reveal d2">
+        <div class="bg c2"></div>
+        <span class="tag">Learning Tools</span>
+        <h3>Games for Public Health</h3>
+        <p>A collection of interactive learning tools that make complex public health concepts accessible and engaging for diverse audiences.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Who I Am</h3>
-                    <p>I'm a public health professional, educator, and strategist dedicated to advancing equity, improving population health, and supporting organizations working for social good. I combine evidence-based methods with creative communication to help partners make real-world impact.</p>
-
-                    <h3>My Approach</h3>
-                    <p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p>
-
-
-                <div class="about-credentials">
-                    <div class="credential-box">
-                        <h4>Education</h4>
-                        <ul>
-                            <li><strong>DrPH Student</strong> | Johns Hopkins Bloomberg School of Public Health</li>
-                            <li><strong>MPH, Epidemiology</strong> | Florida International University</li>
-                            <li><strong>BA, Anthropology</strong> | University of Florida</li>
-                        </ul>
-                    </div>
-                    <div class="credential-box">
-                        <h4>Certifications</h4>
-                        <ul>
-                            <li>Certified in Public Health (CPH)</li>
-                            <li>Becoming an Ally to All</li>
-                            <li>Leadership: Practical Skills</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<!-- EXPERIENCE / CREDENTIALS -->
+<section id="experience">
+  <svg class="deco deco-astro float-flip" viewBox="0 0 100 130" aria-hidden="true"><use href="#astronaut"/></svg>
+  <div class="wrap">
+    <span class="eyebrow reveal">Experience &amp; Credentials</span>
+    <h2 class="section-title reveal d1">A career in public health impact.</h2>
+    <p class="lead reveal d2">A career dedicated to public health impact and community-centered solutions.</p>
+    <div class="cred-grid">
+      <div class="cred-block reveal d2">
+        <h4>Education</h4>
+        <div class="timeline">
+          <div class="titem">
+            <div class="deg">DrPH Student</div>
+            <div class="org">Johns Hopkins Bloomberg School of Public Health</div>
+          </div>
+          <div class="titem">
+            <div class="deg">MPH, Epidemiology</div>
+            <div class="org">Florida International University</div>
+          </div>
+          <div class="titem">
+            <div class="deg">BA, Anthropology</div>
+            <div class="org">University of Florida</div>
+          </div>
         </div>
-    </section>
-
-    <!-- Featured Press Section -->
-    <section id="press" class="press section">
-        <div class="container">
-            <h2 class="section-title">In the News</h2>
-            <p class="section-intro">Featured commentary and interviews on public health initiatives.</p>
-                        <img src="04_in_the_news.png" alt="In the News" class="section-image" />
-
-            <div class="press-grid">
-                                <article class="press-card">
-                    <div class="press-source">Health Affairs</div>
-                    <h3><a href="https://www.healthaffairs.org/doi/10.1377/hlthaff.2025.00960" target="_blank" rel="noopener noreferrer">Empowering A New Kind Of Research Team To Study Substance Use</a></h3>
-                    <p class="press-date">September 2, 2025</p>
-                    <p>Hoping to improve substance use research, a new group has committed to providing key training and access to people with lived and living experience using drugs. Features commentary from Adam Troy on his work with the People with Lived(-ing) Experience as Researchers Board.</p>
-                    <a href="https://www.healthaffairs.org/doi/10.1377/hlthaff.2025.00960" class="press-link" target="_blank" rel="noopener noreferrer">Read Article →</a>
-                </article>
-
-                <article class="press-card">
-                    <div class="press-source">Orlando Sentinel</div>
-                    <h3><a href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/" target="_blank" rel="noopener noreferrer">Kinship Caregivers and the Opioid Epidemic</a></h3>
-                    <p class="press-date">March 29, 2025</p>
-                    <p>Nearly 200,000 Florida children now live with relatives after parental substance use derailed their families. Opioid settlement funds should be used to help these caregivers.</p>
-                    <a href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/" class="press-link" target="_blank" rel="noopener noreferrer">Read Article →</a>
-                </article>
-
-                <article class="press-card">
-                    <div class="press-source">Orlando Sentinel</div>
-                    <h3><a href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/" target="_blank" rel="noopener noreferrer">Orange County's New Needle Exchange Program</a></h3>
-                    <p class="press-date">June 14, 2021</p>
-                    <p>Orange County's first-ever needle exchange program launched to help contain fatal overdoses and HIV spread through harm reduction strategies.</p>
-                    <a href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/" class="press-link" target="_blank" rel="noopener noreferrer">Read Article →</a>
-                </article>
-            </div>
+      </div>
+      <div class="cred-block reveal d3">
+        <h4>Certifications</h4>
+        <div class="chips">
+          <span class="chip">Certified in Public Health (CPH)</span>
+          <span class="chip">Becoming an Ally to All</span>
+          <span class="chip">Leadership: Practical Skills</span>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Games/Creative Work Section -->
-    <section id="games" class="games section">
-        <div class="container">
-            <h2 class="section-title">Creative Work</h2>
-            <p class="section-intro">Interactive tools and games for public health education.</p>
-                        <img src="05_creative_work.png" alt="Creative Work" class="section-image" />
-
-            <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-image-placeholder" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="22" y1="12" x2="2" y2="12"></line>
-                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
-                            <line x1="6" y1="16" x2="6.01" y2="16"></line>
-                            <line x1="10" y1="16" x2="10.01" y2="16"></line>
-                        </svg>
-                    </div>
-                    <h3>Stop the Outbreak</h3>
-                    <p>An educational game designed to teach epidemic response strategies and public health decision-making through interactive gameplay.</p>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image-placeholder" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <circle cx="12" cy="12" r="6"></circle>
-                            <circle cx="12" cy="12" r="2"></circle>
-                        </svg>
-                    </div>
-                    <h3>Games for Public Health</h3>
-                    <p>A collection of interactive learning tools that make complex public health concepts accessible and engaging for diverse audiences.</p>
-                </div>
-            </div>
+<!-- CONTACT -->
+<section id="contact">
+  <svg class="deco deco-astro float-b" viewBox="0 0 100 130" aria-hidden="true"><use href="#astronaut"/></svg>
+  <div class="wrap">
+    <span class="eyebrow reveal" style="margin-inline:auto;display:flex;justify-content:center">Contact</span>
+    <h2 class="section-title reveal d1">Let's collaborate.</h2>
+    <p class="lead reveal d2" style="margin-inline:auto">Let's collaborate on creating evidence-based solutions for public health challenges.</p>
+    <div class="contact-card reveal d2">
+      <div class="contact-methods">
+        <a class="cmethod" href="mailto:adamtroy0@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          <span class="lbl">Email</span><span class="val">adamtroy0@gmail.com</span>
+        </a>
+        <a class="cmethod" href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          <span class="lbl">LinkedIn</span><span class="val">Connect with me</span>
+        </a>
+        <div class="cmethod">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="lbl">Location</span><span class="val">Orlando, Florida</span>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Experience Timeline Section -->
-    <section id="experience" class="experience section">
-        <div class="container">
-            <h2 class="section-title">Experience</h2>
-            <p class="section-intro">A career dedicated to public health impact and community-centered solutions.</p>
-                        <img src="06_experience.png" alt="Professional Experience" class="section-image" />
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p class="palequote reveal">Bridging research and real-world impact through strategic evaluation, innovative design, and <span class="accent">community-centered solutions.</span></p>
+    <div class="foot-row">
+      <div class="foot-links">
+        <a href="mailto:adamtroy0@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <span>© 2026 Adam Troy. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
 
-            <div id="timeline" class="timeline">
-                <!-- Timeline will be populated by JavaScript -->
-            </div>
-        </div>
-    </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- animated starfield ---------- */
+(function(){
+  const canvas=document.getElementById('starfield');
+  const ctx=canvas.getContext('2d');
+  let w,h,stars,shooting=[],dpr=Math.min(window.devicePixelRatio||1,2);
+  const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function resize(){
+    w=canvas.width=innerWidth*dpr;h=canvas.height=innerHeight*dpr;
+    canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';
+    const count=Math.min(260,Math.floor(innerWidth*innerHeight/7000));
+    stars=Array.from({length:count},()=>({
+      x:Math.random()*w,y:Math.random()*h,
+      z:Math.random()*0.7+0.3,
+      r:(Math.random()*1.4+0.3)*dpr,
+      tw:Math.random()*Math.PI*2,
+      tws:Math.random()*0.025+0.005,
+      hue:Math.random()<0.18?[127,192,255]:Math.random()<0.5?[200,210,255]:[255,255,255]
+    }));
+  }
+  resize();addEventListener('resize',resize);
+  let sx=0,sy=0,tx=0,ty=0;
+  addEventListener('mousemove',e=>{tx=(e.clientX/innerWidth-0.5);ty=(e.clientY/innerHeight-0.5);});
+  function spawnShoot(){
+    if(reduce)return;
+    if(Math.random()<0.012){
+      const fromLeft=Math.random()<0.5;
+      shooting.push({x:fromLeft?0:w,y:Math.random()*h*0.5,
+        vx:(fromLeft?1:-1)*(6+Math.random()*5)*dpr,vy:(2+Math.random()*3)*dpr,life:1});
+    }
+  }
+  function draw(){
+    sx+=(tx-sx)*0.04;sy+=(ty-sy)*0.04;
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      s.tw+=s.tws;
+      const a=0.4+Math.sin(s.tw)*0.4;
+      const px=s.x+sx*40*s.z*dpr, py=s.y+sy*40*s.z*dpr;
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${s.hue[0]},${s.hue[1]},${s.hue[2]},${a})`;
+      ctx.arc(px,py,s.r*s.z,0,Math.PI*2);ctx.fill();
+      if(s.r*s.z>1.1){ctx.beginPath();ctx.fillStyle=`rgba(${s.hue[0]},${s.hue[1]},${s.hue[2]},${a*0.18})`;
+        ctx.arc(px,py,s.r*s.z*3,0,Math.PI*2);ctx.fill();}
+    }
+    spawnShoot();
+    for(let i=shooting.length-1;i>=0;i--){
+      const m=shooting[i];m.x+=m.vx;m.y+=m.vy;m.life-=0.012;
+      if(m.life<=0||m.x<-50||m.x>w+50){shooting.splice(i,1);continue;}
+      const tlx=m.x-m.vx*8,tly=m.y-m.vy*8;
+      const g=ctx.createLinearGradient(tlx,tly,m.x,m.y);
+      g.addColorStop(0,'rgba(127,192,255,0)');g.addColorStop(1,`rgba(200,225,255,${m.life})`);
+      ctx.strokeStyle=g;ctx.lineWidth=1.6*dpr;ctx.beginPath();ctx.moveTo(tlx,tly);ctx.lineTo(m.x,m.y);ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  if(reduce){ // static field
+    for(const s of stars){ctx.fillStyle='rgba(220,230,255,.7)';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}
+  }else{draw();}
+})();
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-        <div class="container">
-            <h2 class="section-title">Get in Touch</h2>
-            <p class="section-intro">Let's collaborate on creating evidence-based solutions for public health challenges.</p>
-                        <img src="07_get_in_touch.png" alt="Get in Touch" class="section-image" />
+/* ---------- nav scroll state + mobile toggle ---------- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>40);},{passive:true});
+const toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
+toggle.addEventListener('click',()=>links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
 
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        <div>
-                            <h4>Email</h4>
-                            <a href="mailto:adamtroy0@gmail.com">adamtroy0@gmail.com</a>
-                        </div>
-                    </div>
+/* ---------- cursor glow ---------- */
+const glow=document.getElementById('cursorGlow');
+if(matchMedia('(pointer:fine)').matches){
+  addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';});
+}else{glow.style.display='none';}
 
-                    <div class="contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
-                        </svg>
-                        <div>
-                            <h4>LinkedIn</h4>
-                            <a href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
-                        </div>
-                    </div>
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-                    <div class="contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <div>
-                            <h4>Location</h4>
-                            <p>Orlando, Florida</p>
-                        </div>
-                    </div>
-                </div>
+/* ---------- interactive 3D earth (three.js) ---------- */
+(function(){
+  const mount=document.getElementById('globe');
+  if(!mount || typeof THREE==='undefined') return;   // fallback: shaded CSS sphere stays
+  const hint=document.getElementById('dotHint');
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-            </div>
-        </div>
-    </section>
+  let size=mount.clientWidth||260;
+  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setSize(size,size);
+  mount.appendChild(renderer.domElement);
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-text">
-                <p>&copy; 2026 Adam Troy. All rights reserved.</p>
-                <p class="footer-tagline">Inspired by Carl Sagan's "Pale Blue Dot" — a reminder of our shared humanity.</p>
-            </div>
-            <div class="footer-links">
-                <a href="mailto:adamtroy0@gmail.com" aria-label="Email Adam Troy">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                </a>
-                <a href="https://www.linkedin.com/in/adam-troy-86366932/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </footer>
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(34,1,0.1,100);
+  camera.position.z=3.9;
 
-    <script src="network-hero.js" defer></script>
-    <script src="script.js" defer></script>
+  const group=new THREE.Group();
+  group.rotation.z=0.41;                 // 23.5 deg axial tilt
+  scene.add(group);
+
+  const mat=new THREE.MeshPhongMaterial({color:0x223a5c, shininess:14, specular:0x335577});
+  const earth=new THREE.Mesh(new THREE.SphereGeometry(1,64,64), mat);
+  group.add(earth);
+
+  // ----- location markers (hover for details) -----
+  function latLonToVec3(lat,lon,r){
+    const phi=(90-lat)*Math.PI/180, theta=(lon+180)*Math.PI/180;
+    return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta), r*Math.cos(phi), r*Math.sin(phi)*Math.sin(theta));
+  }
+  function ringTex(){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d');
+    x.strokeStyle='#fff'; x.lineWidth=9; x.beginPath(); x.arc(64,64,46,0,Math.PI*2); x.stroke(); return new THREE.CanvasTexture(c); }
+  const RTEX=ringTex();
+  const MARKERS=[
+    {lat:28.54,lon:-81.38,color:0xff5b6e,city:'Orlando, FL',note:'Where I teach &amp; work'},
+    {lat:39.29,lon:-76.61,color:0xffd27f,city:'Baltimore, MD',note:'Where I go to school'},
+    {lat:47.01,lon:28.86,color:0x74f0e0,city:'Chișinău, Moldova',note:'Where I served in the Peace Corps'}
+  ];
+  const hitSpheres=[], rings=[];
+  MARKERS.forEach(m=>{
+    const pos=latLonToVec3(m.lat,m.lon,1);
+    const dot=new THREE.Mesh(new THREE.SphereGeometry(0.035,16,16), new THREE.MeshBasicMaterial({color:m.color}));
+    dot.position.copy(pos).multiplyScalar(1.01); earth.add(dot);
+    const ring=new THREE.Sprite(new THREE.SpriteMaterial({map:RTEX,color:m.color,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+    ring.position.copy(pos).multiplyScalar(1.014); ring.scale.set(0.14,0.14,1); earth.add(ring); rings.push(ring);
+    const hit=new THREE.Mesh(new THREE.SphereGeometry(0.1,12,12), new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));
+    hit.position.copy(pos).multiplyScalar(1.02); hit.userData.marker=m; earth.add(hit); hitSpheres.push(hit);
+    m._pos=pos;
+  });
+  const ORL=MARKERS[0]._pos;
+
+  // hover detection (raycast) -> HTML tooltip; pauses spin while hovering
+  const ray=new THREE.Raycaster(), ptr=new THREE.Vector2(), tip=document.getElementById('globeTip');
+  let hovering=false;
+  function hover(e){
+    if(dragging){ if(tip)tip.classList.remove('show'); hovering=false; return; }
+    const rect=renderer.domElement.getBoundingClientRect();
+    ptr.x=((e.clientX-rect.left)/rect.width)*2-1;
+    ptr.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    ray.setFromCamera(ptr,camera);
+    const hits=ray.intersectObjects([earth].concat(hitSpheres),false);
+    const m=(hits.length && hits[0].object.userData.marker) ? hits[0].object.userData.marker : null;
+    hovering=!!m;
+    if(m && tip){
+      tip.innerHTML='<b style="color:#'+m.color.toString(16).padStart(6,'0')+'">'+m.city+'</b><span>'+m.note+'</span>';
+      tip.style.left=e.clientX+'px'; tip.style.top=e.clientY+'px'; tip.classList.add('show');
+      renderer.domElement.style.cursor='pointer';
+    } else if(tip){ tip.classList.remove('show'); renderer.domElement.style.cursor=''; }
+  }
+  renderer.domElement.addEventListener('pointermove',hover);
+  renderer.domElement.addEventListener('pointerleave',()=>{ hovering=false; if(tip)tip.classList.remove('show'); });
+
+  // earth texture (continents + oceans), CORS-friendly, with fallback source
+  const loader=new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
+  const urls=[
+    'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg',
+    'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg'
+  ];
+  (function tryTex(i){
+    if(i>=urls.length) return;
+    loader.load(urls[i],
+      t=>{ mat.map=t; mat.color.set(0xffffff); mat.needsUpdate=true; },
+      undefined,
+      ()=>tryTex(i+1));
+  })(0);
+
+  // lighting — directional sun creates the day/night terminator
+  scene.add(new THREE.AmbientLight(0x3a5f8a,0.6));
+  const sun=new THREE.DirectionalLight(0xfff2d6,1.6); sun.position.set(3,1.2,2); scene.add(sun);
+  const rim=new THREE.DirectionalLight(0x4da3ff,0.5); rim.position.set(-2.5,-0.5,1); scene.add(rim);
+
+  // atmosphere — fresnel rim glow on a slightly larger back-faced sphere
+  const atm=new THREE.Mesh(new THREE.SphereGeometry(1.16,64,64), new THREE.ShaderMaterial({
+    transparent:true, side:THREE.BackSide, blending:THREE.AdditiveBlending, depthWrite:false,
+    vertexShader:'varying vec3 vN; void main(){ vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+    fragmentShader:'varying vec3 vN; void main(){ float i=pow(0.72 - dot(vN,vec3(0.0,0.0,1.0)),2.4); gl_FragColor=vec4(0.30,0.62,1.0,1.0)*clamp(i,0.0,1.0); }'
+  }));
+  scene.add(atm);
+
+  // interaction: drag to rotate (any direction) + inertia + idle spin
+  const BASE=reduce?0:0.0016;            // idle spin, rad/frame
+  let spin=-Math.atan2(ORL.x,ORL.z), velY=BASE, tiltX=0, velX=0;  // start facing Orlando
+  let dragging=false, lastX=0, lastY=0, hinted=false;
+
+  function frame(){
+    if(!dragging && !hovering){ spin+=velY; velY+=(BASE-velY)*0.03; tiltX+=velX; velX*=0.9; }
+    tiltX=Math.max(-0.7,Math.min(0.7,tiltX));
+    earth.rotation.y=spin;
+    group.rotation.x=tiltX;
+    const k=(Math.sin(performance.now()*0.004)+1)/2;        // pulse the marker rings
+    const ps=0.13+k*0.1; for(const rg of rings){ rg.scale.set(ps,ps,1); rg.material.opacity=0.9-k*0.65; }
+    renderer.render(scene,camera);
+    requestAnimationFrame(frame);
+  }
+  frame();
+
+  const gx=e=>e.touches?e.touches[0].clientX:e.clientX;
+  const gy=e=>e.touches?e.touches[0].clientY:e.clientY;
+  function down(e){dragging=true;mount.classList.add('grabbing');lastX=gx(e);lastY=gy(e);velY=0;velX=0;
+    if(!hinted&&hint){hint.style.opacity='0';hinted=true;} e.preventDefault();}
+  function move(e){if(!dragging)return;
+    const dx=gx(e)-lastX, dy=gy(e)-lastY;
+    spin+=dx*0.01; tiltX+=dy*0.01;
+    velY=dx*0.01; velX=dy*0.005;          // carried into inertia on release
+    lastX=gx(e);lastY=gy(e); e.preventDefault();}
+  function up(){if(!dragging)return;dragging=false;mount.classList.remove('grabbing');
+    if(Math.abs(velY)<0.0005) velY=BASE; }
+  mount.addEventListener('mousedown',down);
+  window.addEventListener('mousemove',move,{passive:false});
+  window.addEventListener('mouseup',up);
+  mount.addEventListener('touchstart',down,{passive:false});
+  window.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('touchend',up);
+
+  window.addEventListener('resize',()=>{ size=mount.clientWidth||size; renderer.setSize(size,size); });
+})();
+
+/* ---------- Astro Shooter mini-game ---------- */
+(function(){
+  const box=document.getElementById('game'); if(!box)return;
+  const cv=box.querySelector('canvas'); const ctx=cv.getContext('2d');
+  const scoreEl=box.querySelector('.gscore'); const start=box.querySelector('.gstart'); const gtxt=box.querySelector('.gtxt');
+  const W=cv.width, H=cv.height;
+  let ship,bullets,rocks,stars,score,running=false,raf,keys={},lastShot=0,spawnT=0;
+  function init(){ ship={x:W/2,y:H-22}; bullets=[]; rocks=[]; score=0; spawnT=0; lastShot=0;
+    stars=Array.from({length:32},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.4+.3,v:Math.random()*.6+.2})); }
+  function spawnRock(){ rocks.push({x:12+Math.random()*(W-24),y:-12,r:7+Math.random()*8,v:0.7+Math.random()*1.1+score*0.01,rot:Math.random()*6,vr:(Math.random()-.5)*.12}); }
+  function shoot(){ const n=performance.now(); if(n-lastShot<170)return; lastShot=n; bullets.push({x:ship.x,y:ship.y-12}); }
+  function drawShip(){ ctx.save(); ctx.translate(ship.x,ship.y);
+    ctx.fillStyle='#cfe2ff'; ctx.beginPath(); ctx.moveTo(0,-12); ctx.lineTo(9,9); ctx.lineTo(0,4); ctx.lineTo(-9,9); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#ffd27f'; ctx.fillRect(-2,4,4,7); ctx.restore(); }
+  function drawRock(r){ ctx.save(); ctx.translate(r.x,r.y); ctx.rotate(r.rot);
+    ctx.fillStyle='#6f7da0'; ctx.strokeStyle='#aab6d6'; ctx.lineWidth=1; ctx.beginPath();
+    const n=7; for(let k=0;k<n;k++){ const a=k/n*Math.PI*2, rr=r.r*(0.78+((k%2)?0.28:0)); ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);} ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  function loop(){ raf=requestAnimationFrame(loop); ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#9fb0d4'; ctx.globalAlpha=.5; for(const s of stars){ s.y+=s.v; if(s.y>H)s.y=0; ctx.fillRect(s.x,s.y,s.s,s.s);} ctx.globalAlpha=1;
+    if(keys.left)ship.x-=3.2; if(keys.right)ship.x+=3.2; ship.x=Math.max(12,Math.min(W-12,ship.x));
+    shoot();
+    ctx.fillStyle='#74f0e0'; for(let i=bullets.length-1;i>=0;i--){ const b=bullets[i]; b.y-=5.2; if(b.y<-6){bullets.splice(i,1);continue;} ctx.fillRect(b.x-1.5,b.y,3,8); }
+    if(--spawnT<=0){ spawnRock(); spawnT=Math.max(30-score*0.4,12); }
+    for(let i=rocks.length-1;i>=0;i--){ const r=rocks[i]; r.y+=r.v; r.rot+=r.vr; drawRock(r);
+      let hit=false;
+      for(let j=bullets.length-1;j>=0;j--){ const b=bullets[j]; if(Math.hypot(b.x-r.x,b.y-r.y)<r.r+2){ bullets.splice(j,1); hit=true; break; } }
+      if(hit){ rocks.splice(i,1); score++; scoreEl.textContent=score; continue; }
+      if(r.y-r.r>H){ rocks.splice(i,1); continue; }
+      if(Math.hypot(ship.x-r.x,ship.y-r.y)<r.r+8){ return gameOver(); }
+    }
+    drawShip();
+  }
+  function gameOver(){ running=false; cancelAnimationFrame(raf);
+    ctx.fillStyle='rgba(4,7,18,.72)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='bold 15px "Space Grotesk",sans-serif'; ctx.fillText('Game Over',W/2,H/2-6);
+    ctx.fillStyle='#9fb0d4'; ctx.font='11px Inter,sans-serif'; ctx.fillText('Score '+score,W/2,H/2+13);
+    gtxt.textContent='Play again'; start.style.display='flex'; }
+  function begin(){ if(running)return; init(); scoreEl.textContent='0'; running=true; start.style.display='none'; loop(); }
+  start.addEventListener('click',begin);
+  cv.addEventListener('pointermove',e=>{ if(!running||!ship)return; const r=cv.getBoundingClientRect(); ship.x=(e.clientX-r.left)*(W/r.width); });
+  cv.addEventListener('pointerdown',()=>{ if(running)shoot(); });
+  addEventListener('keydown',e=>{ if(!running)return; if(e.key==='ArrowLeft')keys.left=1; if(e.key==='ArrowRight')keys.right=1; if(e.key===' '){shoot();e.preventDefault();} });
+  addEventListener('keyup',e=>{ if(e.key==='ArrowLeft')keys.left=0; if(e.key==='ArrowRight')keys.right=0; });
+})();
+</script>
 </body>
 </html>
