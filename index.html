@@ -151,13 +151,6 @@
   .dot-caption{position:absolute;bottom:-6%;left:50%;transform:translateX(-50%);
     font-family:'Space Grotesk';font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
     color:var(--faint);white-space:nowrap;transition:opacity .5s ease;pointer-events:none}
-  .scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
-    display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--faint);font-size:.72rem;
-    letter-spacing:.2em;text-transform:uppercase;z-index:3}
-  .scroll-cue .mouse{width:22px;height:36px;border:1.5px solid var(--faint);border-radius:12px;position:relative}
-  .scroll-cue .mouse::after{content:'';position:absolute;top:6px;left:50%;width:3px;height:7px;border-radius:2px;
-    transform:translateX(-50%);background:var(--blue-bright);animation:wheel 1.8s ease-in-out infinite}
-  @keyframes wheel{50%{transform:translate(-50%,9px);opacity:.3}}
 
   /* ---------- reveal animation ---------- */
   .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
@@ -312,27 +305,12 @@
   @keyframes twk{0%,100%{opacity:.45}50%{opacity:1}}
   .blink{animation:blink 1.6s steps(1,end) infinite}
   @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.12}}
-  /* mini game */
-  .deco-game{position:absolute;z-index:3;pointer-events:auto;width:178px;border-radius:16px;overflow:hidden;
-    border:1px solid var(--card-border);background:rgba(6,10,26,.72);backdrop-filter:var(--glass-blur);
-    box-shadow:0 18px 44px -18px rgba(0,16,60,.85)}
-  .deco-game canvas{display:block;width:100%;height:auto;background:transparent;cursor:crosshair;touch-action:none}
-  .deco-game .ghud{display:flex;justify-content:space-between;align-items:center;padding:6px 11px;
-    font-family:'Space Grotesk';font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
-    border-bottom:1px solid rgba(125,160,255,.12)}
-  .deco-game .gscore{color:var(--cyan)}
-  .gstart{position:absolute;inset:0;display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center;
-    background:rgba(4,7,18,.8);color:#fff;font-family:'Space Grotesk';font-size:.85rem;cursor:pointer;text-align:center;padding:12px}
-  .gstart small{color:var(--faint);font-size:.6rem;letter-spacing:.06em;line-height:1.7}
-  .gstart .play{width:36px;height:36px;border-radius:50%;border:1px solid var(--blue);display:grid;place-items:center;color:var(--blue-bright)}
   /* placement per section */
   #about .deco{top:7%;right:4%}
   #expertise .deco{top:5%;right:4%}
   #news .deco{top:6%;right:4%}
-  #creative .deco-game{top:8%;right:3%}
-  #experience .deco{top:8%;right:5%}
   #contact .deco{top:5%;right:8%}
-  @media(max-width:1000px){.deco,.deco-game{display:none}}
+  @media(max-width:1000px){.deco{display:none}}
   /* globe marker tooltip */
   .globe-tip{position:fixed;z-index:60;pointer-events:none;transform:translate(14px,14px);
     background:rgba(8,14,32,.93);border:1px solid var(--card-border);border-radius:12px;padding:9px 13px;
@@ -429,7 +407,6 @@
     <a href="#expertise">Expertise</a>
     <a href="#news">In the News</a>
     <a href="#creative">Creative</a>
-    <a href="#experience">Credentials</a>
     <a href="#work">Work with me</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -457,9 +434,6 @@
       <div class="dot-caption" id="dotHint">Drag to spin ↔</div>
     </div>
   </div>
-  <a href="#about" class="scroll-cue" aria-label="Scroll down">
-    <span class="mouse"></span>Scroll
-  </a>
 </section>
 
 <!-- ABOUT -->
@@ -610,17 +584,10 @@
 
 <!-- CREATIVE WORK -->
 <section id="creative">
-  <div class="deco-game" id="game">
-    <div class="ghud"><span>Astro Shooter</span><span class="gscore">0</span></div>
-    <div class="gwrap" style="position:relative">
-      <canvas width="178" height="196"></canvas>
-      <div class="gstart"><span class="play">▶</span><span class="gtxt">Play</span><small>move to aim · auto-fire<br>← → · space</small></div>
-    </div>
-  </div>
   <div class="wrap">
     <span class="eyebrow reveal">Creative Work</span>
-    <h2 class="section-title reveal d1">Play as a teaching tool.</h2>
-    <p class="lead reveal d2">Interactive tools and games for public health education.</p>
+    <h2 class="section-title reveal d1">Interactive tools for public health learning.</h2>
+    <p class="lead reveal d2">Games and data stories that make complex public health ideas concrete.</p>
     <div class="creative-grid">
       <article class="creative-card reveal d1">
         <div class="bg c1"></div>
@@ -645,42 +612,7 @@
   </div>
 </section>
 
-<!-- EXPERIENCE / CREDENTIALS -->
-<section id="experience">
-  <svg class="deco deco-astro float-flip" viewBox="0 0 100 130" aria-hidden="true"><use href="#astronaut"/></svg>
-  <div class="wrap">
-    <span class="eyebrow reveal">Experience &amp; Credentials</span>
-    <h2 class="section-title reveal d1">A career in public health impact.</h2>
-    <p class="lead reveal d2">A career dedicated to public health impact and community-centered solutions.</p>
-    <div class="cred-grid">
-      <div class="cred-block reveal d2">
-        <h4>Education</h4>
-        <div class="timeline">
-          <div class="titem">
-            <div class="deg">DrPH Student</div>
-            <div class="org">Johns Hopkins Bloomberg School of Public Health</div>
-          </div>
-          <div class="titem">
-            <div class="deg">MPH, Epidemiology</div>
-            <div class="org">Florida International University</div>
-          </div>
-          <div class="titem">
-            <div class="deg">BA, Anthropology</div>
-            <div class="org">University of Florida</div>
-          </div>
-        </div>
-      </div>
-      <div class="cred-block reveal d3">
-        <h4>Certifications</h4>
-        <div class="chips">
-          <span class="chip">Certified in Public Health (CPH)</span>
-          <span class="chip">Becoming an Ally to All</span>
-          <span class="chip">Leadership: Practical Skills</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- WORK WITH ME -->
 <section id="work">
@@ -692,19 +624,13 @@
       <div class="offer-head">
         <div>
           <h3>The Public Health Strategy Session</h3>
-          <p class="offer-sub">A 60-minute working session for teams and leaders who need senior-level public health thinking without hiring for it. You bring the problem. I bring 15+ years across evaluation, program design, health equity, and funding strategy, plus a habit of turning complexity into a plan you can actually use.</p>
+          <p class="offer-sub">The Public Health Strategy Session is a 60-minute working session for teams and leaders who need senior-level public health thinking without hiring for it. You bring the problem; I bring 15+ years across evaluation, program design, health equity, and funding strategy. You will get a written summary with recommendations within three business days, plus one follow-up email exchange.</p>
         </div>
         <div class="offer-price"><span class="amount">$250</span><span class="per">per session</span></div>
       </div>
-      <ul class="offer-list">
-        <li>A 60-minute video session, shaped around your questions in advance</li>
-        <li>A written summary with recommendations within 3 business days</li>
-        <li>One follow-up email exchange for clarifying questions</li>
-      </ul>
       <div class="offer-cta">
         <!-- TODO: replace the mailto link below with your Stripe Payment Link, e.g. https://buy.stripe.com/xxxx -->
         <a class="btn btn-primary" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Book a session</a>
-        <p class="offer-note">Not sure it's a fit? <a href="mailto:adam@adamtroy.net">Tell me what you're working on.</a></p>
       </div>
     </div>
   </div>
@@ -967,50 +893,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   window.addEventListener('resize',()=>{ size=mount.clientWidth||size; renderer.setSize(size,size); });
 })();
 
-/* ---------- Astro Shooter mini-game ---------- */
-(function(){
-  const box=document.getElementById('game'); if(!box)return;
-  const cv=box.querySelector('canvas'); const ctx=cv.getContext('2d');
-  const scoreEl=box.querySelector('.gscore'); const start=box.querySelector('.gstart'); const gtxt=box.querySelector('.gtxt');
-  const W=cv.width, H=cv.height;
-  let ship,bullets,rocks,stars,score,running=false,raf,keys={},lastShot=0,spawnT=0;
-  function init(){ ship={x:W/2,y:H-22}; bullets=[]; rocks=[]; score=0; spawnT=0; lastShot=0;
-    stars=Array.from({length:32},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.4+.3,v:Math.random()*.6+.2})); }
-  function spawnRock(){ rocks.push({x:12+Math.random()*(W-24),y:-12,r:7+Math.random()*8,v:0.7+Math.random()*1.1+score*0.01,rot:Math.random()*6,vr:(Math.random()-.5)*.12}); }
-  function shoot(){ const n=performance.now(); if(n-lastShot<170)return; lastShot=n; bullets.push({x:ship.x,y:ship.y-12}); }
-  function drawShip(){ ctx.save(); ctx.translate(ship.x,ship.y);
-    ctx.fillStyle='#cfe2ff'; ctx.beginPath(); ctx.moveTo(0,-12); ctx.lineTo(9,9); ctx.lineTo(0,4); ctx.lineTo(-9,9); ctx.closePath(); ctx.fill();
-    ctx.fillStyle='#ffd27f'; ctx.fillRect(-2,4,4,7); ctx.restore(); }
-  function drawRock(r){ ctx.save(); ctx.translate(r.x,r.y); ctx.rotate(r.rot);
-    ctx.fillStyle='#6f7da0'; ctx.strokeStyle='#aab6d6'; ctx.lineWidth=1; ctx.beginPath();
-    const n=7; for(let k=0;k<n;k++){ const a=k/n*Math.PI*2, rr=r.r*(0.78+((k%2)?0.28:0)); ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);} ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore(); }
-  function loop(){ raf=requestAnimationFrame(loop); ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#9fb0d4'; ctx.globalAlpha=.5; for(const s of stars){ s.y+=s.v; if(s.y>H)s.y=0; ctx.fillRect(s.x,s.y,s.s,s.s);} ctx.globalAlpha=1;
-    if(keys.left)ship.x-=3.2; if(keys.right)ship.x+=3.2; ship.x=Math.max(12,Math.min(W-12,ship.x));
-    shoot();
-    ctx.fillStyle='#74f0e0'; for(let i=bullets.length-1;i>=0;i--){ const b=bullets[i]; b.y-=5.2; if(b.y<-6){bullets.splice(i,1);continue;} ctx.fillRect(b.x-1.5,b.y,3,8); }
-    if(--spawnT<=0){ spawnRock(); spawnT=Math.max(30-score*0.4,12); }
-    for(let i=rocks.length-1;i>=0;i--){ const r=rocks[i]; r.y+=r.v; r.rot+=r.vr; drawRock(r);
-      let hit=false;
-      for(let j=bullets.length-1;j>=0;j--){ const b=bullets[j]; if(Math.hypot(b.x-r.x,b.y-r.y)<r.r+2){ bullets.splice(j,1); hit=true; break; } }
-      if(hit){ rocks.splice(i,1); score++; scoreEl.textContent=score; continue; }
-      if(r.y-r.r>H){ rocks.splice(i,1); continue; }
-      if(Math.hypot(ship.x-r.x,ship.y-r.y)<r.r+8){ return gameOver(); }
-    }
-    drawShip();
-  }
-  function gameOver(){ running=false; cancelAnimationFrame(raf);
-    ctx.fillStyle='rgba(4,7,18,.72)'; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='bold 15px "Space Grotesk",sans-serif'; ctx.fillText('Game Over',W/2,H/2-6);
-    ctx.fillStyle='#9fb0d4'; ctx.font='11px Inter,sans-serif'; ctx.fillText('Score '+score,W/2,H/2+13);
-    gtxt.textContent='Play again'; start.style.display='flex'; }
-  function begin(){ if(running)return; init(); scoreEl.textContent='0'; running=true; start.style.display='none'; loop(); }
-  start.addEventListener('click',begin);
-  cv.addEventListener('pointermove',e=>{ if(!running||!ship)return; const r=cv.getBoundingClientRect(); ship.x=(e.clientX-r.left)*(W/r.width); });
-  cv.addEventListener('pointerdown',()=>{ if(running)shoot(); });
-  addEventListener('keydown',e=>{ if(!running)return; if(e.key==='ArrowLeft')keys.left=1; if(e.key==='ArrowRight')keys.right=1; if(e.key===' '){shoot();e.preventDefault();} });
-  addEventListener('keyup',e=>{ if(e.key==='ArrowLeft')keys.left=0; if(e.key==='ArrowRight')keys.right=0; });
-})();
+
 </script>
 </body>
 </html>
