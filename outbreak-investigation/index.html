@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epidemiology Outbreak Investigation Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Introduction Screen -->
+        <section id="intro-screen" class="game-screen active">
+            <div class="card">
+                <div class="card__header">
+                    <h1>Outbreak Investigation</h1>
+                    <div class="status status--warning">Active Investigation</div>
+                </div>
+                <div class="card__body">
+                    <h2>Scenario: Bella Vista Restaurant Outbreak</h2>
+                    <p>You are an epidemiologist investigating reports of gastrointestinal illness among patrons of Bella Vista Restaurant. Multiple people who dined there between June 18-26, 2023 have become ill with similar symptoms.</p>
+                    
+                    <div class="outbreak-details">
+                        <h3>Initial Report Details:</h3>
+                        <ul>
+                            <li>Location: Bella Vista Restaurant, Downtown</li>
+                            <li>Exposure Period: June 18-26, 2023</li>
+                            <li>Illness Onset: June 19 - July 2, 2023</li>
+                            <li>Suspected Source: Foodborne contamination</li>
+                            <li>Cases Identified: 30 confirmed/probable cases</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Your Mission:</strong> Analyze the case data, calculate incubation periods, construct an epidemic curve, identify the causative agent, determine the outbreak type, and calculate attack rates to identify the source of contamination.</p>
+
+                    <div class="seed-panel" id="seed-panel">
+                        <div class="seed-display">Case set: <strong id="seed-value">&ndash;</strong></div>
+                        <p class="seed-note">Every case set has different patient data but the same outbreak. Share a seed with your class so everyone works the same numbers.</p>
+                        <div class="seed-actions">
+                            <button class="btn btn--secondary btn--sm" onclick="newCaseSet()">New random case set</button>
+                            <button class="btn btn--outline btn--sm" onclick="copySeedLink()">Copy link with this seed</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn--primary btn--lg" onclick="gameState.nextScreen()">Begin Investigation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Data Review Screen -->
+        <section id="data-screen" class="game-screen">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Case Interview Data & Incubation Period Calculation</h2>
+                    <div class="progress-indicator">Step 1 of 5</div>
+                    <div class="progress-steps" aria-label="Step 1 of 5"><span class="step-dot done"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                </div>
+                <div class="card__body">
+                    <p>Review the case interview data below and calculate the incubation period for each case directly in the table. The incubation period is the time between exposure (dining date/time) and illness onset (onset date/time).</p>
+                    
+                    <div class="calculation-status">
+                        <div class="status-summary">
+                            <div class="status-item">
+                                <span class="status-label">Calculated:</span>
+                                <span id="calculated-count">0</span>/30 cases
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Median incubation period:</span>
+                                <span id="median-incubation">--</span> hours
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-controls">
+                        <div class="form-group">
+                            <label class="form-label" for="sort-select">Sort by:</label>
+                            <select id="sort-select" class="form-control" onchange="sortCases(this.value)">
+                                <option value="id">Case ID</option>
+                                <option value="age">Age</option>
+                                <option value="dining_date">Dining Date</option>
+                                <option value="onset_date">Onset Date</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="case-table" class="case-table">
+                            <thead>
+                                <tr>
+                                    <th>Case ID</th>
+                                    <th>Age</th>
+                                    <th>Sex</th>
+                                    <th>Dining Date/Time</th>
+                                    <th>Onset Date/Time</th>
+                                    <th>Symptoms</th>
+                                    <th>Hospitalized</th>
+                                    <th>Incubation Period (hours)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="case-table-body">
+                                <!-- Cases will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="screen-navigation">
+                        <button class="btn btn--secondary" onclick="gameState.prevScreen()">Back</button>
+                        <button class="btn btn--primary" id="proceed-to-curve" onclick="gameState.nextScreen()" disabled>Proceed to Epi Curve</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Epi Curve Construction Screen -->
+        <section id="curve-screen" class="game-screen">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Construct the Epidemic Curve</h2>
+                    <div class="progress-indicator">Step 2 of 5</div>
+                    <div class="progress-steps" aria-label="Step 2 of 5"><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                </div>
+                <div class="card__body">
+                    <p>Build the epidemic curve by clicking on the appropriate time slots for each case's illness onset date. Use the reference panel to check your calculated incubation periods.</p>
+                    
+                    <div class="curve-construction">
+                        <div class="reference-panel">
+                            <h3>Calculated Incubation Periods</h3>
+                            <div class="reference-controls">
+                                <select id="reference-sort" class="form-control" onchange="sortReferencePanel(this.value)">
+                                    <option value="id">Sort by Case ID</option>
+                                    <option value="onset_date">Sort by Onset Date</option>
+                                    <option value="incubation">Sort by Incubation Period</option>
+                                </select>
+                            </div>
+                            <div id="reference-list" class="reference-list">
+                                <!-- Reference cases will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="curve-builder-section">
+                            <div class="case-pool">
+                                <h3>Cases to Place:</h3>
+                                <div id="case-blocks" class="case-blocks">
+                                    <!-- Case blocks will be generated by JavaScript -->
+                                </div>
+                            </div>
+                            
+                            <div class="epi-curve-builder">
+                                <h3>Epidemic Curve</h3>
+                                <div class="curve-chart" id="curve-chart">
+                                    <div class="y-axis">
+                                        <div class="y-label">Number of Cases</div>
+                                        <div class="y-scale" id="y-scale">
+                                            <!-- Y-axis ticks are generated from the case data -->
+                                        </div>
+                                    </div>
+                                    <div class="chart-area">
+                                        <div class="x-axis-labels" id="x-axis-labels">
+                                            <!-- X-axis labels are generated from the case data -->
+                                        </div>
+                                        <div class="chart-columns" id="chart-columns">
+                                            <!-- Chart columns will be generated by JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="curve-actions">
+                        <button class="btn btn--outline" onclick="resetCurve()">Reset Curve</button>
+                        <button class="btn btn--primary" onclick="checkCurve()">Check Curve</button>
+                    </div>
+                    
+                    <div id="curve-feedback" class="feedback hidden"></div>
+                    
+                    <div class="screen-navigation">
+                        <button class="btn btn--secondary" onclick="gameState.prevScreen()">Back</button>
+                        <button class="btn btn--primary" id="curve-next-btn" disabled onclick="gameState.nextScreen()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disease Identification Screen -->
+        <section id="disease-screen" class="game-screen">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Disease Identification</h2>
+                    <div class="progress-indicator">Step 3 of 5</div>
+                    <div class="progress-steps" aria-label="Step 3 of 5"><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                </div>
+                <div class="card__body">
+                    <div class="analysis-section">
+                        <h3>Incubation Period Analysis</h3>
+                        <p>Based on your calculated median incubation period of <strong><span id="calculated-median-display">--</span> hours</strong>, select the most likely causative agent.</p>
+                    </div>
+                    
+                    <div class="disease-options">
+                        <h3>Select the Most Likely Disease:</h3>
+                        <div class="disease-grid">
+                            <div class="disease-option" onclick="selectDisease('Staphylococcus aureus')">
+                                <h4>Staphylococcus aureus</h4>
+                                <p><strong>Incubation:</strong> 1-6 hours</p>
+                                <p><strong>Median:</strong> 3 hours</p>
+                                <input type="radio" name="disease" value="Staphylococcus aureus">
+                            </div>
+                            <div class="disease-option" onclick="selectDisease('Clostridium perfringens')">
+                                <h4>Clostridium perfringens</h4>
+                                <p><strong>Incubation:</strong> 8-12 hours</p>
+                                <p><strong>Median:</strong> 10 hours</p>
+                                <input type="radio" name="disease" value="Clostridium perfringens">
+                            </div>
+                            <div class="disease-option" onclick="selectDisease('Salmonella Enteritidis')">
+                                <h4>Salmonella Enteritidis</h4>
+                                <p><strong>Incubation:</strong> 12-72 hours</p>
+                                <p><strong>Median:</strong> 24 hours</p>
+                                <input type="radio" name="disease" value="Salmonella Enteritidis">
+                            </div>
+                            <div class="disease-option" onclick="selectDisease('E. coli O157:H7')">
+                                <h4>E. coli O157:H7</h4>
+                                <p><strong>Incubation:</strong> 2-8 days</p>
+                                <p><strong>Median:</strong> 72 hours</p>
+                                <input type="radio" name="disease" value="E. coli O157:H7">
+                            </div>
+                            <div class="disease-option" onclick="selectDisease('Norovirus')">
+                                <h4>Norovirus</h4>
+                                <p><strong>Incubation:</strong> 24-48 hours</p>
+                                <p><strong>Median:</strong> 32 hours</p>
+                                <input type="radio" name="disease" value="Norovirus">
+                            </div>
+                            <div class="disease-option" onclick="selectDisease('Campylobacter')">
+                                <h4>Campylobacter</h4>
+                                <p><strong>Incubation:</strong> 2-5 days</p>
+                                <p><strong>Median:</strong> 72 hours</p>
+                                <input type="radio" name="disease" value="Campylobacter">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="outbreak-type-section">
+                        <h3>Outbreak Type Classification</h3>
+                        <p>Based on the shape of your epidemic curve, what type of outbreak is this?</p>
+                        
+                        <div class="outbreak-options">
+                            <div class="outbreak-option" onclick="selectOutbreakType('Point source outbreak')">
+                                <h4>Point source outbreak</h4>
+                                <p>Persons exposed to same source over brief time, rapid rise to peak, gradual fall</p>
+                                <input type="radio" name="outbreak-type" value="Point source outbreak">
+                            </div>
+                            <div class="outbreak-option" onclick="selectOutbreakType('Continuous common source')">
+                                <h4>Continuous common source</h4>
+                                <p>Ongoing exposure over prolonged period, gradual rise with plateau</p>
+                                <input type="radio" name="outbreak-type" value="Continuous common source">
+                            </div>
+                            <div class="outbreak-option" onclick="selectOutbreakType('Propagated outbreak')">
+                                <h4>Propagated outbreak</h4>
+                                <p>Person-to-person spread, series of peaks one incubation period apart</p>
+                                <input type="radio" name="outbreak-type" value="Propagated outbreak">
+                            </div>
+                            <div class="outbreak-option" onclick="selectOutbreakType('Mixed outbreak')">
+                                <h4>Mixed outbreak</h4>
+                                <p>Begins as point source, transitions to propagated spread</p>
+                                <input type="radio" name="outbreak-type" value="Mixed outbreak">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen-navigation">
+                        <button class="btn btn--secondary" onclick="gameState.prevScreen()">Back</button>
+                        <button class="btn btn--primary" onclick="gameState.nextScreen()">Continue to Attack Rates</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Attack Rate Screen -->
+        <section id="attack-screen" class="game-screen">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Attack Rate Analysis</h2>
+                    <div class="progress-indicator">Step 4 of 5</div>
+                    <div class="progress-steps" aria-label="Step 4 of 5"><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot"></span></div>
+                </div>
+                <div class="card__body">
+                    <div class="overall-attack-rate">
+                        <h3>Overall Attack Rate</h3>
+                        <p>Calculate the overall attack rate for this outbreak:</p>
+                        <p><strong>Total ill:</strong> 30 people<br>
+                           <strong>Total exposed:</strong> 180 restaurant patrons</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Overall Attack Rate (%):</label>
+                            <input type="number" id="overall-attack-rate" class="form-control" step="0.1" placeholder="Enter percentage">
+                        </div>
+                    </div>
+                    
+                    <div class="food-specific-rates">
+                        <h3>Food-Specific Attack Rates with Cross-Tabulation Tables</h3>
+                        <p>Calculate the attack rate for each food item using the cross-tabulation data below:</p>
+                        
+                        <div class="food-analysis">
+                            <div class="food-item">
+                                <h4>Caesar Salad</h4>
+                                <div class="cross-tab-table">
+                                    <table class="cross-table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Ate Caesar</th>
+                                                <th>Didn't Eat</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Ill</strong></td>
+                                                <td><span id="ct-caesar-ill-ate">&ndash;</span></td>
+                                                <td><span id="ct-caesar-ill-not">&ndash;</span></td>
+                                                <td>30</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Well</strong></td>
+                                                <td><span id="ct-caesar-well-ate">&ndash;</span></td>
+                                                <td><span id="ct-caesar-well-not">&ndash;</span></td>
+                                                <td>150</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Total</strong></td>
+                                                <td><span id="ct-caesar-ate-total">&ndash;</span></td>
+                                                <td><span id="ct-caesar-not-total">&ndash;</span></td>
+                                                <td>180</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Attack Rate among those who ate Caesar Salad (%):</label>
+                                    <input type="number" id="caesar-rate" class="form-control" step="0.1" placeholder="Calculate the attack rate">
+                                </div>
+                            </div>
+                            
+                            <div class="food-item">
+                                <h4>Chicken Parmesan</h4>
+                                <div class="cross-tab-table">
+                                    <table class="cross-table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Ate Chicken</th>
+                                                <th>Didn't Eat</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Ill</strong></td>
+                                                <td><span id="ct-chicken-ill-ate">&ndash;</span></td>
+                                                <td><span id="ct-chicken-ill-not">&ndash;</span></td>
+                                                <td>30</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Well</strong></td>
+                                                <td><span id="ct-chicken-well-ate">&ndash;</span></td>
+                                                <td><span id="ct-chicken-well-not">&ndash;</span></td>
+                                                <td>150</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Total</strong></td>
+                                                <td><span id="ct-chicken-ate-total">&ndash;</span></td>
+                                                <td><span id="ct-chicken-not-total">&ndash;</span></td>
+                                                <td>180</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Attack Rate among those who ate Chicken Parmesan (%):</label>
+                                    <input type="number" id="chicken-rate" class="form-control" step="0.1" placeholder="Calculate the attack rate">
+                                </div>
+                            </div>
+                            
+                            <div class="food-item">
+                                <h4>Tiramisu</h4>
+                                <div class="cross-tab-table">
+                                    <table class="cross-table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Ate Tiramisu</th>
+                                                <th>Didn't Eat</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Ill</strong></td>
+                                                <td><span id="ct-tiramisu-ill-ate">&ndash;</span></td>
+                                                <td><span id="ct-tiramisu-ill-not">&ndash;</span></td>
+                                                <td>30</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Well</strong></td>
+                                                <td><span id="ct-tiramisu-well-ate">&ndash;</span></td>
+                                                <td><span id="ct-tiramisu-well-not">&ndash;</span></td>
+                                                <td>150</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Total</strong></td>
+                                                <td><span id="ct-tiramisu-ate-total">&ndash;</span></td>
+                                                <td><span id="ct-tiramisu-not-total">&ndash;</span></td>
+                                                <td>180</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Attack Rate among those who ate Tiramisu (%):</label>
+                                    <input type="number" id="tiramisu-rate" class="form-control" step="0.1" placeholder="Calculate the attack rate">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Most Likely Food Vehicle (highest attack rate):</label>
+                            <select id="food-vehicle" class="form-control">
+                                <option value="">Select the food vehicle</option>
+                                <option value="Caesar Salad">Caesar Salad</option>
+                                <option value="Chicken Parmesan">Chicken Parmesan</option>
+                                <option value="Tiramisu">Tiramisu</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="screen-navigation">
+                        <button class="btn btn--secondary" onclick="gameState.prevScreen()">Back</button>
+                        <button class="btn btn--primary" onclick="gameState.nextScreen()">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Report Screen -->
+        <section id="report-screen" class="game-screen">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Outbreak Investigation Report</h2>
+                    <div class="progress-indicator">Final Report</div>
+                    <div class="progress-steps" aria-label="All 5 steps complete"><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot done"></span></div>
+                </div>
+                <div class="card__body">
+                    <div class="score-summary">
+                        <h3>Your Performance</h3>
+                        <div class="score-display">
+                            <div class="total-score">
+                                <span class="score-number" id="total-score">0</span>
+                                <span class="score-label">/ 100 points</span>
+                            </div>
+                            <div class="score-grade" id="score-grade">Grade</div>
+                        </div>
+                        
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <span>Incubation Calculations:</span>
+                                <span id="incubation-score">0/20</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Epi Curve Construction:</span>
+                                <span id="curve-score">0/30</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Disease Identification:</span>
+                                <span id="disease-score">0/20</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Outbreak Type:</span>
+                                <span id="outbreak-score">0/15</span>
+                            </div>
+                            <div class="score-item">
+                                <span>Attack Rate Analysis:</span>
+                                <span id="attack-score">0/15</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="investigation-report">
+                        <h3>Official Investigation Report</h3>
+                        <div class="report-content" id="report-content">
+                            <!-- Report content will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="learning-points">
+                        <h3>Learning Points & Feedback</h3>
+                        <div id="feedback-content">
+                            <!-- Feedback will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="final-actions">
+                        <button class="btn btn--primary btn--lg" onclick="restartGame()">Play Again</button>
+                        <button class="btn btn--secondary" onclick="window.print()">Print Report</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructor Panel (answer key). Empty until instructor mode is on:
+             ?instructor=1. Answers are never rendered into the student view. -->
+        <section id="instructor-panel" class="instructor-panel hidden" aria-label="Instructor answer key">
+            <div class="card">
+                <div class="card__header">
+                    <h2>Instructor Panel</h2>
+                </div>
+                <div class="card__body" id="instructor-content">
+                    <!-- Populated by JavaScript when instructor mode is enabled -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <span>Outbreak Investigation &middot; Bella Vista Restaurant scenario</span>
+        <a href="#" id="instructor-link">Instructor</a>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
