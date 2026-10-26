@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Substances and Violence: The Numbers Behind the Story</title>
+<style>
+  :root { --ink:#142228; --muted:#53666e; --line:#cbd6d9; --bg:#f3f6f7; --surface:#fff;
+    --teal:#087f8c; --rust:#d05a31; --blue:#3f668f; --green:#18786f; --gold:#b98a1d; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.55; }
+  header { background:#182a31; color:#fff; padding:2.2rem 1.2rem 1.6rem; }
+  header h1 { margin:0 auto; max-width:980px; font-size:1.9rem; line-height:1.25; }
+  header p { margin:.7rem auto 0; max-width:980px; color:#cfe0e4; font-size:1.05rem; }
+  main { max-width:980px; margin:0 auto; padding:1.2rem; display:grid; gap:1.2rem; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:1.2rem 1.4rem; box-shadow:0 10px 28px rgba(22,42,49,.06); }
+  .card h2 { margin:0 0 .3rem; font-size:1.25rem; }
+  .card .sub { color:var(--muted); margin:0 0 1rem; font-size:.95rem; }
+  .row { display:flex; align-items:center; gap:.8rem; margin:.55rem 0; }
+  .label { width:210px; flex-shrink:0; font-size:.95rem; }
+  .bar-wrap { flex:1; background:#e9eff0; border-radius:6px; overflow:hidden; }
+  .bar { height:26px; border-radius:6px; display:flex; align-items:center; }
+  .val { width:110px; flex-shrink:0; font-weight:700; font-variant-numeric:tabular-nums; }
+  .teal { background:var(--teal); } .rust { background:var(--rust); } .blue { background:var(--blue); }
+  .green { background:var(--green); } .gold { background:var(--gold); }
+  .big { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+  .stat { background:#eef4f5; border-radius:10px; padding:1rem; }
+  .stat b { display:block; font-size:1.9rem; line-height:1.1; color:var(--teal); }
+  .stat span { color:var(--muted); font-size:.92rem; }
+  .note { color:var(--muted); font-size:.9rem; }
+  footer { max-width:980px; margin:0 auto; padding:0 1.2rem 2rem; color:var(--muted); font-size:.88rem; }
+  footer a { color:var(--teal); }
+  @media (max-width:640px) { .label { width:140px; } .val { width:80px; font-size:.85rem; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Substances and Violence: The Numbers Behind the Story</h1>
+  <p>Association is not causation. Most people who use drugs never commit a violent crime. These figures separate three different relationships, and show why the market, not just the molecule, drives so much of the violence.</p>
+</header>
+<main>
+  <section class="card">
+    <h2>1. Most drug-related killing is market violence, not intoxication</h2>
+    <p class="sub">Goldstein's analysis of drug-related homicides, New York City, 1988. Of all homicides studied, 52.7% were drug related, and this is how those broke down.</p>
+    <div class="row"><div class="label">Systemic (turf, debts, dealer robberies)</div><div class="bar-wrap"><div class="bar rust" style="width:74%"></div></div><div class="val">74%</div></div>
+    <div class="row"><div class="label">Psychopharmacological (intoxication)</div><div class="bar-wrap"><div class="bar teal" style="width:14%"></div></div><div class="val">14%</div></div>
+    <div class="row"><div class="label">Multidimensional</div><div class="bar-wrap"><div class="bar blue" style="width:8%"></div></div><div class="val">8%</div></div>
+    <div class="row"><div class="label">Economic-compulsive (crime to buy drugs)</div><div class="bar-wrap"><div class="bar gold" style="width:4%"></div></div><div class="val">4%</div></div>
+    <p class="note">In plain terms: nearly three quarters of drug-related homicide in this study came from how an illegal market settles disputes, not from drugs changing behavior.</p>
+  </section>
+
+  <section class="card">
+    <h2>2. The same pattern, 35 years later and an ocean away</h2>
+    <p class="sub">England and Wales, April 2018 to March 2023 (Office for National Statistics, applying Goldstein's framework to the Home Office Homicide Index), compared with New York City, 1988. Shares are of drug-related homicides in each study.</p>
+    <p class="note"><strong>New York City, 1988</strong></p>
+    <div class="row"><div class="label">Systemic</div><div class="bar-wrap"><div class="bar rust" style="width:74%"></div></div><div class="val">74%</div></div>
+    <div class="row"><div class="label">Psychopharmacological</div><div class="bar-wrap"><div class="bar teal" style="width:14%"></div></div><div class="val">14%</div></div>
+    <div class="row"><div class="label">Economic-compulsive</div><div class="bar-wrap"><div class="bar gold" style="width:4%"></div></div><div class="val">4%</div></div>
+    <p class="note"><strong>England and Wales, 2018-2023</strong> (of 1,627 drug-related homicides)</p>
+    <div class="row"><div class="label">Systemic (464 cases)</div><div class="bar-wrap"><div class="bar rust" style="width:28.5%"></div></div><div class="val">28.5%</div></div>
+    <div class="row"><div class="label">Psychopharmacological (399)</div><div class="bar-wrap"><div class="bar teal" style="width:24.5%"></div></div><div class="val">24.5%</div></div>
+    <div class="row"><div class="label">Economic-compulsive (159)</div><div class="bar-wrap"><div class="bar gold" style="width:9.8%"></div></div><div class="val">9.8%</div></div>
+    <div class="row"><div class="label">Ambiguous link (789)</div><div class="bar-wrap"><div class="bar blue" style="width:48.5%"></div></div><div class="val">48.5%</div></div>
+    <p class="note">Same ordering through time and place: systemic largest, economic-compulsive smallest, in both studies. The UK shares look smaller because nearly half of UK cases could not be classified from administrative records, while Goldstein coded full case files, and because UK cases can meet more than one category. The UK psychopharmacological count covers suspects only; Goldstein also counted victims. Of all 3,148 homicides in England and Wales in the period, 27% met at least one Goldstein category and 52% counted as drug-related under the broad Home Office definition.</p>
+  </section>
+
+  <section class="card">
+    <h2>3. Alcohol is the largest intoxication contributor, and it is legal</h2>
+    <div class="big">
+      <div class="stat"><b>37%</b><span>of people convicted of violent crimes reported being under the influence of alcohol when they committed them (Bureau of Justice Statistics surveys)</span></div>
+      <div class="stat"><b>48%</b><span>of homicide offenders had been drinking beforehand (meta-analysis of homicide studies)</span></div>
+      <div class="stat"><b>~7,000</b><span>alcohol-attributable homicides per year in the US (CDC Alcohol-Related Disease Impact application)</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. Who is in prison for drugs</h2>
+    <p class="sub">Share of sentenced prisoners whose most serious offense was a drug offense. The federal system is heavily a drug enforcement system; state prisons mostly hold people convicted of violent offenses.</p>
+    <div class="row"><div class="label">Federal prison, Sept 30, 2023</div><div class="bar-wrap"><div class="bar teal" style="width:45%"></div></div><div class="val">45%</div></div>
+    <div class="row"><div class="label">State prison, yearend 2022</div><div class="bar-wrap"><div class="bar blue" style="width:13%"></div></div><div class="val">13%</div></div>
+    <p class="note">About 1.9 million people are incarcerated in the US. In state prison, 62% are serving sentences for violent offenses.</p>
+  </section>
+
+  <section class="card">
+    <h2>5. The demand-side evidence: treatment beats enforcement on cost</h2>
+    <p class="sub">RAND, 1994: cost to reduce cocaine consumption by 1%. Treatment of heavy users is the cheapest option by a wide margin.</p>
+    <div class="row"><div class="label">Treatment of heavy users</div><div class="bar-wrap"><div class="bar green" style="width:14%"></div></div><div class="val">$34M</div></div>
+    <div class="row"><div class="label">Domestic enforcement (7.3x treatment)</div><div class="bar-wrap"><div class="bar rust" style="width:100%"></div></div><div class="val">$246M</div></div>
+    <div class="row"><div class="label">Interdiction (10.8x treatment)</div><div class="bar-wrap"><div class="bar blue" style="width:100%"></div></div><div class="val">~$367M</div></div>
+    <div class="row"><div class="label">Source-country control (23x treatment)</div><div class="bar-wrap"><div class="bar gold" style="width:100%"></div></div><div class="val">~$782M</div></div>
+    <p class="note">Measured against crime and lost productivity, RAND found treatment about 15 times more cost effective than enforcement. A later RAND study found treatment reduced serious crime roughly 10 times more per dollar than conventional enforcement, and 15 times more than mandatory minimums.</p>
+  </section>
+
+  <section class="card">
+    <h2>6. The business around the status quo</h2>
+    <p class="sub">Annual spending, United States. Private prisons are a small slice; the system is mostly public money, and families pay a large share too.</p>
+    <div class="row"><div class="label">Full criminal justice system</div><div class="bar-wrap"><div class="bar blue" style="width:100%"></div></div><div class="val">$445B</div></div>
+    <div class="row"><div class="label">Direct corrections spending</div><div class="bar-wrap"><div class="bar teal" style="width:18%"></div></div><div class="val">~$81B</div></div>
+    <div class="row"><div class="label">Paid by families (fines, fees, bail, commissary, calls)</div><div class="bar-wrap"><div class="bar rust" style="width:6%"></div></div><div class="val">$27.7B</div></div>
+    <div class="row"><div class="label">Private prisons</div><div class="bar-wrap"><div class="bar gold" style="width:1%"></div></div><div class="val">$3.1B</div></div>
+    <p class="note">Total war on drugs spending since the 1970s exceeds $1 trillion. Enforcement also falls unequally: Black Americans are arrested for cannabis possession at nearly 4 times the rate of white Americans despite comparable use (ACLU).</p>
+  </section>
+
+  <section class="card">
+    <h2>What a demand-side approach means</h2>
+    <p>Treatment on demand, including medication for opioid use disorder. Harm reduction that keeps people alive: naloxone, fentanyl test strips, syringe services, overdose prevention sites. Diversion from arrest toward services: drug courts, deflection, crisis response. And the longer work: stable housing, employment, trauma care, and community investment where the trade and its enforcement concentrate. Plus a democratic fix: people harmed by the drug war should have a real say in how opioid settlement funds are spent.</p>
+  </section>
+</main>
+<footer>
+  <p><strong>Read the caveats.</strong> Goldstein's 1988 New York figures describe one city during the crack epidemic; they illustrate mechanisms, not current national percentages. The England and Wales figures come from administrative records, not case file coding, so nearly half of drug-related cases there are unclassified. RAND's dollar figures are 1994 estimates. Prison figures are the most recent BJS data available (federal 2023, state 2022). Sources: Bureau of Justice Statistics, Prisoners in 2023; Goldstein et al. (1989), Contemporary Drug Problems; Office for National Statistics (2024), Measuring drug-related homicide methodology; Rydell and Everingham (1994), RAND; Prison Policy Initiative (2026); CDC Alcohol-Related Disease Impact application; ACLU cannabis arrest analysis.</p>
+  <p>Companion piece: <a href="substance-use-violence.html">The Violence We Blame on Drugs, and the Violence We Built Around Them</a> (blog post).</p>
+</footer>
+</body>
+</html>
