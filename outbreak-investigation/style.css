@@ -1802,3 +1802,20 @@ select.form-control {
     width: 100%;
   }
 }
+
+/* One-click incubation calculation buttons (stage 1) */
+.calc-btn {
+  margin-left: 6px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border: 1px solid #3f668f;
+  border-radius: 6px;
+  background: #eef4f5;
+  color: #3f668f;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.calc-btn:hover {
+  background: #3f668f;
+  color: #fff;
+}

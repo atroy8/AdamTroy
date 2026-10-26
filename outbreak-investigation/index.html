@@ -32,6 +32,9 @@
                     
                     <p><strong>Your Mission:</strong> Analyze the case data, calculate incubation periods, construct an epidemic curve, identify the causative agent, determine the outbreak type, and calculate attack rates to identify the source of contamination.</p>
 
+                    <p><strong>Watch the intro</strong> (36 seconds):</p>
+                    <video controls preload="metadata" src="intro-video.mp4" style="width:100%;border-radius:12px;"></video>
+
                     <div class="seed-panel" id="seed-panel">
                         <div class="seed-display">Case set: <strong id="seed-value">&ndash;</strong></div>
                         <p class="seed-note">Every case set has different patient data but the same outbreak. Share a seed with your class so everyone works the same numbers.</p>
@@ -55,7 +58,7 @@
                     <div class="progress-steps" aria-label="Step 1 of 5"><span class="step-dot done"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
                 </div>
                 <div class="card__body">
-                    <p>Review the case interview data below and calculate the incubation period for each case directly in the table. The incubation period is the time between exposure (dining date/time) and illness onset (onset date/time).</p>
+                    <p>Review the case interview data below and calculate the incubation period for each case directly in the table. The incubation period is the time between exposure (dining date/time) and illness onset (onset date/time). You can type each answer yourself, or click Calculate on a row, or Calculate all below, to fill it in.</p>
                     
                     <div class="calculation-status">
                         <div class="status-summary">
@@ -80,6 +83,7 @@
                                 <option value="onset_date">Onset Date</option>
                             </select>
                         </div>
+                        <button type="button" class="btn btn--secondary" onclick="calculateAllIncubations()">Calculate all incubation periods</button>
                     </div>
 
                     <div class="table-wrapper">

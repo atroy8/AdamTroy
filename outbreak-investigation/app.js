@@ -672,6 +672,25 @@ function validateIncubation(caseId) {
   updateCalculationStatus();
 }
 
+// One-click calculation: fill a case's incubation period (onset minus dining)
+// and mark it correct. Keeps the teaching point (what an incubation period is)
+// while removing the arithmetic bottleneck in stage 1.
+function calculateIncubation(caseId) {
+  const input = document.getElementById(`incubation-input-${caseId}`);
+  const found = gameData.cases.find(c => c.id === caseId);
+  if (!input || !found) return;
+  input.value = found.incubation_hours;
+  validateIncubation(caseId);
+}
+
+function calculateAllIncubations() {
+  gameData.cases.forEach(function(caseData) {
+    const input = document.getElementById(`incubation-input-${caseData.id}`);
+    if (input) input.value = caseData.incubation_hours;
+  });
+  gameData.cases.forEach(function(caseData) { validateIncubation(caseData.id); });
+}
+
 function updateCalculationStatus() {
   const calculatedCount = Object.keys(gameState.calculatedIncubations).length;
   const totalCases = gameData.cases.length;
@@ -745,6 +764,7 @@ function populateCaseTable() {
                  min="1"
                  max="168"
                  onchange="validateIncubation(${caseData.id})">
+          <button type="button" class="calc-btn" onclick="calculateIncubation(${caseData.id})" title="Calculate: onset minus dining">Calculate</button>
           <span class="incubation-status pending" id="status-icon-${caseData.id}">?</span>
         </div>
       </td>
@@ -791,6 +811,7 @@ function sortCases(sortBy) {
                  max="168"
                  value="${gameState.calculatedIncubations[caseData.id] || ''}"
                  onchange="validateIncubation(${caseData.id})">
+          <button type="button" class="calc-btn" onclick="calculateIncubation(${caseData.id})" title="Calculate: onset minus dining">Calculate</button>
           <span class="incubation-status ${gameState.calculatedIncubations[caseData.id] ? 'correct' : 'pending'}"
                 id="status-icon-${caseData.id}">
             ${gameState.calculatedIncubations[caseData.id] ? '✓' : '?'}
