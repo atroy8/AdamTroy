@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f4f7f8" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,650&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Gun Deaths Timeline</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f7f8;
+      --paper: #ffffff;
+      --ink: #11262d;
+      --muted: #54666c;
+      --subtle: #708086;
+      --line: #d6e0e3;
+      --grid: #dce5e7;
+      --suicide: #16677a;
+      --suicide-soft: #dceef1;
+      --homicide: #c65339;
+      --homicide-soft: #f7e2dd;
+      --total: #96690f;
+      --event: #738a32;
+      --event-soft: #e8eed8;
+      --focus: #007f9b;
+      --shadow: 0 20px 60px rgba(22, 49, 57, .08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d171a;
+        --paper: #132227;
+        --ink: #edf5f6;
+        --muted: #b6c5c9;
+        --subtle: #96a9ae;
+        --line: #31464c;
+        --grid: #2a3c41;
+        --suicide: #64c2d3;
+        --suicide-soft: #183b43;
+        --homicide: #f0856c;
+        --homicide-soft: #462a26;
+        --total: #e6bd60;
+        --event: #b9cc70;
+        --event-soft: #303c21;
+        --focus: #7bd4e4;
+        --shadow: 0 24px 70px rgba(0, 0, 0, .24);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 560px), color-mix(in srgb, var(--line) 42%, transparent) calc(50% - 560px), color-mix(in srgb, var(--line) 42%, transparent) calc(50% - 559px), transparent calc(50% - 559px)),
+        var(--bg);
+      color: var(--ink);
+      font-family: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: var(--suicide); text-underline-offset: .18em; }
+    a:hover { text-decoration-thickness: 2px; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .page { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 70px 0 88px; }
+    .hero { display: grid; grid-template-columns: 1.45fr .55fr; gap: 52px; align-items: end; margin-bottom: 34px; }
+    .kicker { color: var(--suicide); font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 13px; }
+    h1 { font: 650 clamp(2.55rem, 5.7vw, 5.35rem)/.96 "Newsreader", Georgia, serif; letter-spacing: -.045em; margin: 0; max-width: 820px; text-wrap: balance; }
+    .dek { color: var(--muted); font-size: 1.06rem; margin: 0 0 5px; max-width: 420px; }
+    .status { display: inline-flex; gap: 8px; align-items: center; margin-top: 18px; color: var(--muted); font-size: .78rem; font-weight: 600; }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--event); box-shadow: 0 0 0 4px var(--event-soft); }
+    .insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 42px 0 24px; }
+    .insight { background: var(--paper); padding: 22px 24px 20px; min-height: 150px; }
+    .insight strong { display: block; font: 650 2.35rem/1 "Newsreader", Georgia, serif; letter-spacing: -.035em; margin: 9px 0 10px; }
+    .insight span { color: var(--muted); font-size: .88rem; }
+    .insight .tag { font-size: .71rem; font-weight: 700; color: var(--subtle); text-transform: uppercase; letter-spacing: .07em; }
+    .chart-card { background: var(--paper); box-shadow: var(--shadow); border: 1px solid var(--line); }
+    .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 28px 30px 16px; }
+    .chart-head h2, .section-head h2 { font: 650 clamp(1.7rem, 3vw, 2.45rem)/1.05 "Newsreader", Georgia, serif; letter-spacing: -.025em; margin: 0 0 8px; }
+    .chart-head p, .section-head p { color: var(--muted); margin: 0; font-size: .9rem; }
+    .metric-switch { display: inline-flex; border: 1px solid var(--line); background: var(--bg); padding: 3px; flex: none; }
+    .metric-switch button { border: 0; background: transparent; padding: 7px 11px; cursor: pointer; font-size: .78rem; font-weight: 700; color: var(--muted); }
+    .metric-switch button.active { background: var(--ink); color: var(--paper); }
+    .legend { display: flex; flex-wrap: wrap; gap: 16px 24px; padding: 4px 30px 10px; font-size: .79rem; font-weight: 600; }
+    .legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .legend i { width: 23px; height: 3px; display: inline-block; background: currentColor; }
+    .legend .s { color: var(--suicide); }
+    .legend .h { color: var(--homicide); }
+    .legend .t { color: var(--total); }
+    .legend .e { color: var(--event); }
+    .legend .e i { width: 8px; height: 8px; transform: rotate(45deg); }
+    .plot-wrap { position: relative; padding: 0 20px; }
+    #chart { width: 100%; height: auto; min-height: 360px; display: block; touch-action: pan-y; }
+    .axis-label { fill: var(--subtle); font: 500 12px "Public Sans", sans-serif; }
+    .axis-title { fill: var(--muted); font: 600 12px "Public Sans", sans-serif; }
+    .gridline { stroke: var(--grid); stroke-width: 1; }
+    .yearline { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 2 5; }
+    .series-line { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+    .series-line.total-line { stroke-width: 3; }
+    .selected-guide { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 4 5; opacity: .55; }
+    .selected-dot { stroke: var(--paper); stroke-width: 3; vector-effect: non-scaling-stroke; }
+    .event-stem { stroke: var(--event); stroke-width: 1; opacity: .55; }
+    .event-diamond { fill: var(--event); stroke: var(--paper); stroke-width: 2; cursor: pointer; }
+    .scrubber { padding: 0 30px 26px; }
+    .scrubber input { width: 100%; accent-color: var(--ink); cursor: ew-resize; }
+    .scrubber-labels { display: flex; justify-content: space-between; color: var(--subtle); font-size: .71rem; margin-top: 3px; }
+    .readout { border-top: 1px solid var(--line); display: grid; grid-template-columns: 1.1fr .95fr .95fr .95fr 1.35fr; }
+    .readout > div { padding: 21px 24px; border-right: 1px solid var(--line); }
+    .readout > div:last-child { border-right: 0; }
+    .readout .label { color: var(--subtle); font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; font-weight: 700; }
+    .readout .big { font: 650 1.55rem/1.15 "Newsreader", Georgia, serif; margin-top: 7px; }
+    .readout .small { color: var(--muted); font-size: .76rem; margin-top: 6px; }
+    .readout .suicide-v { color: var(--suicide); }
+    .readout .homicide-v { color: var(--homicide); }
+    .readout .total-v { color: var(--total); }
+    .context-readout .big { font-family: "Public Sans", sans-serif; font-size: .9rem; line-height: 1.35; font-weight: 600; }
+    .context-readout .small { line-height: 1.35; }
+    .causal-note { margin: 14px 0 0; padding: 14px 18px; border-left: 3px solid var(--event); color: var(--muted); font-size: .8rem; background: color-mix(in srgb, var(--event-soft) 60%, transparent); }
+    section { margin-top: 74px; }
+    .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: end; margin-bottom: 22px; }
+    .events { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .event-card { appearance: none; text-align: left; border: 0; background: var(--paper); padding: 20px; cursor: pointer; min-height: 154px; transition: background .16s ease; }
+    .event-card:hover { background: var(--event-soft); }
+    .event-card.active { background: var(--event-soft); box-shadow: inset 0 4px 0 var(--event); }
+    .event-card time { display: block; color: var(--event); font-size: .75rem; font-weight: 700; margin-bottom: 8px; }
+    .event-card strong { display: block; font-size: .88rem; line-height: 1.4; }
+    .event-card small { display: block; color: var(--muted); font-size: .69rem; margin-top: 10px; }
+    .annual-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .annual-row { display: grid; grid-template-columns: 70px 1fr 1fr; gap: 24px; align-items: center; background: var(--paper); padding: 17px 20px; }
+    .annual-row .year { font: 650 1.35rem "Newsreader", Georgia, serif; }
+    .bar-item { display: grid; grid-template-columns: 88px 1fr 68px; align-items: center; gap: 12px; font-size: .75rem; }
+    .bar-item .track { height: 7px; background: var(--bg); overflow: hidden; }
+    .bar-item .fill { height: 100%; }
+    .bar-item .value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+    .bar-item.suicide .fill { background: var(--suicide); }
+    .bar-item.homicide .fill { background: var(--homicide); }
+    .method { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
+    .method h3 { font: 650 1.25rem "Newsreader", Georgia, serif; margin: 0 0 10px; }
+    .method p, .method li { color: var(--muted); font-size: .84rem; }
+    .method ul { margin: 0; padding-left: 18px; }
+    .method li + li { margin-top: 8px; }
+    .source-box { border-top: 1px solid var(--line); margin-top: 58px; padding-top: 22px; display: flex; justify-content: space-between; gap: 30px; color: var(--muted); font-size: .75rem; }
+    .source-box p { margin: 0; max-width: 780px; }
+    .source-box .stamp { white-space: nowrap; color: var(--subtle); }
+    @media (max-width: 820px) {
+      .page { width: min(100% - 28px, 700px); padding-top: 40px; }
+      .hero, .section-head { grid-template-columns: 1fr; gap: 20px; }
+      .dek { max-width: 620px; }
+      .insights { grid-template-columns: 1fr; }
+      .insight { min-height: auto; }
+      .chart-head { flex-direction: column; padding: 22px 18px 12px; }
+      .legend { padding-left: 18px; padding-right: 18px; }
+      .plot-wrap { padding: 0 4px; }
+      #chart { min-height: 340px; }
+      .scrubber { padding: 0 18px 20px; }
+      .readout { grid-template-columns: 1fr 1fr; }
+      .readout > div { border-bottom: 1px solid var(--line); }
+      .readout > div:nth-child(even) { border-right: 0; }
+      .readout > div:nth-child(5) { grid-column: 1 / -1; border-bottom: 0; }
+      .events { grid-template-columns: 1fr 1fr; }
+      .annual-row { grid-template-columns: 48px 1fr; gap: 12px; }
+      .annual-row .bar-item { grid-column: 2; }
+      .method { grid-template-columns: 1fr; gap: 28px; }
+      .source-box { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 520px) {
+      h1 { font-size: 2.65rem; }
+      .page { width: min(100% - 20px, 470px); }
+      .events { grid-template-columns: 1fr; }
+      .event-card { min-height: auto; }
+      .readout { grid-template-columns: 1fr; }
+      .readout > div { border-right: 0; border-bottom: 1px solid var(--line) !important; }
+      .readout > div:last-child { border-bottom: 0 !important; }
+      .annual-row { padding: 16px 14px; }
+      .bar-item { grid-template-columns: 72px 1fr 58px; gap: 8px; }
+      section { margin-top: 56px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <p class="kicker">United States · monthly mortality · 2018–2024</p>
+        <h1>A pandemic shock, then two diverging paths</h1>
+      </div>
+      <div>
+        <p class="dek">Explore monthly firearm suicide and homicide counts alongside pivotal COVID-19, labor, and vaccination milestones.</p>
+        <div class="status">Latest available here: December 2024</div>
+      </div>
+    </header>
+
+    <div class="insights" aria-label="Key findings">
+      <div class="insight">
+        <div class="tag">Homicide, 2019 to 2020</div>
+        <strong id="spikeStat">+34.7%</strong>
+        <span>Firearm homicides rose sharply in the first pandemic year.</span>
+      </div>
+      <div class="insight">
+        <div class="tag">Homicide, 2021 to 2024</div>
+        <strong id="retreatStat">−26.7%</strong>
+        <span>Counts fell from their annual peak, but remained above 2019.</span>
+      </div>
+      <div class="insight">
+        <div class="tag">Suicide, 2019 to 2024</div>
+        <strong id="suicideStat">+15.3%</strong>
+        <span>Firearm suicides followed a slower, sustained climb.</span>
+      </div>
+    </div>
+
+    <article class="chart-card" aria-labelledby="chartTitle">
+      <div class="chart-head">
+        <div>
+          <h2 id="chartTitle">Move through the mortality lines</h2>
+          <p>Drag across the chart or use the month slider. Values are monthly, not rolling averages.</p>
+        </div>
+        <div class="metric-switch" role="group" aria-label="Chart metric">
+          <button type="button" class="active" data-metric="count" aria-pressed="true">Deaths</button>
+          <button type="button" data-metric="rate" aria-pressed="false">Rate</button>
+        </div>
+      </div>
+      <div class="legend" aria-label="Chart legend">
+        <span class="s"><i></i> Firearm suicide</span>
+        <span class="h"><i></i> Firearm homicide</span>
+        <span class="t"><i></i> Combined total</span>
+        <span class="e"><i></i> Context marker</span>
+      </div>
+      <div class="plot-wrap">
+        <svg id="chart" viewBox="0 0 1000 460" role="img" aria-labelledby="svgTitle svgDesc">
+          <title id="svgTitle">Monthly firearm suicide, homicide, and combined total in the United States</title>
+          <desc id="svgDesc">An interactive line chart for January 2018 through December 2024. Suicide and homicide are shown separately, along with their combined total, with pandemic context markers.</desc>
+        </svg>
+      </div>
+      <div class="scrubber">
+        <label class="visually-hidden" for="monthRange">Selected month</label>
+        <input id="monthRange" type="range" min="0" max="83" value="83" step="1" aria-label="Select a month from January 2018 through December 2024" />
+        <div class="scrubber-labels" aria-hidden="true"><span>Jan 2018</span><span>Dec 2024</span></div>
+      </div>
+      <div class="readout" id="readout" aria-live="polite">
+        <div>
+          <div class="label">Selected month</div>
+          <div class="big" id="monthValue">December 2024</div>
+          <div class="small" id="statusValue">Provisional data</div>
+        </div>
+        <div>
+          <div class="label">Firearm suicide</div>
+          <div class="big suicide-v" id="suicideValue">2,166</div>
+          <div class="small" id="suicideChange">−2.0% from Dec 2023</div>
+        </div>
+        <div>
+          <div class="label">Firearm homicide</div>
+          <div class="big homicide-v" id="homicideValue">1,159</div>
+          <div class="small" id="homicideChange">−15.4% from Dec 2023</div>
+        </div>
+        <div>
+          <div class="label">Combined total</div>
+          <div class="big total-v" id="totalValue">3,325</div>
+          <div class="small" id="totalChange">−6.3% from Dec 2023</div>
+        </div>
+        <div class="context-readout">
+          <div class="label">Nearest context marker</div>
+          <div class="big" id="eventValue">U.S. public health emergency ends</div>
+          <div class="small" id="eventSource">May 11, 2023 · U.S. Department of Health and Human Services</div>
+        </div>
+      </div>
+    </article>
+    <p class="causal-note"><strong>Read with care:</strong> the markers establish timing, not causation. This timeline does not show that any pandemic event, policy, or labor-market change caused a mortality change.</p>
+
+    <section aria-labelledby="eventsTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Context rail</p>
+          <h2 id="eventsTitle">What was happening when</h2>
+        </div>
+        <p>Select any marker to jump to that month. State policies varied: California issued the first statewide stay-at-home order, 43 states followed through April 7, 2020, and seven states never issued one.</p>
+      </div>
+      <div class="events" id="events"></div>
+    </section>
+
+    <section aria-labelledby="annualTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Annual view</p>
+          <h2 id="annualTitle">The split is clearer year by year</h2>
+        </div>
+        <p>Firearm homicide rose abruptly in 2020, peaked in 2021, then declined. Firearm suicide changed less abruptly and reached its highest annual count in this series in 2024.</p>
+      </div>
+      <div class="annual-grid" id="annualGrid" aria-label="Annual firearm suicide and homicide totals"></div>
+    </section>
+
+    <section aria-labelledby="methodTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Definitions and limits</p>
+          <h2 id="methodTitle">What these lines measure</h2>
+        </div>
+        <p>Death-certificate counts by month of death for U.S. residents. The chart covers all 84 months with no missing or suppressed values.</p>
+      </div>
+      <div class="method">
+        <div>
+          <h3>Intent categories</h3>
+          <ul>
+            <li><strong>Suicide:</strong> ICD-10 X72–X74, intentional self-harm by firearm discharge.</li>
+            <li><strong>Homicide:</strong> ICD-10 X93–X95, assault by firearm discharge.</li>
+            <li>The homicide series excludes ICD-10 U01.4, terrorism involving firearm discharge. That excludes 17 deaths in August 2019 and none in the other months shown.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Data status and rates</h3>
+          <ul>
+            <li>2018–2020 are final CDC WONDER D76 data. 2021–2024 are provisional D176 data and may be revised as late certificates are processed.</li>
+            <li>Rates are crude monthly deaths per 100,000 residents, not age-adjusted or annualized. Each month uses that year’s annual population denominator.</li>
+            <li>Coding practices and reporting timeliness vary by jurisdiction.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="source-box">
+      <p><strong>Source:</strong> <a href="https://wonder.cdc.gov/" target="_blank" rel="noopener noreferrer">CDC WONDER</a>, National Vital Statistics System. Final Underlying Cause of Death data for 2018–2020 and Provisional Multiple Cause of Death data for 2021–2024. Pandemic markers are identified by the cited agencies and reporting organizations shown on each card.</p>
+      <div class="stamp">Retrieved October 13, 2026</div>
+    </footer>
+  </main>
+
+  <script>
+    const DATA = {
+      months: Array.from({length: 84}, (_, i) => {
+        const d = new Date(Date.UTC(2018 + Math.floor(i / 12), i % 12, 1));
+        return d.toISOString().slice(0, 7);
+      }),
+      suicide: [2169,1836,2092,2023,2123,2015,2138,2147,2052,2074,1865,1898,1957,1817,2152,2067,1953,2057,2119,2077,2017,1978,1869,1877,2119,1947,2085,1799,1967,2119,2205,2140,2056,1976,1944,1935,2148,1976,2149,2067,2184,2249,2239,2378,2300,2302,2198,2138,2318,2105,2241,2215,2347,2360,2325,2316,2213,2247,2154,2191,2397,2149,2288,2215,2325,2221,2378,2408,2319,2289,2156,2155,2338,2157,2291,2354,2444,2296,2394,2448,2210,2264,2231,2166],
+      homicide: [1267,1028,1057,1134,1156,1229,1291,1162,1215,1141,1093,1184,1155,1002,1064,1077,1224,1270,1342,1258,1247,1220,1228,1306,1269,1092,1257,1331,1590,1770,1932,1882,1746,1878,1832,1803,1703,1434,1529,1643,1902,1870,1973,1844,1827,1913,1609,1711,1625,1411,1528,1638,1802,1769,1880,1751,1609,1646,1483,1509,1580,1302,1426,1487,1670,1599,1713,1540,1401,1446,1370,1393,1318,1152,1269,1263,1398,1424,1417,1272,1264,1280,1148,1159],
+      suicideRate: [0.663,0.561,0.639,0.618,0.649,0.616,0.653,0.656,0.627,0.634,0.57,0.58,0.596,0.554,0.656,0.63,0.595,0.627,0.646,0.633,0.614,0.603,0.569,0.572,0.643,0.591,0.633,0.546,0.597,0.643,0.669,0.65,0.624,0.6,0.59,0.587,0.647,0.595,0.647,0.623,0.658,0.678,0.675,0.716,0.693,0.694,0.662,0.644,0.695,0.632,0.672,0.665,0.704,0.708,0.698,0.695,0.664,0.674,0.646,0.657,0.716,0.642,0.683,0.661,0.694,0.663,0.71,0.719,0.692,0.683,0.644,0.643,0.687,0.634,0.674,0.692,0.719,0.675,0.704,0.72,0.65,0.666,0.656,0.637],
+      homicideRate: [0.387,0.314,0.323,0.347,0.353,0.376,0.395,0.355,0.371,0.349,0.334,0.362,0.352,0.305,0.324,0.328,0.373,0.387,0.409,0.383,0.38,0.372,0.374,0.398,0.385,0.331,0.382,0.404,0.483,0.537,0.586,0.571,0.53,0.57,0.556,0.547,0.513,0.432,0.461,0.495,0.573,0.563,0.594,0.556,0.55,0.576,0.485,0.516,0.488,0.423,0.458,0.491,0.541,0.531,0.564,0.525,0.483,0.494,0.445,0.453,0.472,0.389,0.426,0.444,0.499,0.477,0.511,0.46,0.418,0.432,0.409,0.416,0.388,0.339,0.373,0.371,0.411,0.419,0.417,0.374,0.372,0.376,0.338,0.341]
+    };
+    const EVENTS = [
+      {date:'2020-01-30', short:'WHO declares COVID-19 a public health emergency of international concern', source:'World Health Organization'},
+      {date:'2020-02-06', short:'Earliest known U.S. COVID-19 death, confirmed retrospectively', source:'Santa Clara County Public Health / Reuters'},
+      {date:'2020-02-29', short:'First reported U.S. COVID-19 death', source:'Reuters / CDC'},
+      {date:'2020-03-11', short:'WHO declares COVID-19 a pandemic', source:'World Health Organization'},
+      {date:'2020-03-16', short:'Statewide school closures begin; all states closed by March 24', source:'Education Week'},
+      {date:'2020-03-19', short:'First statewide stay-at-home order takes effect in California', source:'Ballotpedia'},
+      {date:'2020-03-27', short:'CARES Act signed, a $2.2 trillion relief package', source:'Library of Congress / Congress.gov'},
+      {date:'2020-04-01', short:'U.S. unemployment peaks at 14.8% in April', source:'U.S. Bureau of Labor Statistics'},
+      {date:'2020-12-11', short:'FDA authorizes the first COVID-19 vaccine for emergency use', source:'U.S. Food and Drug Administration'},
+      {date:'2020-12-14', short:'First COVID-19 vaccinations administered in the U.S.', source:'CDC / FDA'},
+      {date:'2021-04-19', short:'All U.S. adults become eligible for COVID-19 vaccination', source:'White House / NPR'},
+      {date:'2021-11-26', short:'WHO designates Omicron a variant of concern', source:'WHO / CDC MMWR'},
+      {date:'2022-07-01', short:'U.S. unemployment returns to 3.5% in July', source:'U.S. Bureau of Labor Statistics'},
+      {date:'2023-05-05', short:'WHO ends COVID-19’s global public health emergency status', source:'World Health Organization'},
+      {date:'2023-05-11', short:'U.S. federal COVID-19 public health emergency ends', source:'U.S. Department of Health and Human Services'}
+    ];
+
+    DATA.total = DATA.suicide.map((v, i) => v + DATA.homicide[i]);
+    DATA.totalRate = DATA.suicideRate.map((v, i) => v + DATA.homicideRate[i]);
+
+    const svg = document.getElementById('chart');
+    const slider = document.getElementById('monthRange');
+    const NS = 'http://www.w3.org/2000/svg';
+    const dims = {left: 70, right: 25, top: 38, bottom: 54, width: 1000, height: 460};
+    let selected = 83;
+    let metric = 'count';
+    const fmt = new Intl.NumberFormat('en-US');
+    const monthFmt = new Intl.DateTimeFormat('en-US', {timeZone:'UTC', month:'long', year:'numeric'});
+    const dateFmt = new Intl.DateTimeFormat('en-US', {timeZone:'UTC', month:'short', day:'numeric', year:'numeric'});
+
+    function monthIndex(iso) {
+      const y = +iso.slice(0,4), m = +iso.slice(5,7);
+      return (y - 2018) * 12 + m - 1;
+    }
+    function annual(series, year) {
+      const start = (year - 2018) * 12;
+      return series.slice(start, start + 12).reduce((a,b) => a + b, 0);
+    }
+    function pct(a,b) { return ((b-a)/a)*100; }
+    function signed(n) { return `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(1)}%`; }
+    function isoMonthDate(s) { return new Date(`${s}-01T00:00:00Z`); }
+    function fullDate(s) { return new Date(`${s}T00:00:00Z`); }
+    function el(name, attrs={}, text='') {
+      const node = document.createElementNS(NS, name);
+      Object.entries(attrs).forEach(([k,v]) => node.setAttribute(k,v));
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function setHeadlineStats() {
+      document.getElementById('spikeStat').textContent = signed(pct(annual(DATA.homicide,2019), annual(DATA.homicide,2020)));
+      document.getElementById('retreatStat').textContent = signed(pct(annual(DATA.homicide,2021), annual(DATA.homicide,2024)));
+      document.getElementById('suicideStat').textContent = signed(pct(annual(DATA.suicide,2019), annual(DATA.suicide,2024)));
+    }
+
+    function renderChart() {
+      while (svg.lastChild && !['title','desc'].includes(svg.lastChild.tagName)) svg.removeChild(svg.lastChild);
+      const s = metric === 'count' ? DATA.suicide : DATA.suicideRate;
+      const h = metric === 'count' ? DATA.homicide : DATA.homicideRate;
+      const t = metric === 'count' ? DATA.total : DATA.totalRate;
+      const rawMax = Math.max(...s, ...h, ...t);
+      const step = metric === 'count' ? 500 : .2;
+      const maxY = Math.ceil(rawMax / step) * step;
+      const pw = dims.width - dims.left - dims.right;
+      const ph = dims.height - dims.top - dims.bottom;
+      const x = i => dims.left + (i / (DATA.months.length - 1)) * pw;
+      const y = v => dims.top + ph - (v / maxY) * ph;
+
+      for (let i=0; i<=5; i++) {
+        const value = maxY * i / 5;
+        const yy = y(value);
+        svg.appendChild(el('line',{x1:dims.left,y1:yy,x2:dims.width-dims.right,y2:yy,class:'gridline'}));
+        svg.appendChild(el('text',{x:dims.left-12,y:yy+4,'text-anchor':'end',class:'axis-label'}, metric === 'count' ? fmt.format(value) : value.toFixed(1)));
+      }
+      svg.appendChild(el('text',{x:dims.left,y:17,class:'axis-title'}, metric === 'count' ? 'DEATHS PER MONTH' : 'CRUDE RATE PER 100,000, MONTHLY'));
+      for (let year=2018; year<=2024; year++) {
+        const idx = (year-2018)*12;
+        const xx = x(idx);
+        svg.appendChild(el('line',{x1:xx,y1:dims.top,x2:xx,y2:dims.top+ph,class:'yearline'}));
+        svg.appendChild(el('text',{x:xx,y:dims.height-18,'text-anchor':year===2018?'start':'middle',class:'axis-label'},String(year)));
+      }
+      function path(values) { return values.map((v,i) => `${i?'L':'M'} ${x(i).toFixed(2)} ${y(v).toFixed(2)}`).join(' '); }
+      svg.appendChild(el('path',{d:path(t),class:'series-line total-line',stroke:'var(--total)'}));
+      svg.appendChild(el('path',{d:path(s),class:'series-line',stroke:'var(--suicide)'}));
+      svg.appendChild(el('path',{d:path(h),class:'series-line',stroke:'var(--homicide)'}));
+
+      EVENTS.forEach((event, idx) => {
+        const mi = monthIndex(event.date);
+        const day = +event.date.slice(8,10);
+        const xx = x(mi + (day-1)/31);
+        const tier = idx % 3;
+        const yy = dims.top + 7 + tier*13;
+        svg.appendChild(el('line',{x1:xx,y1:dims.top,x2:xx,y2:yy+2,class:'event-stem'}));
+        const diamond = el('rect',{x:xx-4,y:yy-4,width:8,height:8,transform:`rotate(45 ${xx} ${yy})`,class:'event-diamond',tabindex:'0',role:'button','aria-label':`${dateFmt.format(fullDate(event.date))}: ${event.short}`});
+        diamond.addEventListener('click',()=>selectMonth(mi,true));
+        diamond.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();selectMonth(mi,true);} });
+        svg.appendChild(diamond);
+      });
+
+      const xx = x(selected);
+      svg.appendChild(el('line',{x1:xx,y1:dims.top,x2:xx,y2:dims.top+ph,class:'selected-guide'}));
+      svg.appendChild(el('circle',{cx:xx,cy:y(s[selected]),r:6,fill:'var(--suicide)',class:'selected-dot'}));
+      svg.appendChild(el('circle',{cx:xx,cy:y(h[selected]),r:6,fill:'var(--homicide)',class:'selected-dot'}));
+      svg.appendChild(el('circle',{cx:xx,cy:y(t[selected]),r:6,fill:'var(--total)',class:'selected-dot'}));
+
+      const hit = el('rect',{x:dims.left,y:dims.top,width:pw,height:ph,fill:'transparent',style:'cursor:crosshair'});
+      hit.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' || e.buttons === 1) pointerSelect(e); });
+      hit.addEventListener('pointerdown', e => { hit.setPointerCapture(e.pointerId); pointerSelect(e); });
+      hit.addEventListener('pointerup', e => { if(hit.hasPointerCapture(e.pointerId)) hit.releasePointerCapture(e.pointerId); });
+      svg.appendChild(hit);
+    }
+
+    function pointerSelect(e) {
+      const rect = svg.getBoundingClientRect();
+      const svgX = (e.clientX - rect.left) / rect.width * dims.width;
+      const pw = dims.width-dims.left-dims.right;
+      const idx = Math.round(((svgX-dims.left)/pw)*(DATA.months.length-1));
+      selectMonth(Math.max(0,Math.min(83,idx)),false);
+    }
+
+    function nearestEvent(index) {
+      const selectedDate = isoMonthDate(DATA.months[index]).getTime();
+      return EVENTS.reduce((best,e) => Math.abs(fullDate(e.date).getTime() - selectedDate) < Math.abs(fullDate(best.date).getTime() - selectedDate) ? e : best, EVENTS[0]);
+    }
+    function updateReadout() {
+      const month = DATA.months[selected];
+      document.getElementById('monthValue').textContent = monthFmt.format(isoMonthDate(month));
+      document.getElementById('statusValue').textContent = +month.slice(0,4) <= 2020 ? 'Final CDC WONDER D76 data' : 'Provisional CDC WONDER D176 data';
+      const s = metric === 'count' ? DATA.suicide[selected] : DATA.suicideRate[selected];
+      const h = metric === 'count' ? DATA.homicide[selected] : DATA.homicideRate[selected];
+      const t = metric === 'count' ? DATA.total[selected] : DATA.totalRate[selected];
+      document.getElementById('suicideValue').textContent = metric === 'count' ? fmt.format(s) : `${s.toFixed(3)} per 100,000`;
+      document.getElementById('homicideValue').textContent = metric === 'count' ? fmt.format(h) : `${h.toFixed(3)} per 100,000`;
+      document.getElementById('totalValue').textContent = metric === 'count' ? fmt.format(t) : `${t.toFixed(3)} per 100,000`;
+      function changeText(values) {
+        if (selected < 12) return 'No prior-year month in this view';
+        return `${signed(pct(values[selected-12],values[selected]))} from ${monthFmt.format(isoMonthDate(DATA.months[selected-12])).replace(/^\w+ /,'') === month.slice(0,4) ? 'prior year' : monthFmt.format(isoMonthDate(DATA.months[selected-12])).replace('ember','')}`;
+      }
+      const sValues = metric === 'count' ? DATA.suicide : DATA.suicideRate;
+      const hValues = metric === 'count' ? DATA.homicide : DATA.homicideRate;
+      const tValues = metric === 'count' ? DATA.total : DATA.totalRate;
+      const prevLabel = selected >= 12 ? new Intl.DateTimeFormat('en-US',{timeZone:'UTC',month:'short',year:'numeric'}).format(isoMonthDate(DATA.months[selected-12])) : '';
+      document.getElementById('suicideChange').textContent = selected < 12 ? 'No prior-year month in this view' : `${signed(pct(sValues[selected-12],sValues[selected]))} from ${prevLabel}`;
+      document.getElementById('homicideChange').textContent = selected < 12 ? 'No prior-year month in this view' : `${signed(pct(hValues[selected-12],hValues[selected]))} from ${prevLabel}`;
+      document.getElementById('totalChange').textContent = selected < 12 ? 'No prior-year month in this view' : `${signed(pct(tValues[selected-12],tValues[selected]))} from ${prevLabel}`;
+      const event = nearestEvent(selected);
+      document.getElementById('eventValue').textContent = event.short;
+      document.getElementById('eventSource').textContent = `${dateFmt.format(fullDate(event.date))} · ${event.source}`;
+      document.querySelectorAll('.event-card').forEach((card,i)=> card.classList.toggle('active', EVENTS[i]===event));
+    }
+    function selectMonth(index, scrollChart) {
+      selected = index;
+      slider.value = selected;
+      renderChart();
+      updateReadout();
+      if (scrollChart) document.querySelector('.chart-card').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
+    }
+
+    function renderEvents() {
+      const container = document.getElementById('events');
+      EVENTS.forEach((event,i)=>{
+        const b=document.createElement('button');
+        b.type='button'; b.className='event-card'; b.dataset.event=i;
+        b.innerHTML=`<time datetime="${event.date}">${dateFmt.format(fullDate(event.date))}</time><strong>${event.short}</strong><small>Source: ${event.source}</small>`;
+        b.addEventListener('click',()=>selectMonth(monthIndex(event.date),true));
+        container.appendChild(b);
+      });
+    }
+    function renderAnnual() {
+      const grid=document.getElementById('annualGrid');
+      const totals=[];
+      for(let year=2018;year<=2024;year++) totals.push({year,s:annual(DATA.suicide,year),h:annual(DATA.homicide,year)});
+      const max=Math.max(...totals.flatMap(d=>[d.s,d.h]));
+      totals.forEach(d=>{
+        const row=document.createElement('div'); row.className='annual-row';
+        row.innerHTML=`<div class="year">${d.year}</div>
+          <div class="bar-item suicide"><span>Suicide</span><div class="track"><div class="fill" style="width:${d.s/max*100}%"></div></div><span class="value">${fmt.format(d.s)}</span></div>
+          <div class="bar-item homicide"><span>Homicide</span><div class="track"><div class="fill" style="width:${d.h/max*100}%"></div></div><span class="value">${fmt.format(d.h)}</span></div>`;
+        grid.appendChild(row);
+      });
+    }
+
+    document.querySelectorAll('.metric-switch button').forEach(btn=>btn.addEventListener('click',()=>{
+      metric=btn.dataset.metric;
+      document.querySelectorAll('.metric-switch button').forEach(b=>{const on=b===btn;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+      renderChart(); updateReadout();
+    }));
+    slider.addEventListener('input',e=>selectMonth(+e.target.value,false));
+    setHeadlineStats(); renderEvents(); renderAnnual(); renderChart(); updateReadout();
+  </script>
+</body>
+</html>
