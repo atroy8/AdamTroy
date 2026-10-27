@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Screening Showdown | Adam Troy</title>
+<meta name="description" content="A classroom game about screening tests: set the cutoff, trade sensitivity for specificity, and see why prevalence changes everything." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#16283f; --navy:#0f2a4a; --steel:#2f6da3; --sky:#7fb3e0; --pale:#e9f0f7;
+    --bg:#f5f7fa; --card:#fff; --muted:#55677d; --rule:#dbe3ec;
+    --tp:#2f6da3; --fn:#a9c8e6; --fp:#d9822b; --tn:#e3e8ef;
+    --good:#2e8b57; --bad:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;color:var(--navy);line-height:1.15}
+  a{color:var(--steel)}
+  button{font-family:inherit}
+  .top{background:var(--navy);color:#fff}
+  .top-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .top a{color:#cfe0f1;text-decoration:none;font-size:.9rem}
+  .top a:hover{color:#fff}
+  .scorebox{font-size:.9rem;color:#cfe0f1}
+  .scorebox b{color:#fff;font-size:1.05rem}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 20px 60px}
+  .hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+  .eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);font-weight:700}
+  .hero h1{font-size:clamp(1.9rem,4vw,2.6rem);margin-top:6px}
+  .progress{display:flex;gap:6px}
+  .progress span{width:34px;height:6px;border-radius:3px;background:var(--rule)}
+  .progress span.done{background:var(--steel)}
+  .progress span.now{background:var(--navy)}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:22px}
+  .brief{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-bottom:18px}
+  .brief h2{font-size:1.45rem;margin-bottom:8px}
+  .brief p{color:var(--muted)}
+  .goal{background:var(--pale);border:1px solid #cddcec;border-radius:10px;padding:16px 18px}
+  .goal h3{font-family:'Inter',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);margin-bottom:8px}
+  .goal ul{list-style:none}
+  .goal li{display:flex;gap:10px;align-items:center;padding:4px 0;font-weight:500}
+  .chk{width:20px;height:20px;border-radius:50%;border:2px solid #9db4cc;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;flex:none}
+  .chk.ok{background:var(--good);border-color:var(--good)}
+  .facts{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+  .fact{font-size:.82rem;color:var(--muted)}
+  .fact b{display:block;font-size:1.15rem;color:var(--navy)}
+  .main{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+  .panel-title{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .toggle{font-size:.78rem;letter-spacing:0;text-transform:none;font-weight:500;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
+  svg{display:block;width:100%;height:auto}
+  .slider-row{margin-top:10px}
+  .slider-row label{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem;margin-bottom:6px}
+  .slider-row output{font-family:'Source Serif 4',serif;font-size:1.25rem;color:var(--navy)}
+  input[type=range]{width:100%;accent-color:var(--navy);height:28px}
+  .hint{font-size:.82rem;color:var(--muted);margin-top:4px}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.8rem;color:var(--muted)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+  table.two{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:4px}
+  table.two th,table.two td{border:1px solid var(--rule);padding:8px;text-align:center}
+  table.two th{background:#f2f5f9;font-weight:600;color:var(--muted);font-size:.8rem}
+  table.two td.tp{background:#e3eef8;color:var(--tp);font-weight:700}
+  table.two td.fp{background:#fbeedf;color:#a85d14;font-weight:700}
+  table.two td.fn{background:#f0f6fc;color:#3d6f9c;font-weight:700}
+  table.two td.tn{background:#f6f8fb;color:var(--muted);font-weight:700}
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+  .metric{border:1px solid var(--rule);border-radius:10px;padding:10px 12px}
+  .metric span{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+  .metric b{display:block;font-family:'Source Serif 4',serif;font-size:1.55rem;color:var(--navy)}
+  .metric small{color:var(--muted);font-size:.76rem}
+  .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .btn{padding:12px 20px;border-radius:8px;border:1px solid transparent;font-weight:600;font-size:.95rem;cursor:pointer}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-primary:hover{background:var(--steel)}
+  .btn-ghost{background:#fff;border-color:var(--rule);color:var(--navy)}
+  .btn-ghost:hover{background:var(--pale)}
+  .feedback{margin-top:14px;padding:14px 16px;border-radius:10px;display:none;font-size:.95rem}
+  .feedback.show{display:block}
+  .feedback.win{background:#e8f5ee;border:1px solid #b8dfc9}
+  .feedback.lose{background:#fbecea;border:1px solid #efc2bb}
+  .feedback b{display:block;margin-bottom:4px}
+  .choices{display:grid;gap:10px;margin-top:14px}
+  .choice{text-align:left;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px 16px;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .choice:hover{border-color:var(--steel);background:var(--pale)}
+  .choice.right{border-color:var(--good);background:#e8f5ee}
+  .choice.wrong{border-color:var(--bad);background:#fbecea}
+  .end{text-align:center;padding:40px 22px}
+  .end h2{font-size:2.2rem;margin:6px 0 10px}
+  .big{font-family:'Source Serif 4',serif;font-size:4rem;color:var(--navy);font-weight:700;line-height:1}
+  .takeaways{text-align:left;max-width:680px;margin:24px auto 0;display:grid;gap:10px}
+  .takeaways div{background:var(--pale);border-radius:10px;padding:12px 16px}
+  .intro{max-width:760px;margin:0 auto;text-align:center;padding:30px 10px}
+  .intro h1{font-size:clamp(2.2rem,5vw,3.2rem);margin:8px 0 14px}
+  .intro p{color:var(--muted);font-size:1.08rem;margin-bottom:12px}
+  .pillrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0 26px}
+  .pill{background:#fff;border:1px solid var(--rule);border-radius:999px;padding:6px 14px;font-size:.85rem;color:var(--muted)}
+  .hidden{display:none!important}
+  footer{text-align:center;color:var(--muted);font-size:.82rem;padding:20px}
+  @media (max-width:860px){.brief,.main{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="../index.html#games">&larr; adamtroy.net</a>
+    <div class="scorebox">Score <b id="score">0</b> / 100</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- INTRO -->
+  <section id="intro" class="intro">
+    <p class="eyebrow">A screening test game</p>
+    <h1>Screening Showdown</h1>
+    <p>Every screening test has a cutoff. Move it one way and you catch more disease, but you also alarm more healthy people. Move it the other way and the reverse happens.</p>
+    <p>Across five rounds you will tune a test for different settings, from a community screening day to a hunt for a rare disease. Your job is to meet each clinic's goal.</p>
+    <div class="pillrow">
+      <span class="pill">Sensitivity</span><span class="pill">Specificity</span><span class="pill">Positive predictive value</span><span class="pill">Prevalence</span><span class="pill">Youden's J</span>
+    </div>
+    <button class="btn btn-primary" id="startBtn">Start round 1</button>
+    <p class="hint" style="margin-top:14px">About 10 minutes. Works on phones and classroom projectors.</p>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="hidden">
+    <div class="hero">
+      <div>
+        <p class="eyebrow" id="roundLabel">Round 1 of 5</p>
+        <h1 id="roundTitle"></h1>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="brief">
+      <div class="card">
+        <h2 id="briefTitle">The situation</h2>
+        <p id="briefText"></p>
+        <div class="facts">
+          <div class="fact"><b id="factPop">1,000</b>people screened</div>
+          <div class="fact"><b id="factPrev"></b>actually have the disease</div>
+          <div class="fact"><b id="factSick"></b>sick people in the room</div>
+        </div>
+      </div>
+      <div class="goal">
+        <h3>Your goal</h3>
+        <ul id="goalList"></ul>
+      </div>
+    </div>
+
+    <div class="main" id="tuneArea">
+      <div class="card">
+        <div class="panel-title">Test results by true disease status
+          <label class="toggle"><input type="checkbox" id="scaleToggle" /> Scale to real numbers</label>
+        </div>
+        <svg id="dist" viewBox="0 0 640 230" role="img" aria-label="Distribution of test scores for people with and without the disease"></svg>
+        <div class="slider-row">
+          <label for="cut">Positive if score is at or above <output id="cutOut"></output></label>
+          <input type="range" id="cut" min="0" max="100" step="0.1" />
+          <p class="hint">Drag the cutoff. Lower catches more disease. Higher produces fewer false alarms.</p>
+        </div>
+        <div class="panel-title" style="margin-top:18px">The 1,000 people, one dot each</div>
+        <svg id="dots" viewBox="0 0 500 200" role="img" aria-label="Grid of 1,000 people colored by test result"></svg>
+        <div class="legend">
+          <span><i style="background:var(--tp)"></i>True positive</span>
+          <span><i style="background:var(--fn)"></i>Missed case (false negative)</span>
+          <span><i style="background:var(--fp)"></i>False alarm (false positive)</span>
+          <span><i style="background:var(--tn);border:1px solid #c9d2dd"></i>True negative</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="panel-title">The 2 &times; 2 table</div>
+        <table class="two">
+          <tr><th></th><th>Has disease</th><th>No disease</th><th>Total</th></tr>
+          <tr><th>Test +</th><td class="tp" id="tTP"></td><td class="fp" id="tFP"></td><td id="tPos"></td></tr>
+          <tr><th>Test &minus;</th><td class="fn" id="tFN"></td><td class="tn" id="tTN"></td><td id="tNeg"></td></tr>
+        </table>
+        <div class="metrics">
+          <div class="metric"><span>Sensitivity</span><b id="mSens"></b><small>TP / all with disease</small></div>
+          <div class="metric"><span>Specificity</span><b id="mSpec"></b><small>TN / all without disease</small></div>
+          <div class="metric"><span>PPV</span><b id="mPPV"></b><small>TP / all positives</small></div>
+          <div class="metric"><span>NPV</span><b id="mNPV"></b><small>TN / all negatives</small></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="lockBtn">Lock in this cutoff</button>
+          <button class="btn btn-ghost hidden" id="nextBtn">Next round &rarr;</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="predictArea">
+      <div class="panel-title">Make a prediction</div>
+      <p id="predictQ" style="font-size:1.05rem"></p>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="pFeedback"></div>
+      <div class="actions"><button class="btn btn-primary hidden" id="pNextBtn">Next round &rarr;</button></div>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section id="end" class="card end hidden">
+    <p class="eyebrow">Final score</p>
+    <div class="big" id="finalScore">0</div>
+    <h2 id="finalTitle"></h2>
+    <p style="color:var(--muted)" id="finalText"></p>
+    <div class="takeaways">
+      <div><b>Cutoffs are trade-offs.</b> Raising sensitivity almost always costs specificity. The right balance depends on what a miss costs versus what a false alarm costs.</div>
+      <div><b>Sensitivity and specificity belong to the test.</b> They stay the same when you move it to a new population.</div>
+      <div><b>Predictive values belong to the population.</b> The same test produces mostly false positives when the disease is rare, and mostly true positives in a high risk clinic.</div>
+    </div>
+    <div class="actions" style="justify-content:center;margin-top:26px">
+      <button class="btn btn-primary" id="replayBtn">Play again</button>
+      <button class="btn btn-ghost" id="sandboxBtn">Open the sandbox</button>
+      <a class="btn btn-ghost" href="../index.html#games" style="text-decoration:none">More games</a>
+    </div>
+  </section>
+
+  <!-- SANDBOX -->
+  <section id="sandbox" class="hidden">
+    <div class="hero"><div><p class="eyebrow">Free play</p><h1>Sandbox</h1></div></div>
+    <div class="card" style="margin-bottom:18px">
+      <div class="main" style="grid-template-columns:1fr 1fr">
+        <div class="slider-row"><label for="sbPrev">Prevalence <output id="sbPrevOut"></output></label><input type="range" id="sbPrev" min="0.5" max="50" step="0.5" value="10" /></div>
+        <div class="slider-row"><label for="sbSep">How well the test separates groups <output id="sbSepOut"></output></label><input type="range" id="sbSep" min="0.5" max="4" step="0.1" value="2" /></div>
+      </div>
+      <p class="hint">Change the setting, then use the cutoff slider below. Everything updates live.</p>
+    </div>
+  </section>
+</div>
+<footer>Illustrative test scores, not a real assay. Built by Adam Troy for teaching epidemiology.</footer>
+
+<script>
+(function(){
+  // ---------- math ----------
+  function erf(x){var s=x<0?-1:1;x=Math.abs(x);var t=1/(1+0.3275911*x);var y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
+  function Phi(z){return 0.5*(1+erf(z/Math.SQRT2));}
+  function pdf(z){return Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);}
+  function invPhi(p){var a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416],pl=0.02425,q,r;if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}if(p>1-pl){q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+  // Scores are shown as 40 + 10z, so healthy people average 40.
+  var H=40, SD=10;
+  function toScore(z){return H+SD*z;}
+  function toZ(s){return (s-H)/SD;}
+
+  var N=1000;
+  var ROUNDS=[
+    {title:'Community Screening Day', prev:0.20, sep:2.2,
+     text:'A mobile clinic is screening adults at a church health fair. Anyone who tests positive gets a cheap follow-up blood draw next week. Missing a case means it goes untreated for years, so the clinic wants to catch nearly everyone, without sending the whole parking lot to follow-up.',
+     goals:[{k:'sens',op:'>=',v:0.90,label:'Sensitivity at least 90%'},{k:'spec',op:'>=',v:0.70,label:'Specificity at least 70%'}]},
+    {title:'Before the Biopsy', prev:0.30, sep:2.5,
+     text:'This test decides who gets an invasive biopsy. False alarms mean pain, cost, and anxiety for healthy people. The surgical team wants very few false positives, while still catching most real cases.',
+     goals:[{k:'spec',op:'>=',v:0.95,label:'Specificity at least 95%'},{k:'sens',op:'>=',v:0.60,label:'Sensitivity at least 60%'}]},
+    {title:'Hunting a Rare Disease', prev:0.01, sep:3.5,
+     text:'A state program screens the general population for a disease that only 1 in 100 people have. The test is excellent. Even so, the program director worries that positive results will mostly be false alarms. She wants at least half of all positives to be real cases.',
+     goals:[{k:'ppv',op:'>=',v:0.50,label:'PPV at least 50%'},{k:'sens',op:'>=',v:0.70,label:'Sensitivity at least 70%'}]},
+    {title:'Same Test, New Clinic', prev:0.15, sep:3.5, predict:true},
+    {title:'Find the Balance', prev:0.10, sep:1.8,
+     text:'A new test with no clear clinical priority. The lab wants the cutoff that best balances sensitivity and specificity, the one that maximizes Youden\'s J (sensitivity + specificity &minus; 1). Get within 0.02 of the best possible value.',
+     goals:[{k:'youden',op:'near',v:0.02,label:'Youden\'s J within 0.02 of the maximum'}]}
+  ];
+
+  var state={round:0,score:0,attempts:0,r3cut:null,sandbox:false,people:[],cfg:null,scaled:false,done:false};
+  var $=function(id){return document.getElementById(id);};
+
+  function buildPeople(cfg,seed){
+    var nd=Math.round(N*cfg.prev), nh=N-nd, ppl=[], i;
+    for(i=0;i<nd;i++) ppl.push({d:1,z:cfg.sep+invPhi((i+0.5)/nd)});
+    for(i=0;i<nh;i++) ppl.push({d:0,z:invPhi((i+0.5)/nh)});
+    var r=rng(seed);
+    for(i=ppl.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=ppl[i];ppl[i]=ppl[j];ppl[j]=t;}
+    return ppl;
+  }
+  function counts(cz){
+    var c={tp:0,fp:0,fn:0,tn:0};
+    state.people.forEach(function(p){var pos=p.z>=cz;if(p.d){pos?c.tp++:c.fn++;}else{pos?c.fp++:c.tn++;}});
+    c.sens=c.tp/Math.max(1,c.tp+c.fn); c.spec=c.tn/Math.max(1,c.tn+c.fp);
+    c.ppv=(c.tp+c.fp)?c.tp/(c.tp+c.fp):NaN; c.npv=(c.tn+c.fn)?c.tn/(c.tn+c.fn):NaN;
+    c.youden=c.sens+c.spec-1; return c;
+  }
+  function bestYouden(){var best=-1;for(var s=0;s<=100;s+=0.1){var c=counts(toZ(s));if(c.youden>best)best=c.youden;}return best;}
+  function pct(x){return isNaN(x)?'n/a':(x*100).toFixed(1)+'%';}
+  function fmt(n){return n.toLocaleString();}
+
+  // ---------- drawing ----------
+  var W=640,Hh=230,PAD=28;
+  function xScale(s){return PAD+(s/100)*(W-2*PAD);}
+  function drawDist(cutScore){
+    var cfg=state.cfg, svg=$('dist'), base=Hh-30, top=14;
+    var pts=[],s, maxY=0, wD=state.scaled?cfg.prev:1, wH=state.scaled?(1-cfg.prev):1;
+    for(s=0;s<=100;s+=0.5){var zH=toZ(s),zD=zH-cfg.sep;var yH=wH*pdf(zH),yD=wD*pdf(zD);pts.push([s,yH,yD]);maxY=Math.max(maxY,yH,yD);}
+    var y=function(v){return base-(v/maxY)*(base-top);};
+    function area(idx,from,to){var d='M'+xScale(from)+' '+base;pts.forEach(function(p){if(p[0]>=from&&p[0]<=to)d+=' L'+xScale(p[0]).toFixed(1)+' '+y(p[idx]).toFixed(1);});return d+' L'+xScale(to)+' '+base+' Z';}
+    function line(idx){return pts.map(function(p,i){return(i?'L':'M')+xScale(p[0]).toFixed(1)+' '+y(p[idx]).toFixed(1);}).join(' ');}
+    var cx=xScale(cutScore), g='';
+    g+='<rect x="'+cx+'" y="'+top+'" width="'+(W-PAD-cx)+'" height="'+(base-top)+'" fill="#0f2a4a" opacity=".035"/>';
+    g+='<path d="'+area(1,cutScore,100)+'" fill="#d9822b" opacity=".45"/>';
+    g+='<path d="'+area(2,0,cutScore)+'" fill="#a9c8e6" opacity=".55"/>';
+    g+='<path d="'+area(2,cutScore,100)+'" fill="#2f6da3" opacity=".55"/>';
+    g+='<path d="'+line(1)+'" fill="none" stroke="#8a97a8" stroke-width="2"/>';
+    g+='<path d="'+line(2)+'" fill="none" stroke="#0f2a4a" stroke-width="2.2"/>';
+    g+='<line x1="'+PAD+'" x2="'+(W-PAD)+'" y1="'+base+'" y2="'+base+'" stroke="#c9d2dd"/>';
+    for(s=0;s<=100;s+=20){g+='<text x="'+xScale(s)+'" y="'+(base+18)+'" font-size="11" text-anchor="middle" fill="#55677d">'+s+'</text>';}
+    g+='<line x1="'+cx+'" x2="'+cx+'" y1="'+(top-4)+'" y2="'+base+'" stroke="#0f2a4a" stroke-width="2.5"/>';
+    g+='<circle cx="'+cx+'" cy="'+(top-4)+'" r="5" fill="#0f2a4a"/>';
+    g+='<text x="'+(cx+6)+'" y="'+(base-6)+'" font-size="11" font-weight="600" fill="#0f2a4a">test + &rarr;</text>';
+    var hx=xScale(H), dx=xScale(toScore(cfg.sep));
+    g+='<text x="'+hx+'" y="'+(y(pts[Math.round(H*2)][1])-6)+'" font-size="11" text-anchor="middle" fill="#55677d">No disease</text>';
+    var dIdx=Math.min(pts.length-1,Math.round(toScore(cfg.sep)*2));
+    g+='<text x="'+dx+'" y="'+Math.max(top+20,y(pts[dIdx][2])-6)+'" font-size="11" text-anchor="middle" font-weight="600" fill="#0f2a4a">Disease</text>';
+    svg.innerHTML=g;
+  }
+  function drawDots(cz){
+    var cols=50,g='',col={tp:'#2f6da3',fn:'#a9c8e6',fp:'#d9822b',tn:'#e3e8ef'};
+    state.people.forEach(function(p,i){
+      var pos=p.z>=cz,k=p.d?(pos?'tp':'fn'):(pos?'fp':'tn');
+      var x=5+(i%cols)*10,y=5+Math.floor(i/cols)*10;
+      g+='<circle cx="'+x+'" cy="'+y+'" r="'+(k==='tn'?3.2:4)+'" fill="'+col[k]+'"/>';
+    });
+    $('dots').innerHTML=g;
+  }
+  function goalMet(goal,c){
+    if(goal.op==='near') return c.youden>=state.bestJ-goal.v;
+    return c[goal.k]>=goal.v-1e-9;
+  }
+  function update(){
+    var s=parseFloat($('cut').value), cz=toZ(s), c=counts(cz);
+    $('cutOut').textContent=s.toFixed(1);
+    drawDist(s); drawDots(cz);
+    $('tTP').textContent=fmt(c.tp);$('tFP').textContent=fmt(c.fp);$('tFN').textContent=fmt(c.fn);$('tTN').textContent=fmt(c.tn);
+    $('tPos').textContent=fmt(c.tp+c.fp);$('tNeg').textContent=fmt(c.fn+c.tn);
+    $('mSens').textContent=pct(c.sens);$('mSpec').textContent=pct(c.spec);$('mPPV').textContent=pct(c.ppv);$('mNPV').textContent=pct(c.npv);
+    if(!state.sandbox&&state.cfg.goals){
+      var lis=$('goalList').querySelectorAll('.chk');
+      state.cfg.goals.forEach(function(gl,i){var ok=goalMet(gl,c);lis[i].className='chk'+(ok?' ok':'');lis[i].textContent=ok?'✓':'';});
+      if(state.cfg.goals[0].op==='near'){$('jNow').textContent=c.youden.toFixed(3);}
+    }
+    return c;
+  }
+
+  // ---------- flow ----------
+  function setProgress(){
+    var h='';for(var i=0;i<ROUNDS.length;i++)h+='<span class="'+(i<state.round?'done':i===state.round?'now':'')+'"></span>';
+    $('progress').innerHTML=h;
+  }
+  function loadRound(i){
+    state.round=i; state.attempts=0; state.sandbox=false;
+    var cfg=ROUNDS[i]; state.cfg=cfg;
+    state.people=buildPeople(cfg,101+i*7);
+    $('roundLabel').textContent='Round '+(i+1)+' of '+ROUNDS.length;
+    $('roundTitle').textContent=cfg.title;
+    $('factPrev').textContent=(cfg.prev*100)+'%';
+    $('factSick').textContent=fmt(Math.round(N*cfg.prev));
+    setProgress();
+    $('feedback').className='feedback';$('nextBtn').classList.add('hidden');$('lockBtn').classList.remove('hidden');$('lockBtn').disabled=false;$('cut').disabled=false;
+    if(cfg.predict){ loadPredict(); return; }
+    $('predictArea').classList.add('hidden');$('tuneArea').classList.remove('hidden');
+    $('briefTitle').textContent='The situation';
+    $('briefText').innerHTML=cfg.text;
+    var gh='';cfg.goals.forEach(function(g){gh+='<li><span class="chk"></span>'+g.label+'</li>';});
+    if(cfg.goals[0].op==='near'){state.bestJ=bestYouden();gh+='<li style="font-weight:400;color:var(--muted);font-size:.9rem">Current J: <b id="jNow" style="margin-left:4px;color:var(--navy)"></b></li>';}
+    $('goalList').innerHTML=gh;
+    $('cut').value=50;
+    update();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function lock(){
+    var c=update(), ok=state.cfg.goals.every(function(g){return goalMet(g,c);});
+    state.attempts++;
+    var fb=$('feedback');
+    if(ok){
+      var pts=state.attempts===1?20:state.attempts===2?14:10;
+      state.score+=pts; $('score').textContent=state.score;
+      if(state.round===2) state.r3cut=parseFloat($('cut').value);
+      fb.className='feedback show win';
+      fb.innerHTML='<b>Goal met. +'+pts+' points.</b>'+winNote(c);
+      $('lockBtn').classList.add('hidden');$('nextBtn').classList.remove('hidden');$('cut').disabled=true;
+    } else {
+      fb.className='feedback show lose';
+      fb.innerHTML='<b>Not quite.</b>'+missNote(c)+(state.attempts>=3?'<div style="margin-top:6px"><button class="btn btn-ghost" id="skipBtn" style="padding:8px 14px">Show me a working cutoff</button></div>':'');
+      var sk=$('skipBtn'); if(sk) sk.onclick=showAnswer;
+    }
+  }
+  function showAnswer(){
+    for(var s=0;s<=100;s+=0.1){var c=counts(toZ(s));if(state.cfg.goals.every(function(g){return goalMet(g,c);})){
+      // pick middle of the passing window
+      var e=s;while(e<=100&&state.cfg.goals.every(function(g){return goalMet(g,counts(toZ(e)));}))e+=0.1;
+      $('cut').value=((s+e-0.1)/2).toFixed(1);break;}}
+    update();
+    if(state.round===2) state.r3cut=parseFloat($('cut').value);
+    $('feedback').className='feedback show win';
+    $('feedback').innerHTML='<b>Here is a cutoff that works (no points this round).</b>Notice where it sits relative to the two curves, then move on.';
+    $('lockBtn').classList.add('hidden');$('nextBtn').classList.remove('hidden');$('cut').disabled=true;
+  }
+  function winNote(c){
+    switch(state.round){
+      case 0: return 'You caught '+c.tp+' of '+(c.tp+c.fn)+' cases, and '+c.fp+' healthy people get a follow-up blood draw. For a cheap, safe follow-up, that trade is usually worth it.';
+      case 1: return 'Only '+c.fp+' healthy people face a biopsy. The cost: '+c.fn+' real cases test negative here, which is why a high-specificity test is often paired with another way to catch misses.';
+      case 2: return 'Look at the dots. Only '+(c.tp+c.fn)+' people in the room are sick. To keep false alarms below true cases among 990 healthy people, the cutoff had to sit far out in the healthy curve\'s tail.';
+      case 4: return 'Your J is '+c.youden.toFixed(3)+'; the best possible is '+state.bestJ.toFixed(3)+'. When both curves have the same spread, the balance point sits halfway between their centers.';
+    } return '';
+  }
+  function missNote(c){
+    var g=state.cfg.goals, msgs=[];
+    g.forEach(function(gl){if(!goalMet(gl,c)){
+      if(gl.k==='sens')msgs.push('Sensitivity is '+pct(c.sens)+'. Lower the cutoff to catch more cases.');
+      if(gl.k==='spec')msgs.push('Specificity is '+pct(c.spec)+'. Raise the cutoff to cut false alarms.');
+      if(gl.k==='ppv')msgs.push('PPV is '+pct(c.ppv)+': '+c.fp+' false alarms versus '+c.tp+' true positives. With a rare disease, even a small false positive rate swamps the true cases. Try raising the cutoff.');
+      if(gl.op==='near')msgs.push('J is '+c.youden.toFixed(3)+'. Watch the J value as you drag and look for its peak.');
+    }});
+    return msgs.join(' ');
+  }
+
+  function loadPredict(){
+    $('tuneArea').classList.add('hidden');$('predictArea').classList.remove('hidden');
+    $('briefTitle').textContent='The situation';
+    $('briefText').innerHTML='Your rare-disease test from round 3 works so well that a specialty clinic adopts it, with the exact same cutoff. The clinic sees referred, high risk patients, and 15% of them have the disease.';
+    $('goalList').innerHTML='<li><span class="chk"></span>Predict what happens to the test\'s performance</li>';
+    $('predictQ').innerHTML='Compared with the statewide program, what happens in the specialty clinic?';
+    var opts=[
+      {t:'Sensitivity and specificity stay the same, and PPV goes up a lot.',ok:true},
+      {t:'Sensitivity and specificity both go up, because the patients are sicker.',ok:false},
+      {t:'Everything stays the same. It is the same test with the same cutoff.',ok:false},
+      {t:'PPV goes down, because more people test positive.',ok:false}];
+    var h='';opts.forEach(function(o,i){h+='<button class="choice" data-i="'+i+'">'+o.t+'</button>';});
+    $('choices').innerHTML=h;$('pFeedback').className='feedback';$('pNextBtn').classList.add('hidden');
+    Array.prototype.forEach.call($('choices').querySelectorAll('.choice'),function(b){
+      b.onclick=function(){
+        if($('pNextBtn').classList.contains('hidden')===false)return;
+        var o=opts[+b.dataset.i]; b.classList.add(o.ok?'right':'wrong');
+        var cz=toZ(state.r3cut==null?72:state.r3cut);
+        var rare=state.people; state.people=buildPeople(ROUNDS[2],101+2*7); var a=counts(cz);
+        state.people=rare; var b2=counts(cz);
+        var chk=$('goalList').querySelector('.chk');
+        if(o.ok){state.score+=20;$('score').textContent=state.score;chk.className='chk ok';chk.textContent='✓';}
+        else{ Array.prototype.forEach.call($('choices').querySelectorAll('.choice'),function(x,i){if(opts[i].ok)x.classList.add('right');}); }
+        $('pFeedback').className='feedback show '+(o.ok?'win':'lose');
+        $('pFeedback').innerHTML='<b>'+(o.ok?'Correct. +20 points.':'Not this one.')+'</b>'+
+          '<table class="two" style="margin:10px 0"><tr><th></th><th>Statewide (1%)</th><th>Specialty clinic (15%)</th></tr>'+
+          '<tr><th>Sensitivity</th><td>'+pct(a.sens)+'</td><td>'+pct(b2.sens)+'</td></tr>'+
+          '<tr><th>Specificity</th><td>'+pct(a.spec)+'</td><td>'+pct(b2.spec)+'</td></tr>'+
+          '<tr><th>PPV</th><td>'+pct(a.ppv)+'</td><td><b>'+pct(b2.ppv)+'</b></td></tr>'+
+          '<tr><th>NPV</th><td>'+pct(a.npv)+'</td><td>'+pct(b2.npv)+'</td></tr></table>'+
+          'Sensitivity and specificity describe the test, so they barely move (small differences here are rounding with whole people). PPV depends on how common the disease is among the people tested. That is why screening the general population for a rare disease produces so many false alarms, and why targeting high risk groups raises PPV.';
+        $('pNextBtn').classList.remove('hidden');
+      };
+    });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function next(){ if(state.round+1<ROUNDS.length) loadRound(state.round+1); else finish(); }
+  function finish(){
+    $('game').classList.add('hidden');$('end').classList.remove('hidden');
+    $('finalScore').textContent=state.score;
+    var t=state.score>=90?['Chief Screening Officer','You balanced every trade-off and called the prevalence twist.']:
+          state.score>=70?['Seasoned Epidemiologist','Solid work. Revisit any round where it took a few tries.']:
+          state.score>=50?['Promising Analyst','You have the core ideas. Try the sandbox to build intuition.']:
+          ['Trainee','Screening is counterintuitive. Play again and watch the dots as you drag.'];
+    $('finalTitle').textContent=t[0];$('finalText').textContent=t[1];
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function sandbox(){
+    state.sandbox=true;
+    $('end').classList.add('hidden');$('game').classList.remove('hidden');$('sandbox').classList.remove('hidden');
+    $('game').parentNode.insertBefore($('sandbox'),$('game'));
+    document.querySelector('#game .hero').classList.add('hidden');document.querySelector('#game .brief').classList.add('hidden');
+    $('lockBtn').classList.add('hidden');$('nextBtn').classList.add('hidden');$('feedback').className='feedback';$('cut').disabled=false;
+    $('predictArea').classList.add('hidden');$('tuneArea').classList.remove('hidden');
+    sbUpdate();
+  }
+  function sbUpdate(){
+    var prev=parseFloat($('sbPrev').value)/100, sep=parseFloat($('sbSep').value);
+    $('sbPrevOut').textContent=(prev*100).toFixed(1)+'%';$('sbSepOut').textContent=sep.toFixed(1)+' SD';
+    state.cfg={prev:prev,sep:sep}; state.people=buildPeople(state.cfg,999); update();
+  }
+
+  $('startBtn').onclick=function(){$('intro').classList.add('hidden');$('game').classList.remove('hidden');loadRound(0);};
+  $('cut').oninput=update;
+  $('scaleToggle').onchange=function(){state.scaled=this.checked;update();};
+  $('lockBtn').onclick=lock;$('nextBtn').onclick=next;$('pNextBtn').onclick=next;
+  $('replayBtn').onclick=function(){location.reload();};
+  $('sandboxBtn').onclick=sandbox;
+  $('sbPrev').oninput=sbUpdate;$('sbSep').oninput=sbUpdate;
+})();
+</script>
+</body>
+</html>

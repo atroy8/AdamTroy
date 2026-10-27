@@ -13,158 +13,296 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Adam Troy | Public Health Consultant" />
 <meta name="twitter:description" content="Public health consultant, evaluator, and educator." />
+<meta name="theme-color" content="#0f2a4a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2a4a'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23fff' text-anchor='middle'%3EAT%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
     --ink:#16283f;
     --navy:#0f2a4a;
+    --navy-deep:#0a1f38;
     --steel:#2f6da3;
+    --sky:#8fc0ea;
     --steel-pale:#e9f0f7;
     --bg:#ffffff;
     --bg-alt:#f5f7fa;
     --muted:#55677d;
     --rule:#dbe3ec;
-    --maxw:1080px;
+    --maxw:1120px;
+    --shadow:0 1px 2px rgba(15,42,74,.06),0 8px 24px rgba(15,42,74,.06);
+    --shadow-lg:0 2px 4px rgba(15,42,74,.06),0 18px 40px rgba(15,42,74,.12);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;color:var(--navy);line-height:1.15}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;color:var(--navy);line-height:1.15;letter-spacing:-.01em}
   a{color:var(--steel);text-decoration:none}
   a:hover{text-decoration:underline}
+  img,svg{display:block;max-width:100%}
+  :focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:4px}
   .skip{position:absolute;left:-9999px}
   .skip:focus{left:16px;top:16px;background:var(--navy);color:#fff;padding:8px 14px;z-index:100}
 
-  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--rule)}
-  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-  .brand{font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:1.35rem;color:var(--navy);text-decoration:none}
+  /* ---------- nav ---------- */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .25s,box-shadow .25s,border-color .25s;border-bottom:1px solid transparent}
+  header.nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom-color:var(--rule)}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
   .brand:hover{text-decoration:none}
-  .brand span{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  nav.links{display:flex;gap:26px;align-items:center}
-  nav.links a{font-size:.92rem;color:var(--ink);font-weight:500}
-  nav.links a:hover{color:var(--steel);text-decoration:none}
-  .btn{display:inline-block;padding:11px 22px;border-radius:6px;font-weight:600;font-size:.95rem;border:1px solid transparent;cursor:pointer}
-  .btn:hover{text-decoration:none}
+  .mono{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',serif;font-weight:700;font-size:1rem;color:#fff;transition:all .25s}
+  .brand-text{font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:1.2rem;line-height:1.1}
+  .brand-text span{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-top:2px}
+  nav.links{display:flex;gap:24px;align-items:center}
+  nav.links a{font-size:.9rem;color:rgba(255,255,255,.85);font-weight:500;position:relative}
+  nav.links a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:currentColor;transform:scaleX(0);transition:transform .2s;transform-origin:left}
+  nav.links a:not(.btn):hover::after,nav.links a.active::after{transform:scaleX(1)}
+  nav.links a:hover{color:#fff;text-decoration:none}
+  .scrolled .brand{color:var(--navy)}
+  .scrolled .mono{background:var(--navy);border-color:var(--navy)}
+  .scrolled nav.links a{color:var(--ink)}
+  .scrolled nav.links a:hover,.scrolled nav.links a.active{color:var(--steel)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:8px;font-weight:600;font-size:.95rem;border:1px solid transparent;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s,color .2s}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
   .btn-primary{background:var(--navy);color:#fff}
-  .btn-primary:hover{background:var(--steel)}
-  .btn-outline{border-color:var(--steel);color:var(--steel);background:#fff}
-  .btn-outline:hover{background:var(--steel-pale)}
-  .nav-toggle{display:none;background:none;border:1px solid var(--rule);border-radius:6px;padding:8px 12px;font-size:1rem;cursor:pointer;color:var(--navy)}
+  .btn-primary:hover{background:var(--steel);box-shadow:var(--shadow)}
+  .btn-light{background:#fff;color:var(--navy)}
+  .btn-light:hover{background:var(--steel-pale)}
+  .btn-glass{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.35);color:#fff}
+  .btn-glass:hover{background:rgba(255,255,255,.16)}
+  nav.links .btn{padding:9px 16px;font-size:.88rem;background:#fff;color:var(--navy)}
+  .scrolled nav.links .btn{background:var(--navy);color:#fff}
+  .scrolled nav.links .btn:hover{background:var(--steel)}
+  .nav-toggle{display:none;background:none;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:8px 12px;font-size:.9rem;cursor:pointer;color:#fff;font-weight:600}
+  .scrolled .nav-toggle{color:var(--navy);border-color:var(--rule)}
 
-  section{padding:72px 24px}
+  /* ---------- hero ---------- */
+  #hero{position:relative;overflow:hidden;background:radial-gradient(1200px 600px at 85% -10%,#1f4f80 0%,transparent 60%),radial-gradient(900px 500px at -10% 110%,#173d66 0%,transparent 55%),var(--navy-deep);color:#fff;padding:150px 24px 0}
+  #hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
+  .hero-grid{position:relative;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;padding-bottom:84px}
+  .eyebrow{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:22px;height:2px;background:currentColor;display:inline-block}
+  #hero .eyebrow{color:var(--sky)}
+  #hero h1{color:#fff;font-size:clamp(3rem,7vw,5rem);font-weight:700;margin-bottom:18px}
+  .hero-sub{font-family:'Source Serif 4',serif;font-style:italic;font-weight:500;font-size:clamp(1.2rem,2.2vw,1.5rem);color:#d7e5f4;max-width:30ch;margin-bottom:30px;line-height:1.35}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .focus{margin-top:30px;display:flex;flex-wrap:wrap;gap:8px}
+  .focus span{font-size:.82rem;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#d7e5f4}
+  .cred-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:8px 24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .cred-card div{padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12);display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start}
+  .cred-card div:last-child{border-bottom:0}
+  .cred-card .ic{width:40px;height:40px;border-radius:10px;background:rgba(143,192,234,.15);display:flex;align-items:center;justify-content:center;color:var(--sky)}
+  .cred-card dt{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sky);font-weight:700;margin-bottom:2px}
+  .cred-card dd{color:#fff;font-size:.96rem;line-height:1.45}
+  .stats{position:relative;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.14)}
+  .stat{padding:26px 8px 30px;border-right:1px solid rgba(255,255,255,.1)}
+  .stat:last-child{border-right:0}
+  .stat b{display:block;font-family:'Source Serif 4',serif;font-size:2.2rem;color:#fff;line-height:1}
+  .stat span{font-size:.82rem;color:#b9cde3}
+  .stat:not(:first-child){padding-left:24px}
+
+  /* ---------- sections ---------- */
+  section{padding:96px 24px}
   .wrap{max-width:var(--maxw);margin:0 auto}
-  .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);font-weight:600;margin-bottom:14px}
-  .section-title{font-size:2.1rem;margin-bottom:12px}
-  .lead{color:var(--muted);max-width:62ch;font-size:1.06rem}
-  .rule{height:1px;background:var(--rule);margin:0 auto;max-width:var(--maxw)}
-
-  #hero{padding:84px 24px 64px}
-  #hero h1{font-size:clamp(2.6rem,6vw,4rem);margin-bottom:20px}
-  .cred{border-top:1px solid var(--rule);margin-top:8px}
-  .cred div{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule);font-size:.98rem}
-  .cred dt{font-weight:600;color:var(--navy)}
-  .cred dd{color:var(--muted)}
-  .hero-sub{font-size:1.12rem;color:var(--muted);max-width:60ch;margin:26px 0 30px}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
-  .focus{margin-top:34px;font-size:.95rem;color:var(--muted)}
-  .focus strong{color:var(--navy)}
-
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+  .section-title{font-size:clamp(2rem,4vw,2.7rem);margin-bottom:12px}
+  .lead{color:var(--muted);max-width:60ch;font-size:1.08rem}
   .alt{background:var(--bg-alt)}
-  .grid{display:grid;gap:22px;margin-top:30px}
+  .grid{display:grid;gap:22px}
   .grid-3{grid-template-columns:repeat(3,1fr)}
   .grid-2{grid-template-columns:repeat(2,1fr)}
-  .card{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:26px}
+  .card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:28px;transition:transform .25s,box-shadow .25s,border-color .25s}
+  a.card,.card.lift{color:inherit}
+  a.card:hover,.card.lift:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:#c7d5e4;text-decoration:none}
   .card h3{font-size:1.3rem;margin-bottom:8px}
   .card p{color:var(--muted);font-size:.97rem}
-  .tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);font-weight:600;display:block;margin-bottom:10px}
-  .card .more{display:inline-block;margin-top:14px;font-weight:600;font-size:.94rem}
-  .feature{background:var(--navy);color:#fff;border-radius:10px;padding:32px}
-  .feature h3{color:#fff;font-size:1.6rem;margin-bottom:10px}
-  .feature p{color:#c9d6e6}
-  .feature .more{color:#9fc6e8}
-  .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:30px}
-  .news-item{padding:20px 0;border-bottom:1px solid var(--rule)}
-  .news-item:first-child{padding-top:0}
+  .tag{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);font-weight:700;display:block;margin-bottom:10px}
+  .more{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-weight:600;font-size:.94rem;color:var(--steel)}
+  .more .arr{transition:transform .2s}
+  a.card:hover .more .arr{transform:translateX(4px)}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .pull{font-family:'Source Serif 4',serif;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.3;color:var(--navy);border-left:4px solid var(--steel);padding-left:22px;margin-top:22px}
+  .about-cards{display:grid;gap:18px}
+  .about-cards .card{display:grid;grid-template-columns:48px 1fr;gap:18px}
+
+  /* services */
+  .icon{width:48px;height:48px;border-radius:12px;background:var(--steel-pale);color:var(--steel);display:flex;align-items:center;justify-content:center;flex:none}
+  .svc .icon{margin-bottom:18px}
+  .svc{position:relative;overflow:hidden}
+  .svc::after{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--steel),var(--sky));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .svc:hover::after{transform:scaleX(1)}
+
+  /* writing */
+  .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:28px}
+  .feature{position:relative;overflow:hidden;background:linear-gradient(150deg,#14385f 0%,var(--navy) 55%,var(--navy-deep) 100%);color:#fff;border-radius:16px;padding:40px;display:flex;flex-direction:column;justify-content:flex-end;min-height:380px;transition:transform .25s,box-shadow .25s}
+  .feature:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);text-decoration:none}
+  .feature .quote-mark{position:absolute;top:-30px;right:20px;font-family:'Source Serif 4',serif;font-size:16rem;line-height:1;color:rgba(143,192,234,.12)}
+  .feature h3{color:#fff;font-size:clamp(1.6rem,2.6vw,2.1rem);margin-bottom:12px;position:relative}
+  .feature p{color:#c9d6e6;position:relative}
+  .feature .tag{color:var(--sky)}
+  .feature .more{color:var(--sky)}
+  .news-list{display:flex;flex-direction:column}
+  .news-item{display:block;padding:22px 0;border-bottom:1px solid var(--rule);color:inherit}
+  .news-item:first-child{padding-top:4px}
   .news-item:last-child{border-bottom:0}
-  .news-item h3{font-size:1.25rem;margin:6px 0}
-  .news-item p{color:var(--muted);font-size:.95rem}
-  .meta{font-size:.82rem;color:var(--muted)}
+  .news-item:hover{text-decoration:none}
+  .news-item h3{font-size:1.22rem;margin:6px 0;transition:color .2s}
+  .news-item:hover h3{color:var(--steel)}
+  .news-item p{color:var(--muted);font-size:.94rem}
+  .meta{font-size:.76rem;color:var(--steel);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 
-  #work .panel{background:var(--navy);border-radius:12px;padding:44px 32px;text-align:center}
-  #work .panel h2{color:#fff;font-size:2rem;margin-bottom:10px}
-  #work .panel p{color:#c9d6e6;margin-bottom:26px}
-  #work .panel .btn-primary{background:#fff;color:var(--navy)}
-  #work .panel .btn-primary:hover{background:var(--steel-pale)}
+  /* data stories */
+  .story{display:flex;flex-direction:column;padding:0;overflow:hidden}
+  .story .thumb{height:132px;background:var(--navy);position:relative;overflow:hidden}
+  .story .thumb svg{width:100%;height:100%}
+  .story .body{padding:24px 26px 26px;display:flex;flex-direction:column;flex:1}
+  .story .more{margin-top:auto;padding-top:14px}
+  .stories{grid-template-columns:repeat(6,1fr)}
+  .stories > *{grid-column:span 2}
+  .stories > .wide{grid-column:span 3}
 
-  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}
-  .contact-grid h3{font-size:1rem;font-family:'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-  footer{border-top:1px solid var(--rule);padding:28px 24px;text-align:center;color:var(--muted);font-size:.9rem}
+  /* games */
+  #games{background:var(--navy-deep);color:#fff;position:relative;overflow:hidden}
+  #games::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 100% 0%,rgba(47,109,163,.35),transparent 60%),radial-gradient(700px 400px at 0% 100%,rgba(46,139,110,.18),transparent 60%)}
+  #games .wrap{position:relative}
+  #games .section-title{color:#fff}
+  #games .lead{color:#b9cde3}
+  #games .eyebrow{color:var(--sky)}
+  .game{display:flex;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;color:#fff;transition:transform .25s,border-color .25s,background .25s}
+  .game:hover{transform:translateY(-4px);border-color:rgba(143,192,234,.5);background:rgba(255,255,255,.07);text-decoration:none}
+  .game .art{aspect-ratio:16/8;position:relative}
+  .game .art svg{width:100%;height:100%}
+  .game .badge{position:absolute;top:14px;left:14px;background:#fff;color:var(--navy);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .game .badge.new{background:#9fe0c4;color:#0d3b2c}
+  .game .body{padding:24px 26px 26px;display:flex;flex-direction:column;flex:1}
+  .game h3{color:#fff;font-size:1.45rem;margin-bottom:8px}
+  .game p{color:#c2d3e6;font-size:.95rem}
+  .game .tags{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 4px}
+  .game .tags span{font-size:.74rem;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#d7e5f4}
+  .game .more{color:var(--sky);margin-top:auto;padding-top:16px}
+  .teach-note{margin-top:30px;display:flex;gap:14px;align-items:center;color:#b9cde3;font-size:.93rem;border-top:1px solid rgba(255,255,255,.12);padding-top:24px}
+  .teach-note a{color:var(--sky);font-weight:600}
 
+  /* cta + contact */
+  .panel{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--steel) 0%,var(--navy) 70%);border-radius:20px;padding:56px 48px;display:grid;grid-template-columns:1.4fr auto;gap:30px;align-items:center}
+  .panel::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;border:50px solid rgba(255,255,255,.06)}
+  .panel h2{color:#fff;font-size:clamp(1.8rem,3.4vw,2.4rem);margin-bottom:8px}
+  .panel p{color:#d7e5f4;font-size:1.05rem}
+  .panel .eyebrow{color:var(--sky)}
+  .panel .btn{position:relative;z-index:1}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .contact-grid .card{display:flex;gap:16px;align-items:center}
+  .contact-grid h3{font-size:.72rem;font-family:'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:700}
+  .contact-grid p{font-size:1rem;color:var(--ink);font-weight:500}
+
+  footer{background:var(--navy-deep);color:#9fb3c9;padding:40px 24px}
+  .foot{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:.88rem}
+  .foot nav{display:flex;gap:20px;flex-wrap:wrap}
+  .foot a{color:#cfe0f1}
+  .foot .brand-text{color:#fff;font-size:1.05rem}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{transition:none!important}}
+
+  @media (max-width:980px){
+    .hero-grid,.about-grid,.two-col{grid-template-columns:1fr;gap:36px}
+    .grid-3{grid-template-columns:repeat(2,1fr)}
+    .stories{grid-template-columns:repeat(2,1fr)}
+    .stories > *,.stories > .wide{grid-column:span 1}
+    .panel{grid-template-columns:1fr}
+  }
   @media (max-width:820px){
-    .grid-3,.grid-2,.two-col,.contact-grid{grid-template-columns:1fr}
-    .cred div{grid-template-columns:1fr;gap:2px}
-    nav.links{display:none;flex-direction:column;align-items:flex-start;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--rule);padding:16px 24px}
+    nav.links{display:none;flex-direction:column;align-items:flex-start;gap:16px;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--rule);padding:20px 24px;box-shadow:var(--shadow)}
     nav.links.open{display:flex}
+    nav.links a{color:var(--ink)!important}
+    nav.links .btn{background:var(--navy)!important;color:#fff!important}
     .nav-toggle{display:block}
     .nav-inner{position:relative}
-    section{padding:56px 20px}
+  }
+  @media (max-width:680px){
+    section{padding:68px 20px}
+    #hero{padding:120px 20px 0}
+    .grid-3,.grid-2,.stories,.contact-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat{border-right:0;padding-left:0!important}
+    .stat:nth-child(odd){border-right:1px solid rgba(255,255,255,.1)}
+    .stat:nth-child(even){padding-left:20px!important}
+    .feature{padding:30px;min-height:300px}
+    .panel{padding:40px 26px}
+    .about-cards .card{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
 <a class="skip" href="#about">Skip to main content</a>
-<header class="nav">
+
+<header class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href="#hero">Adam Troy<span>Public Health Consultant</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav.links').classList.toggle('open')">Menu</button>
-    <nav class="links">
+    <a class="brand" href="#hero"><span class="mono">AT</span><span class="brand-text">Adam Troy<span>Public Health Consultant</span></span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" id="navToggle">Menu</button>
+    <nav class="links" id="navLinks">
       <a href="#about">About</a>
       <a href="#expertise">Services</a>
       <a href="#news">Writing</a>
       <a href="#creative">Data Stories</a>
       <a href="#games">Games</a>
       <a href="#contact">Contact</a>
-      <a class="btn btn-primary" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session</a>
+      <a class="btn" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session</a>
     </nav>
   </div>
 </header>
 
 <main>
 <section id="hero">
-  <div class="wrap">
-    <p class="eyebrow">Public Health &middot; Evaluation &middot; Strategy</p>
-    <h1>Adam Troy</h1>
-    <dl class="cred">
-      <div><dt>Current role</dt><dd>Lead Technical Assistance Consultant, American Institutes for Research (AIR), Center for Addiction Research and Effective Solutions</dd></div>
-      <div><dt>Doctoral study</dt><dd>DrPH Candidate, Johns Hopkins Bloomberg School of Public Health</dd></div>
-      <div><dt>Teaching</dt><dd>Adjunct Instructor, University of Central Florida, Epidemiology of Chronic Disease</dd></div>
-    </dl>
-    <p class="hero-sub">Bridging research and real-world impact through strategic evaluation, innovative design, and community-centered solutions.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session</a>
-      <a class="btn btn-outline" href="#creative">Explore data stories</a>
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">Public Health &middot; Evaluation &middot; Strategy</p>
+      <h1>Adam Troy</h1>
+      <p class="hero-sub">Bridging research and real-world impact through strategic evaluation, innovative design, and community-centered solutions.</p>
+      <div class="cta-row">
+        <a class="btn btn-light" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session</a>
+        <a class="btn btn-glass" href="#creative">Explore data stories <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="focus" aria-label="Focus areas">
+        <span>Substance use</span><span>Health equity</span><span>Social determinants of health</span><span>Community violence prevention</span>
+      </div>
     </div>
-    <p class="focus"><strong>Focus areas:</strong> substance use, health equity, social determinants of health, and community violence prevention. 15+ years in public health.</p>
+    <dl class="cred-card">
+      <div><span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span><dt>Current role</dt><dd>Lead Technical Assistance Consultant, American Institutes for Research (AIR), Center for Addiction Research and Effective Solutions</dd></span></div>
+      <div><span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span><span><dt>Doctoral study</dt><dd>DrPH Candidate, Johns Hopkins Bloomberg School of Public Health</dd></span></div>
+      <div><span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5a2.5 2.5 0 0 0 0 5H20"/></svg></span><span><dt>Teaching</dt><dd>Adjunct Instructor, University of Central Florida, Epidemiology of Chronic Disease</dd></span></div>
+    </dl>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>15+</b><span>years in public health</span></div>
+    <div class="stat"><b>5</b><span>interactive data stories</span></div>
+    <div class="stat"><b>4</b><span>playable teaching games</span></div>
+    <div class="stat"><b>3</b><span>institutions: AIR, Johns Hopkins, UCF</span></div>
   </div>
 </section>
 
-<div class="rule"></div>
-
 <section id="about">
-  <div class="wrap">
-    <p class="eyebrow">About</p>
-    <h2 class="section-title">Research with a pulse.</h2>
-    <p class="lead">A public health professional, educator, and strategist working at the intersection of evidence and equity.</p>
-    <div class="grid grid-2">
-      <div class="card">
-        <h3>Who I Am</h3>
-        <p>I'm a public health professional, educator, and strategist dedicated to advancing equity, improving population health, and supporting organizations working for social good. I combine evidence-based methods with creative communication to help partners make real-world impact.</p>
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <p class="eyebrow">About</p>
+      <h2 class="section-title">Research with a pulse.</h2>
+      <p class="lead">A public health professional, educator, and strategist working at the intersection of evidence and equity.</p>
+      <p class="pull">Data as a tool for empowerment, and imagination backed by real-world evidence.</p>
+    </div>
+    <div class="about-cards">
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span>
+        <div><h3>Who I Am</h3><p>I'm a public health professional, educator, and strategist dedicated to advancing equity, improving population health, and supporting organizations working for social good. I combine evidence-based methods with creative communication to help partners make real-world impact.</p></div>
       </div>
-      <div class="card">
-        <h3>My Approach</h3>
-        <p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p>
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span>
+        <div><h3>My Approach</h3><p>I center community voices, prioritize equity, and approach every project with curiosity and care. My work is grounded in collaborative partnerships, using data as a tool for empowerment, and imaginative thinking backed by real-world evidence.</p></div>
       </div>
     </div>
   </div>
@@ -172,48 +310,49 @@
 
 <section id="expertise" class="alt">
   <div class="wrap">
-    <p class="eyebrow">Services</p>
-    <h2 class="section-title">What I do.</h2>
-    <p class="lead">Comprehensive public health consulting services rooted in evidence and driven by impact.</p>
+    <div class="section-head reveal">
+      <div><p class="eyebrow">Services</p><h2 class="section-title">What I do.</h2><p class="lead">Comprehensive public health consulting services rooted in evidence and driven by impact.</p></div>
+    </div>
     <div class="grid grid-3">
-      <div class="card"><h3>Public Health Strategy &amp; Evaluation</h3><p>Plan, implement, and measure programs that improve health outcomes and advance equity. From logic models to impact assessments, I bring clarity to complexity.</p></div>
-      <div class="card"><h3>Curriculum &amp; Educational Design</h3><p>Design engaging, accessible training and learning experiences for professionals and adult learners. From e-learning to workshops, I create content that resonates.</p></div>
-      <div class="card"><h3>Facilitation &amp; Strategic Planning</h3><p>From board retreats to community visioning sessions, I help teams move forward with purpose. Inclusive facilitation creates space for real conversations and actionable plans.</p></div>
-      <div class="card"><h3>Multimedia &amp; Creative Communications</h3><p>Craft videos, infographics, toolkits, and more to communicate complex ideas clearly and compellingly. Visual storytelling that brings your work to life.</p></div>
-      <div class="card"><h3>Grant Writing &amp; Funding Development</h3><p>Develop compelling grant proposals and funding strategies to secure resources for public health programs. From federal grants to foundation funding, I help organizations translate their vision into fundable projects that drive community impact.</p></div>
-      <div class="card"><h3>Participatory Action Research &amp; Evaluation</h3><p>Partner with communities to co-create research and evaluation projects that center lived experience and drive meaningful change. Using participatory methods, I help organizations engage stakeholders as partners in knowledge generation and program improvement.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></span><h3>Public Health Strategy &amp; Evaluation</h3><p>Plan, implement, and measure programs that improve health outcomes and advance equity. From logic models to impact assessments, I bring clarity to complexity.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></span><h3>Curriculum &amp; Educational Design</h3><p>Design engaging, accessible training and learning experiences for professionals and adult learners. From e-learning to workshops, I create content that resonates.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M15 14.5c3 0 6 1.8 6 5.5"/></svg></span><h3>Facilitation &amp; Strategic Planning</h3><p>From board retreats to community visioning sessions, I help teams move forward with purpose. Inclusive facilitation creates space for real conversations and actionable plans.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m10 9 5 2.5-5 2.5z"/><path d="M8 21h8"/></svg></span><h3>Multimedia &amp; Creative Communications</h3><p>Craft videos, infographics, toolkits, and more to communicate complex ideas clearly and compellingly. Visual storytelling that brings your work to life.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 14h8M8 17h5"/></svg></span><h3>Grant Writing &amp; Funding Development</h3><p>Develop compelling grant proposals and funding strategies to secure resources for public health programs. From federal grants to foundation funding, I help organizations translate their vision into fundable projects that drive community impact.</p></div>
+      <div class="card svc lift reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="20" cy="16" r="1.5"/><circle cx="4" cy="16" r="1.5"/><path d="M12 5v4M18.7 15.2l-4.1-2M5.3 15.2l4.1-2"/></svg></span><h3>Participatory Action Research &amp; Evaluation</h3><p>Partner with communities to co-create research and evaluation projects that center lived experience and drive meaningful change. Using participatory methods, I help organizations engage stakeholders as partners in knowledge generation and program improvement.</p></div>
     </div>
   </div>
 </section>
 
 <section id="news">
   <div class="wrap">
-    <p class="eyebrow">Writing</p>
-    <h2 class="section-title">Featured commentary.</h2>
-    <p class="lead">Commentary and essays on public health policy and practice.</p>
+    <div class="section-head reveal">
+      <div><p class="eyebrow">Writing</p><h2 class="section-title">Featured commentary.</h2><p class="lead">Commentary and essays on public health policy and practice.</p></div>
+    </div>
     <div class="two-col">
-      <div class="feature">
-        <span class="tag" style="color:#9fc6e8">Essay</span>
+      <a class="feature reveal" href="substance-use-violence.html">
+        <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+        <span class="tag">Essay</span>
         <h3>The Violence We Blame on Drugs, and the Violence We Built Around Them</h3>
         <p>Alcohol, illegal markets, and mass incarceration: separating intoxication, theft, and systemic violence, and the case for demand-side approaches.</p>
-        <a class="more" href="substance-use-violence.html">Read the essay &rarr;</a>
-      </div>
-      <div>
-        <div class="news-item">
+        <span class="more">Read the essay <span class="arr">&rarr;</span></span>
+      </a>
+      <div class="news-list reveal">
+        <a class="news-item" href="https://www.healthaffairs.org/doi/10.1377/hlthaff.2025.00960">
           <span class="meta">Health Affairs &middot; September 2, 2025</span>
-          <h3><a href="https://www.healthaffairs.org/doi/10.1377/hlthaff.2025.00960">Empowering A New Kind Of Research Team To Study Substance Use</a></h3>
+          <h3>Empowering A New Kind Of Research Team To Study Substance Use</h3>
           <p>Hoping to improve substance use research, a new group has committed to providing key training and access to people with lived and living experience using drugs. Features commentary from Adam Troy on his work with the People with Lived(-ing) Experience as Researchers Board.</p>
-        </div>
-        <div class="news-item">
+        </a>
+        <a class="news-item" href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/">
           <span class="meta">Orlando Sentinel &middot; March 29, 2025</span>
-          <h3><a href="https://www.orlandosentinel.com/2025/03/29/commentary-kinship-caregivers-and-the-opioid-epidemic/">Kinship Caregivers and the Opioid Epidemic</a></h3>
+          <h3>Kinship Caregivers and the Opioid Epidemic</h3>
           <p>Nearly 200,000 Florida children now live with relatives after parental substance use derailed their families. Opioid settlement funds should be used to help these caregivers.</p>
-        </div>
-        <div class="news-item">
+        </a>
+        <a class="news-item" href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/">
           <span class="meta">Orlando Sentinel &middot; June 14, 2021</span>
-          <h3><a href="https://www.orlandosentinel.com/2021/06/14/orange-countys-new-needle-exchange-program-aims-to-reduce-harm-of-drug-use/">Orange County's New Needle Exchange Program</a></h3>
+          <h3>Orange County's New Needle Exchange Program</h3>
           <p>Orange County's first-ever needle exchange program launched to help contain fatal overdoses and HIV spread through harm reduction strategies.</p>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -221,93 +360,203 @@
 
 <section id="creative" class="alt">
   <div class="wrap">
-    <p class="eyebrow">Data Stories</p>
-    <h2 class="section-title">Interactive tools for public health learning.</h2>
-    <p class="lead">Data stories and essays that make complex public health ideas concrete.</p>
-    <div class="grid grid-2">
-      <div class="card">
-        <span class="tag">Data Story</span>
-        <h3>Death in America: National Trends, 1999-2020</h3>
-        <p>Leading causes of death over time: interactive age-adjusted rates and ranked views by year, from CDC WONDER data, with a companion county map for heart disease and stroke.</p>
-        <a class="more" href="death-in-america/index.html">View the trends &rarr;</a>
-      </div>
-      <div class="card">
-        <span class="tag">Data Story</span>
-        <h3>Death in America: County Maps</h3>
-        <p>Animated county-level maps of heart disease and stroke mortality, 2015-2024, for adults age 35 and older, from CDC Atlas data.</p>
-        <a class="more" href="death-in-america/county-maps.html">View the maps &rarr;</a>
-      </div>
-      <div class="card">
-        <span class="tag">Data Story</span>
-        <h3>Homicide and Drug Death Rates by County, 1980-2014</h3>
-        <p>Animated county-level maps of homicide and drug death rates alongside state and local public health and public safety spending.</p>
-        <a class="more" href="mortality-maps.html">View the interactive maps &rarr;</a>
-      </div>
-      <div class="card">
-        <span class="tag">Data Story</span>
-        <h3>Gun Deaths Timeline, 2018-2024</h3>
-        <p>Firearm suicide vs homicide, month by month, with a combined total line. CDC WONDER data, 2018-2020 final, 2021-2024 provisional.</p>
-        <a class="more" href="gun-deaths-timeline.html">View the timeline &rarr;</a>
-      </div>
-      <div class="card">
-        <span class="tag">Data Story</span>
-        <h3>Substances and Violence: The Numbers Behind the Story</h3>
-        <p>Goldstein's 1988 breakdown beside England and Wales 2018-2023, alcohol's share, prison figures, and the treatment vs enforcement cost evidence.</p>
-        <a class="more" href="substance-use-violence-dashboard.html">View the dashboard &rarr;</a>
-      </div>
+    <div class="section-head reveal">
+      <div><p class="eyebrow">Data Stories</p><h2 class="section-title">Interactive tools for public health learning.</h2><p class="lead">Data stories and essays that make complex public health ideas concrete.</p></div>
+    </div>
+    <div class="grid stories">
+      <a class="card story wide reveal" href="death-in-america/index.html">
+        <div class="thumb"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="132" fill="#0f2a4a"/><g stroke="#ffffff" stroke-opacity=".08"><path d="M0 33h400M0 66h400M0 99h400"/></g><path d="M0 40 C60 44 100 50 150 58 S250 70 300 62 S360 46 400 52" fill="none" stroke="#8fc0ea" stroke-width="3"/><path d="M0 80 C50 78 110 74 160 76 S260 92 310 98 S370 104 400 108" fill="none" stroke="#e6a46b" stroke-width="3"/><path d="M0 100 C70 102 130 96 190 90 S290 74 340 70 S385 66 400 64" fill="none" stroke="#9fe0c4" stroke-width="3"/></svg></div>
+        <div class="body"><span class="tag">Data Story</span><h3>Death in America: National Trends, 1999-2024</h3><p>Leading causes of death over time: interactive age-adjusted rates and ranked views by year, from CDC WONDER data, with a companion county map for heart disease and stroke.</p><span class="more">View the trends <span class="arr">&rarr;</span></span></div>
+      </a>
+      <a class="card story wide reveal" href="death-in-america/county-maps.html">
+        <div class="thumb"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="132" fill="#0f2a4a"/><g id="tiles"></g></svg></div>
+        <div class="body"><span class="tag">Data Story</span><h3>Death in America: County Maps</h3><p>Animated county-level maps of heart disease and stroke mortality, 2015-2024, for adults age 35 and older, from CDC Atlas data.</p><span class="more">View the maps <span class="arr">&rarr;</span></span></div>
+      </a>
+      <a class="card story reveal" href="mortality-maps.html">
+        <div class="thumb"><svg viewBox="0 0 300 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="132" fill="#0f2a4a"/><g fill="#8fc0ea"><circle cx="40" cy="50" r="6" opacity=".5"/><circle cx="80" cy="80" r="10" opacity=".7"/><circle cx="130" cy="44" r="14" opacity=".85"/><circle cx="175" cy="90" r="8" opacity=".55"/><circle cx="215" cy="58" r="18" opacity=".9"/><circle cx="262" cy="88" r="11" opacity=".6"/></g><g fill="#e6a46b"><circle cx="60" cy="100" r="5" opacity=".7"/><circle cx="150" cy="104" r="7" opacity=".7"/><circle cx="240" cy="34" r="6" opacity=".8"/></g></svg></div>
+        <div class="body"><span class="tag">Data Story</span><h3>Homicide and Drug Death Rates by County, 1980-2014</h3><p>Animated county-level maps of homicide and drug death rates alongside state and local public health and public safety spending.</p><span class="more">View the interactive maps <span class="arr">&rarr;</span></span></div>
+      </a>
+      <a class="card story reveal" href="gun-deaths-timeline.html">
+        <div class="thumb"><svg viewBox="0 0 300 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="132" fill="#0f2a4a"/><g id="bars"></g></svg></div>
+        <div class="body"><span class="tag">Data Story</span><h3>Gun Deaths Timeline, 2018-2024</h3><p>Firearm suicide vs homicide, month by month, with a combined total line. CDC WONDER data, 2018-2020 final, 2021-2024 provisional.</p><span class="more">View the timeline <span class="arr">&rarr;</span></span></div>
+      </a>
+      <a class="card story reveal" href="substance-use-violence-dashboard.html">
+        <div class="thumb"><svg viewBox="0 0 300 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="132" fill="#0f2a4a"/><g transform="translate(90 66)"><circle r="40" fill="none" stroke="#1d4570" stroke-width="16"/><circle r="40" fill="none" stroke="#8fc0ea" stroke-width="16" stroke-dasharray="120 252" transform="rotate(-90)"/><circle r="40" fill="none" stroke="#e6a46b" stroke-width="16" stroke-dasharray="70 252" stroke-dashoffset="-120" transform="rotate(-90)"/></g><g fill="#8fc0ea" opacity=".85"><rect x="170" y="40" width="90" height="10" rx="5"/><rect x="170" y="62" width="60" height="10" rx="5" fill="#e6a46b"/><rect x="170" y="84" width="104" height="10" rx="5" fill="#9fe0c4"/></g></svg></div>
+        <div class="body"><span class="tag">Data Story</span><h3>Substances and Violence: The Numbers Behind the Story</h3><p>Goldstein's 1988 breakdown beside England and Wales 2018-2023, alcohol's share, prison figures, and the treatment vs enforcement cost evidence.</p><span class="more">View the dashboard <span class="arr">&rarr;</span></span></div>
+      </a>
     </div>
   </div>
 </section>
 
 <section id="games">
   <div class="wrap">
-    <p class="eyebrow">Games</p>
-    <h2 class="section-title">Playable public health games.</h2>
-    <p class="lead">Investigate an outbreak, or control an epidemic.</p>
+    <div class="section-head reveal">
+      <div><p class="eyebrow">Games</p><h2 class="section-title">Playable public health games.</h2><p class="lead">Investigate an outbreak, control an epidemic, tune a screening test, or fund a healthier county. Free, browser-based, and built for the classroom.</p></div>
+    </div>
     <div class="grid grid-2">
-      <div class="card">
-        <span class="tag">Educational Game</span>
-        <h3>Outbreak Investigation</h3>
-        <p>Investigate a Salmonella outbreak at Bella Vista Restaurant: incubation periods, epidemic curve, and attack rates. Seeded case sets for classroom use, plus instructor mode with answer keys.</p>
-        <a class="more" href="outbreak-investigation/index.html">Play the game &rarr;</a>
+      <a class="game reveal" href="outbreak-investigation/index.html">
+        <div class="art">
+          <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#173d66"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>
+            <rect width="480" height="240" fill="url(#g1)"/>
+            <g fill="#8fc0ea"><rect x="60" y="170" width="26" height="30" rx="3"/><rect x="92" y="130" width="26" height="70" rx="3"/><rect x="124" y="90" width="26" height="110" rx="3"/><rect x="156" y="60" width="26" height="140" rx="3"/><rect x="188" y="100" width="26" height="100" rx="3"/><rect x="220" y="140" width="26" height="60" rx="3"/><rect x="252" y="168" width="26" height="32" rx="3"/><rect x="284" y="184" width="26" height="16" rx="3"/></g>
+            <line x1="50" x2="330" y1="200" y2="200" stroke="#ffffff" stroke-opacity=".3"/>
+            <g transform="translate(350 70)"><circle cx="40" cy="40" r="44" fill="none" stroke="#e6c26b" stroke-width="9"/><circle cx="40" cy="40" r="38" fill="#e6c26b" opacity=".12"/><line x1="72" y1="72" x2="108" y2="112" stroke="#e6c26b" stroke-width="13" stroke-linecap="round"/></g>
+          </svg>
+          <span class="badge">Classic</span>
+        </div>
+        <div class="body">
+          <h3>Outbreak Investigation</h3>
+          <p>Investigate a Salmonella outbreak at Bella Vista Restaurant: incubation periods, epidemic curve, and attack rates. Seeded case sets for classroom use, plus instructor mode with answer keys.</p>
+          <div class="tags"><span>Field epidemiology</span><span>Epi curves</span><span>Attack rates</span></div>
+          <span class="more">Play the game <span class="arr">&rarr;</span></span>
+        </div>
+      </a>
+      <a class="game reveal" href="https://atroy8.github.io/VAXrebot/">
+        <div class="art">
+          <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a2366"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>
+            <rect width="480" height="240" fill="url(#g2)"/>
+            <g fill="#ffffff" opacity=".5"><circle cx="40" cy="30" r="1.2"/><circle cx="120" cy="200" r="1"/><circle cx="420" cy="40" r="1.4"/><circle cx="300" cy="220" r="1"/><circle cx="450" cy="170" r="1.2"/><circle cx="200" cy="20" r="1"/></g>
+            <path d="M30 200 C120 196 160 60 220 60 S300 180 450 190" fill="none" stroke="#f09a8a" stroke-width="3" opacity=".55"/>
+            <path d="M30 200 C140 198 190 150 240 150 S330 196 450 198" fill="none" stroke="#9fe0c4" stroke-width="3.5"/>
+            <g transform="translate(240 100)"><path d="M0 -58 L44 -42 V0 C44 30 22 48 0 58 C-22 48 -44 30 -44 0 V-42 Z" fill="#8fc0ea" opacity=".18" stroke="#8fc0ea" stroke-width="3"/><g stroke="#f09a8a" stroke-width="3" stroke-linecap="round"><circle r="14" fill="#f09a8a" opacity=".85" stroke="none"/><path d="M0 -14v-9M0 14v9M-14 0h-9M14 0h9M10 -10l6 -6M-10 10l-6 6M10 10l6 6M-10 -10l-6 -6"/></g></g>
+          </svg>
+          <span class="badge">Simulation</span>
+        </div>
+        <div class="body">
+          <h3>VAXrebot: Epidemic Control Simulator</h3>
+          <p>A day-by-day epidemic control simulator. Pick a scenario and difficulty, deploy interventions, and watch infections, deaths, and recoveries respond.</p>
+          <div class="tags"><span>Infectious disease</span><span>Interventions</span><span>Flattening the curve</span></div>
+          <span class="more">Play the game <span class="arr">&rarr;</span></span>
+        </div>
+      </a>
+      <a class="game reveal" href="screening-showdown/index.html">
+        <div class="art">
+          <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b4a78"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>
+            <rect width="480" height="240" fill="url(#g3)"/>
+            <path d="M30 200 C90 200 110 70 170 70 S250 200 310 200 Z" fill="#9aa8b8" opacity=".35"/>
+            <path d="M170 200 C230 200 250 70 310 70 S390 200 450 200 Z" fill="#8fc0ea" opacity=".45"/>
+            <path d="M262 200 C270 160 280 120 295 90 L310 70 C330 70 360 140 400 190 L450 200 Z" fill="#8fc0ea" opacity=".55"/>
+            <path d="M262 200 C266 190 270 178 274 168 C282 180 290 192 300 200 Z" fill="#e6a46b" opacity=".85"/>
+            <line x1="262" x2="262" y1="40" y2="206" stroke="#ffffff" stroke-width="3"/>
+            <circle cx="262" cy="40" r="7" fill="#ffffff"/>
+            <line x1="20" x2="460" y1="200" y2="200" stroke="#ffffff" stroke-opacity=".3"/>
+            <g font-family="Inter,sans-serif" font-size="12" fill="#d7e5f4" font-weight="600"><text x="150" y="58">No disease</text><text x="325" y="58">Disease</text></g>
+          </svg>
+          <span class="badge new">New</span>
+        </div>
+        <div class="body">
+          <h3>Screening Showdown</h3>
+          <p>Drag the cutoff, watch 1,000 people change color, and meet each clinic's goal. Five rounds on sensitivity, specificity, predictive value, and why prevalence changes everything.</p>
+          <div class="tags"><span>Screening tests</span><span>Chronic disease</span><span>About 10 minutes</span></div>
+          <span class="more">Play the game <span class="arr">&rarr;</span></span>
+        </div>
+      </a>
+      <a class="game reveal" href="upstream/index.html">
+        <div class="art">
+          <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14524a"/><stop offset="1" stop-color="#0a1f38"/></linearGradient></defs>
+            <rect width="480" height="240" fill="url(#g4)"/>
+            <path d="M0 40 L60 20 L110 46 L170 14 L230 44 L280 22" fill="none" stroke="#ffffff" stroke-opacity=".25" stroke-width="2"/>
+            <path d="M-10 70 C80 60 140 110 230 120 S380 170 490 200" fill="none" stroke="#8fc0ea" stroke-width="34" opacity=".35" stroke-linecap="round"/>
+            <path d="M-10 70 C80 60 140 110 230 120 S380 170 490 200" fill="none" stroke="#8fc0ea" stroke-width="4" stroke-dasharray="10 12" opacity=".8"/>
+            <g><circle cx="70" cy="66" r="13" fill="#9fe0c4"/><text x="70" y="98" font-family="Inter,sans-serif" font-size="11" fill="#d7e5f4" text-anchor="middle" font-weight="600">upstream</text></g>
+            <g><circle cx="230" cy="120" r="13" fill="#b9a6e6"/><text x="230" y="152" font-family="Inter,sans-serif" font-size="11" fill="#d7e5f4" text-anchor="middle" font-weight="600">midstream</text></g>
+            <g><circle cx="400" cy="172" r="13" fill="#e6a46b"/><text x="400" y="204" font-family="Inter,sans-serif" font-size="11" fill="#d7e5f4" text-anchor="middle" font-weight="600">downstream</text></g>
+            <g fill="#9fe0c4" opacity=".7"><path d="M330 60 l10 -22 l10 22 z"/><path d="M352 60 l8 -16 l8 16 z"/><rect x="338" y="60" width="4" height="8"/></g>
+          </svg>
+          <span class="badge new">New</span>
+        </div>
+        <div class="body">
+          <h3>Upstream: Fund the Future</h3>
+          <p>Run a community health foundation for six years. Balance quick wins against slow, compounding investments in housing and early childhood, and keep your board on your side.</p>
+          <div class="tags"><span>Social determinants</span><span>Philanthropy</span><span>About 10 minutes</span></div>
+          <span class="more">Play the game <span class="arr">&rarr;</span></span>
+        </div>
+      </a>
+    </div>
+    <p class="teach-note reveal">Teaching with these? All four run in any browser with no logins. <a href="mailto:adam@adamtroy.net?subject=Teaching%20with%20your%20games">Tell me how you're using them.</a></p>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="panel reveal">
+      <div>
+        <p class="eyebrow">Work with me</p>
+        <h2>Schedule a session with me.</h2>
+        <p>For consulting, evaluation, training, or a conversation about your project.</p>
       </div>
-      <div class="card">
-        <span class="tag">Simulation Game</span>
-        <h3>VAXrebot: Epidemic Control Simulator</h3>
-        <p>A day-by-day epidemic control simulator. Pick a scenario and difficulty, deploy interventions, and watch infections, deaths, and recoveries respond.</p>
-        <a class="more" href="https://atroy8.github.io/VAXrebot/">Play the game &rarr;</a>
-      </div>
+      <a class="btn btn-light" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session <span aria-hidden="true">&rarr;</span></a>
     </div>
   </div>
 </section>
 
-<section id="work" class="alt">
+<section id="contact" class="alt">
   <div class="wrap">
-    <div class="panel">
-      <p class="eyebrow" style="color:#9fc6e8">Work with me</p>
-      <h2>Schedule a session with me.</h2>
-      <p>For consulting, evaluation, training, or a conversation about your project.</p>
-      <a class="btn btn-primary" href="mailto:adam@adamtroy.net?subject=Strategy%20Session%20booking">Schedule a session</a>
+    <div class="section-head reveal">
+      <div><p class="eyebrow">Contact</p><h2 class="section-title">Let's collaborate.</h2><p class="lead">Let's collaborate on creating evidence-based solutions for public health challenges.</p></div>
     </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h2 class="section-title">Let's collaborate.</h2>
-    <p class="lead">Let's collaborate on creating evidence-based solutions for public health challenges.</p>
     <div class="contact-grid">
-      <div><h3>Email</h3><p><a href="mailto:adam@adamtroy.net">adam@adamtroy.net</a></p></div>
-      <div><h3>LinkedIn</h3><p><a href="https://www.linkedin.com/in/adam-troy-86366932/">Connect with me</a></p></div>
-      <div><h3>Location</h3><p>Orlando, Florida</p></div>
+      <a class="card lift reveal" href="mailto:adam@adamtroy.net"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><h3>Email</h3><p>adam@adamtroy.net</p></div></a>
+      <a class="card lift reveal" href="https://www.linkedin.com/in/adam-troy-86366932/"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.6h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12v5.33h-4v-4.73c0-1.13-.02-2.58-1.57-2.58-1.57 0-1.81 1.23-1.81 2.5v4.81h-4z"/></svg></span><div><h3>LinkedIn</h3><p>Connect with me</p></div></a>
+      <div class="card reveal"><span class="icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><div><h3>Location</h3><p>Orlando, Florida</p></div></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <p>&copy; 2026 Adam Troy. All rights reserved.</p>
+  <div class="foot">
+    <span class="brand-text">Adam Troy</span>
+    <nav aria-label="Footer"><a href="#about">About</a><a href="#news">Writing</a><a href="#creative">Data Stories</a><a href="#games">Games</a><a href="#contact">Contact</a></nav>
+    <span>&copy; 2026 Adam Troy. All rights reserved.</span>
+  </div>
 </footer>
+
+<script>
+(function(){
+  // nav background on scroll, active link, mobile menu
+  var nav=document.getElementById('nav'),links=document.getElementById('navLinks'),tog=document.getElementById('navToggle');
+  function onScroll(){nav.classList.toggle('scrolled',window.scrollY>40);}
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  tog.addEventListener('click',function(){var o=links.classList.toggle('open');tog.setAttribute('aria-expanded',o);});
+  links.addEventListener('click',function(e){if(e.target.tagName==='A'){links.classList.remove('open');tog.setAttribute('aria-expanded','false');}});
+  var navAs=links.querySelectorAll('a[href^="#"]');
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){navAs.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+en.target.id);});}});},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){so.observe(s);});
+    var ro=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+  } else document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+
+  // decorative thumbnails
+  var NS='http://www.w3.org/2000/svg';
+  var tiles=document.getElementById('tiles');
+  if(tiles){var cols=['#1d4570','#2f6da3','#5d93c6','#8fc0ea','#e6a46b','#c4612d'];var s=7;
+    for(var y=0;y<7;y++)for(var x=0;x<20;x++){s=(s*9301+49297)%233280;var r=s/233280;var v=Math.min(5,Math.floor((r*0.6+(x/20)*0.25+(y/7)*0.25)*6));
+      var e=document.createElementNS(NS,'rect');e.setAttribute('x',8+x*19.6);e.setAttribute('y',6+y*17.6);e.setAttribute('width',17);e.setAttribute('height',15.5);e.setAttribute('rx',2.5);e.setAttribute('fill',cols[v]);tiles.appendChild(e);}}
+  var bars=document.getElementById('bars');
+  if(bars){for(var i=0;i<28;i++){var h1=30+18*Math.sin(i/3.2)+i*0.6,h2=22+10*Math.cos(i/2.5)+i*0.9;
+      var a=document.createElementNS(NS,'rect');a.setAttribute('x',14+i*10);a.setAttribute('y',120-h1);a.setAttribute('width',7);a.setAttribute('height',h1);a.setAttribute('rx',1.5);a.setAttribute('fill','#8fc0ea');bars.appendChild(a);
+      var b=document.createElementNS(NS,'rect');b.setAttribute('x',14+i*10);b.setAttribute('y',120-h1-h2);b.setAttribute('width',7);b.setAttribute('height',h2-2);b.setAttribute('rx',1.5);b.setAttribute('fill','#e6a46b');bars.appendChild(b);}}
+
+  // hero network
+  var c=document.getElementById('heroCanvas');if(!c||!c.getContext)return;
+  var ctx=c.getContext('2d'),dpr=Math.min(window.devicePixelRatio||1,2),W,H,pts=[],still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){W=c.offsetWidth;H=c.offsetHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.round(Math.min(70,W*H/16000));pts=[];for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25});}
+  function draw(){ctx.clearRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){var p=pts[i];if(!still){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+      for(var j=i+1;j<pts.length;j++){var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=dx*dx+dy*dy;if(d<19000){ctx.strokeStyle='rgba(143,192,234,'+(0.22*(1-d/19000))+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}
+      ctx.fillStyle='rgba(143,192,234,.6)';ctx.beginPath();ctx.arc(p.x,p.y,1.6,0,6.283);ctx.fill();}
+    if(!still&&!document.hidden)requestAnimationFrame(draw);else running=false;}
+  var running=true;size();draw();
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){size();if(still)draw();},150);});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&!still&&!running){running=true;draw();}});
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Upstream | Adam Troy</title>
+<meta name="description" content="A funding strategy game. Run a community health foundation for six years and decide how much to invest downstream, midstream, and upstream." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#16283f; --navy:#0f2a4a; --steel:#2f6da3; --pale:#e9f0f7;
+    --bg:#f5f7fa; --card:#fff; --muted:#55677d; --rule:#dbe3ec;
+    --down:#c4612d; --mid:#8a6fc2; --up:#2e8b6e;
+    --good:#2e8b57; --bad:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;color:var(--navy);line-height:1.15}
+  button{font-family:inherit}
+  .top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20}
+  .top-inner{max-width:1160px;margin:0 auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .top a{color:#cfe0f1;text-decoration:none;font-size:.9rem}
+  .top a:hover{color:#fff}
+  .hud{display:flex;gap:22px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:#cfe0f1}
+  .hud b{color:#fff;font-size:1.05rem;display:block;line-height:1.1}
+  .conf{width:110px;height:7px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden;margin-top:4px}
+  .conf i{display:block;height:100%;background:#9fd3b8;transition:width .5s}
+  .wrap{max-width:1160px;margin:0 auto;padding:26px 20px 60px}
+  .eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);font-weight:700}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px}
+  .btn{padding:12px 20px;border-radius:8px;border:1px solid transparent;font-weight:600;font-size:.95rem;cursor:pointer}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-primary:hover{background:var(--steel)}
+  .btn-primary:disabled{background:#9aa8b8;cursor:not-allowed}
+  .btn-ghost{background:#fff;border-color:var(--rule);color:var(--navy);text-decoration:none;display:inline-block}
+  .btn-ghost:hover{background:var(--pale)}
+  .hidden{display:none!important}
+
+  .intro{max-width:780px;margin:0 auto;text-align:center;padding:26px 6px}
+  .intro h1{font-size:clamp(2.4rem,6vw,3.6rem);margin:8px 0 14px}
+  .intro p{color:var(--muted);font-size:1.07rem;margin-bottom:12px}
+  .river{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0;text-align:left}
+  .river div{border-radius:10px;padding:14px 16px;background:#fff;border:1px solid var(--rule);border-top:4px solid}
+  .river b{display:block;font-family:'Source Serif 4',serif;font-size:1.1rem;color:var(--navy);margin-bottom:4px}
+  .river span{font-size:.88rem;color:var(--muted)}
+
+  .yearhead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .yearhead h1{font-size:clamp(1.8rem,4vw,2.4rem);margin-top:4px}
+  .event{background:#fff8ec;border:1px solid #f0d9ae;border-left:5px solid #d9922b;border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .event b{display:block;color:#7a4b0c;margin-bottom:2px}
+  .event.good{background:#ecf7f1;border-color:#bfe2cf;border-left-color:var(--good)}
+  .event.good b{color:#1f6640}
+  .layout{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;align-items:start}
+  .programs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .prog{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:15px;display:flex;flex-direction:column;gap:8px;border-top:4px solid}
+  .prog.down{border-top-color:var(--down)} .prog.mid{border-top-color:var(--mid)} .prog.up{border-top-color:var(--up)}
+  .tier{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .down .tier{color:var(--down)} .mid .tier{color:var(--mid)} .up .tier{color:var(--up)}
+  .prog h3{font-size:1.08rem}
+  .prog p{font-size:.84rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{font-size:.72rem;background:#f1f4f8;border-radius:999px;padding:2px 9px;color:var(--muted);font-weight:500}
+  .lag{font-size:.78rem;font-weight:600;color:var(--navy)}
+  .stepper{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:6px}
+  .stepper button{width:36px;height:36px;border-radius:8px;border:1px solid var(--rule);background:#fff;font-size:1.2rem;color:var(--navy);cursor:pointer;line-height:1}
+  .stepper button:hover:not(:disabled){background:var(--pale)}
+  .stepper button:disabled{opacity:.35;cursor:default}
+  .stepper output{font-family:'Source Serif 4',serif;font-size:1.35rem;font-weight:700;color:var(--navy);min-width:52px;text-align:center}
+  .bar{flex:1;height:8px;background:#eef2f6;border-radius:4px;overflow:hidden}
+  .bar i{display:block;height:100%;transition:width .2s}
+  .down .bar i{background:var(--down)} .mid .bar i{background:var(--mid)} .up .bar i{background:var(--up)}
+
+  .side{position:sticky;top:76px;display:grid;gap:14px}
+  .budget{display:flex;justify-content:space-between;align-items:center}
+  .budget b{font-family:'Source Serif 4',serif;font-size:2rem;color:var(--navy);display:block;line-height:1}
+  .budget span{font-size:.8rem;color:var(--muted)}
+  .mixbar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:#eef2f6;margin-top:12px}
+  .mixbar i{display:block;height:100%;transition:width .2s}
+  .mixlegend{display:flex;gap:12px;font-size:.76rem;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+  .mixlegend em{font-style:normal;display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .m{border:1px solid var(--rule);border-radius:10px;padding:10px 12px;background:#fff}
+  .m span{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+  .m b{display:block;font-family:'Source Serif 4',serif;font-size:1.45rem;color:var(--navy);line-height:1.2}
+  .m small{font-size:.76rem;font-weight:600}
+  .m small.up{color:var(--bad)} .m small.dn{color:var(--good)} .m small.flat{color:var(--muted)}
+  .m svg{width:100%;height:38px;display:block;margin-top:4px}
+  .note{font-size:.78rem;color:var(--muted)}
+
+  .modal{position:fixed;inset:0;background:rgba(15,42,74,.45);display:flex;align-items:center;justify-content:center;padding:18px;z-index:40}
+  .modal .card{max-width:560px;width:100%;max-height:90vh;overflow:auto}
+  .modal h2{font-size:1.6rem;margin:4px 0 10px}
+  .res{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:.92rem}
+  .res td,.res th{padding:8px 6px;border-bottom:1px solid var(--rule);text-align:right}
+  .res td:first-child,.res th:first-child{text-align:left}
+  .res th{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .quote{background:var(--pale);border-radius:10px;padding:12px 14px;font-size:.93rem;margin-bottom:14px}
+
+  .end-top{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;margin-bottom:18px}
+  .big{font-family:'Source Serif 4',serif;font-size:4.4rem;font-weight:700;color:var(--navy);line-height:1}
+  .charts{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0}
+  .charts .card h3{font-size:1rem;font-family:'Inter',sans-serif;margin-bottom:4px}
+  .charts svg{width:100%;height:auto;display:block}
+  .lessons{display:grid;gap:10px;margin-top:6px}
+  .lessons div{background:var(--pale);border-radius:10px;padding:12px 16px}
+  footer{text-align:center;color:var(--muted);font-size:.82rem;padding:20px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}.side{position:static}.charts{grid-template-columns:1fr}.end-top{grid-template-columns:1fr;text-align:center}}
+  @media (max-width:560px){.programs,.river{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="../index.html#games">&larr; adamtroy.net</a>
+    <div class="hud hidden" id="hud">
+      <div>Year<b id="hYear">1 of 6</b></div>
+      <div>Budget<b id="hBudget">$10M</b></div>
+      <div>Board confidence<b id="hConf">60</b><div class="conf"><i id="hConfBar" style="width:60%"></i></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="intro" class="intro">
+    <p class="eyebrow">A funding strategy game</p>
+    <h1>Upstream</h1>
+    <p>You are the new program officer at the Riverbend Community Health Foundation. Overdose deaths are climbing, violence is up, and the gap in life expectancy between the county's richest and poorest neighborhoods is 14 years.</p>
+    <p>You have six years and about $10 million a year. Every program helps, but on different timelines. Your board wants results it can see. Your community needs results that last.</p>
+    <div class="river">
+      <div style="border-top-color:var(--down)"><b>Downstream</b><span>Treat harm after it happens. Results this year, but they fade when funding stops.</span></div>
+      <div style="border-top-color:var(--mid)"><b>Midstream</b><span>Reach people at risk. Results in about a year.</span></div>
+      <div style="border-top-color:var(--up)"><b>Upstream</b><span>Change the conditions that create risk. Slow to start, broad, and they compound.</span></div>
+    </div>
+    <button class="btn btn-primary" id="startBtn">Take the job</button>
+    <p class="note" style="margin-top:14px">About 10 minutes. Riverbend is fictional and the model is illustrative, built to show the shape of real trade-offs.</p>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="yearhead">
+      <div><p class="eyebrow" id="yrLabel">Funding cycle 1</p><h1 id="yrTitle">Set this year's portfolio</h1></div>
+      <button class="btn btn-ghost" id="repeatBtn" style="padding:9px 14px">Repeat last year's plan</button>
+    </div>
+    <div id="eventBox"></div>
+    <div class="layout">
+      <div class="programs" id="programs"></div>
+      <aside class="side">
+        <div class="card">
+          <div class="budget"><div><span>Left to allocate</span><b id="left">$10M</b></div><button class="btn btn-primary" id="fundBtn">Fund this year</button></div>
+          <div class="mixbar" id="mixbar"></div>
+          <div class="mixlegend"><span><em style="background:var(--down)"></em>Downstream</span><span><em style="background:var(--mid)"></em>Midstream</span><span><em style="background:var(--up)"></em>Upstream</span></div>
+        </div>
+        <div class="card">
+          <p class="eyebrow" style="margin-bottom:10px">Riverbend dashboard</p>
+          <div class="metrics" id="metrics"></div>
+          <p class="note" style="margin-top:8px">Solid line: Riverbend with your funding. Dashed: what would have happened with no foundation.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="end" class="hidden">
+    <div class="card end-top">
+      <div style="text-align:center"><p class="eyebrow">Impact score</p><div class="big" id="score">0</div></div>
+      <div><h1 id="endTitle" style="font-size:2rem;margin-bottom:6px"></h1><p id="endText" style="color:var(--muted)"></p></div>
+    </div>
+    <p class="eyebrow">Six years of your funding, plus four years if your final plan continued</p>
+    <div class="charts" id="charts"></div>
+    <div class="card">
+      <h2 style="font-size:1.4rem;margin-bottom:10px">What this game is getting at</h2>
+      <div class="lessons">
+        <div><b>Lags are real.</b> Housing and early childhood investments look like they do nothing for two or three years. Then they move every outcome at once, and the gains keep building.</div>
+        <div><b>Downstream is not wasted.</b> Naloxone and treatment save lives this year, and those people need to be alive to benefit from upstream change. The strongest portfolios usually blend tiers.</div>
+        <div><b>Accountability shapes strategy.</b> Boards and funders who expect annual wins push money downstream. Protecting patient, upstream money is one of the hardest jobs in philanthropy.</div>
+        <div><b>Stopping matters.</b> Downstream effects fade quickly when funding ends. Upstream effects persist, which is why the projection years reward them.</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <button class="btn btn-primary" onclick="location.reload()">Play again</button>
+        <a class="btn btn-ghost" href="../index.html#games">More games</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal hidden" id="modal"><div class="card" id="modalCard"></div></div>
+<footer>Illustrative model for teaching. Built by Adam Troy.</footer>
+
+<script>
+(function(){
+  var YEARS=6, PROJ=10;
+  var PROGRAMS=[
+    {id:'treat',name:'Treatment and ER bridge',tier:'down',lag:0,persist:.3,scale:4,eff:{od:.25,hosp:.10},desc:'Expand addiction treatment slots and start medication in the emergency department.'},
+    {id:'harm',name:'Naloxone and harm reduction',tier:'down',lag:0,persist:.5,scale:3,eff:{od:.30},desc:'Naloxone in pharmacies, schools, and shelters, plus syringe services.'},
+    {id:'cvi',name:'Violence interruption',tier:'mid',lag:1,persist:.6,scale:4,eff:{vi:.35,gap:.04},desc:'Credible messengers and hospital-based violence intervention programs.'},
+    {id:'chw',name:'Community health workers',tier:'mid',lag:1,persist:.6,scale:5,eff:{hosp:.25,od:.05,gap:.06},desc:'Neighbors trained to connect families to care, benefits, and chronic disease support.'},
+    {id:'house',name:'Housing stability',tier:'up',lag:2,persist:.85,scale:10,eff:{od:.22,vi:.15,hosp:.20,gap:.15},desc:'Eviction prevention, rental assistance, and permanent supportive housing.'},
+    {id:'early',name:'Early childhood and schools',tier:'up',lag:3,persist:.9,scale:12,eff:{vi:.30,hosp:.10,gap:.18,od:.08},desc:'Home visiting, quality child care, and school-based health centers.'}
+  ];
+  var OUT=[
+    {k:'od',label:'Overdose deaths',base:120,drift:1.05,dec:0,w:1},
+    {k:'vi',label:'Violent injuries',base:400,drift:1.02,dec:0,w:1},
+    {k:'hosp',label:'Preventable hospital stays',base:2400,drift:1.02,dec:0,w:1},
+    {k:'gap',label:'Life expectancy gap (years)',base:14,drift:1.01,dec:1,w:1}
+  ];
+  var CHIPNAME={od:'Overdoses',vi:'Violence',hosp:'Hospital stays',gap:'Equity gap'};
+  var LAGTXT=['Results this year','Results in about 1 year','Results in about 2 years','Results in about 3 years'];
+  var EVENTS=[
+    {id:'fent',good:false,title:'A more potent opioid hits the local supply.',text:'Overdose risk jumps this year and stays higher.',mods:[{o:'od',m:1.18,perm:true}]},
+    {id:'plant',good:false,title:'The county\'s largest employer closes its plant.',text:'Job losses raise hospital stays, violence, and the equity gap from here on.',mods:[{o:'hosp',m:1.06,perm:true},{o:'vi',m:1.06,perm:true},{o:'gap',m:1.03,perm:true}]},
+    {id:'heat',good:false,title:'A record heat wave grips Riverbend.',text:'Violence and hospital stays spike this year only.',mods:[{o:'vi',m:1.10,perm:false},{o:'hosp',m:1.06,perm:false}]},
+    {id:'evict',good:false,title:'An eviction moratorium ends.',text:'Housing instability raises overdose risk and widens the gap. Housing funding this year cuts the damage in half.',mods:[{o:'od',m:1.08,perm:true,house:true},{o:'gap',m:1.03,perm:true,house:true}]},
+    {id:'medicaid',good:true,title:'The state expands Medicaid.',text:'More residents have coverage. Hospital stays fall, and treatment dollars now go 30% further.',mods:[{o:'hosp',m:.93,perm:true}],boost:{treat:1.3}},
+    {id:'match',good:true,title:'A national funder offers a $2M match.',text:'You get $2M extra this year, as long as at least $2M goes upstream.',cash:2}
+  ];
+
+  var S={year:1,budget:10,alloc:{},hist:[],stock:{},events:[],evByYear:{},mods:[],conf:60,boosts:{},series:null,lastAlloc:null};
+  var $=function(id){return document.getElementById(id);};
+  PROGRAMS.forEach(function(p){S.stock[p.id]=[0];});
+
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  // Years 2 to 5 get an event. Always one good one.
+  (function(){var bad=shuffle(EVENTS.filter(function(e){return!e.good;})).slice(0,3),good=shuffle(EVENTS.filter(function(e){return e.good;}))[0];
+    var picks=shuffle(bad.concat([good]));[2,3,4,5].forEach(function(y,i){S.evByYear[y]=picks[i];});})();
+
+  // ---------- model ----------
+  function stockAt(id,t){var s=S.stock[id];return t>=1&&t<s.length?s[t]:(t>=s.length?s[s.length-1]:0);}
+  function baseline(o,t){
+    var v=o.base*Math.pow(o.drift,t);
+    S.mods.forEach(function(md){if(md.o!==o.k)return;if(t<md.year)return;if(!md.perm&&t!==md.year)return;v*=md.eff;});
+    return v;
+  }
+  function factor(o,t){
+    var f=1;PROGRAMS.forEach(function(p){
+      var e=p.eff[o.k]||0;if(!e)return;var k=t-p.lag;var E=k>=1?stockAt(p.id,k):0;
+      if(S.boosts[p.id]&&t>=S.boosts[p.id].year)E*=S.boosts[p.id].m;
+      f*=1-e*(1-Math.exp(-E/p.scale));});
+    return f;
+  }
+  function actual(o,t){return baseline(o,t)*factor(o,t);}
+  function allocTotal(a){var s=0;for(var k in a)s+=a[k];return s;}
+  function tierOf(id){return PROGRAMS.filter(function(p){return p.id===id;})[0].tier;}
+
+  // ---------- render ----------
+  function fmtVal(o,v){return o.dec?v.toFixed(1):Math.round(v).toLocaleString();}
+  function spark(o,uptoT){
+    var W=200,H=38,xs=[],ysA=[],ysB=[],t;
+    for(t=0;t<=YEARS;t++){xs.push(t);}
+    var vals=[];for(t=0;t<=uptoT;t++){vals.push(t===0?o.base:actual(o,t));}
+    var bvals=[];for(t=0;t<=uptoT;t++){bvals.push(t===0?o.base:baseline(o,t));}
+    var all=vals.concat(bvals),mn=Math.min.apply(null,all)*0.92,mx=Math.max.apply(null,all)*1.04;
+    var x=function(t){return 3+t*(W-6)/YEARS;},y=function(v){return H-3-(v-mn)/(mx-mn||1)*(H-6);};
+    var pa=vals.map(function(v,i){return(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');
+    var pb=bvals.map(function(v,i){return(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');
+    return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+pb+'" fill="none" stroke="#9aa8b8" stroke-width="1.5" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/><path d="'+pa+'" fill="none" stroke="#0f2a4a" stroke-width="2.2" vector-effect="non-scaling-stroke"/><circle cx="'+x(uptoT)+'" cy="'+y(vals[vals.length-1])+'" r="3" fill="#0f2a4a"/></svg>';
+  }
+  function renderMetrics(){
+    var t=S.year-1,h='';
+    OUT.forEach(function(o){
+      var cur=t===0?o.base:actual(o,t),prev=t<=1?o.base:actual(o,t-1);
+      var ch=(cur-prev)/prev*100,cls=Math.abs(ch)<0.5?'flat':ch>0?'up':'dn';
+      var arrow=cls==='flat'?'no change':(ch>0?'▲ ':'▼ ')+Math.abs(ch).toFixed(1)+'%';
+      h+='<div class="m"><span>'+o.label+'</span><b>'+fmtVal(o,cur)+'</b><small class="'+cls+'">'+(t===0?'starting point':arrow+' vs last year')+'</small>'+spark(o,t)+'</div>';
+    });
+    $('metrics').innerHTML=h;
+  }
+  function renderPrograms(){
+    var h='';
+    PROGRAMS.forEach(function(p){
+      var chips=Object.keys(p.eff).sort(function(a,b){return p.eff[b]-p.eff[a];}).map(function(k){return '<span class="chip">'+CHIPNAME[k]+'</span>';}).join('');
+      var tierName={down:'Downstream',mid:'Midstream',up:'Upstream'}[p.tier];
+      h+='<div class="prog '+p.tier+'"><span class="tier">'+tierName+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p>'+
+        '<div class="chips">'+chips+'</div><span class="lag">'+LAGTXT[p.lag]+'</span>'+
+        '<div class="stepper"><button data-id="'+p.id+'" data-d="-1" aria-label="Less to '+p.name+'">&minus;</button><output id="o_'+p.id+'">$0M</output><button data-id="'+p.id+'" data-d="1" aria-label="More to '+p.name+'">+</button><div class="bar"><i id="b_'+p.id+'" style="width:0"></i></div></div></div>';
+    });
+    $('programs').innerHTML=h;
+    Array.prototype.forEach.call(document.querySelectorAll('.stepper button'),function(b){b.onclick=function(){step(b.dataset.id,+b.dataset.d);};});
+  }
+  function step(id,d){
+    var left=S.budget-allocTotal(S.alloc);
+    if(d>0&&left<=0)return; if(d<0&&!S.alloc[id])return;
+    S.alloc[id]=(S.alloc[id]||0)+d; refreshAlloc();
+  }
+  function refreshAlloc(){
+    var tot=allocTotal(S.alloc),left=S.budget-tot,tiers={down:0,mid:0,up:0};
+    PROGRAMS.forEach(function(p){var v=S.alloc[p.id]||0;tiers[p.tier]+=v;$('o_'+p.id).textContent='$'+v+'M';$('b_'+p.id).style.width=(v/S.budget*100)+'%';});
+    Array.prototype.forEach.call(document.querySelectorAll('.stepper button'),function(b){b.disabled=(+b.dataset.d>0&&left<=0)||(+b.dataset.d<0&&!(S.alloc[b.dataset.id]));});
+    $('left').textContent='$'+left+'M';
+    $('mixbar').innerHTML=['down','mid','up'].map(function(t){return '<i style="width:'+(tiers[t]/S.budget*100)+'%;background:var(--'+t+')"></i>';}).join('');
+    var matchEv=S.evByYear[S.year]&&S.evByYear[S.year].id==='match';
+    $('fundBtn').disabled=left>0||(matchEv&&tiers.up<2);
+    $('fundBtn').textContent=left>0?'Allocate $'+left+'M more':(matchEv&&tiers.up<2?'Match needs $2M upstream':'Fund this year');
+    $('repeatBtn').classList.toggle('hidden',!S.lastAlloc);
+  }
+  function renderHud(){
+    $('hud').classList.remove('hidden');
+    $('hYear').textContent=Math.min(S.year,YEARS)+' of '+YEARS;$('hBudget').textContent='$'+S.budget+'M';
+    $('hConf').textContent=Math.round(S.conf);$('hConfBar').style.width=S.conf+'%';
+    $('hConfBar').style.background=S.conf<35?'#f0a79d':S.conf>=75?'#9fd3b8':'#cfe0f1';
+  }
+  function startYear(){
+    var ev=S.evByYear[S.year],box=$('eventBox');
+    S.budget=S.nextBudget||10;
+    if(ev){
+      if(ev.cash)S.budget+=ev.cash;
+      box.innerHTML='<div class="event'+(ev.good?' good':'')+'"><b>'+(ev.good?'Good news: ':'News: ')+ev.title+'</b>'+ev.text+'</div>';
+    } else box.innerHTML='';
+    S.alloc={};
+    $('yrLabel').textContent='Funding cycle '+S.year+' of '+YEARS;
+    $('yrTitle').textContent=S.year===1?'Set your first portfolio':'Set year '+S.year+'\'s portfolio';
+    renderHud();refreshAlloc();renderMetrics();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function fund(){
+    var t=S.year,ev=S.evByYear[t];
+    // record stocks
+    PROGRAMS.forEach(function(p){var s=S.stock[p.id];s[t]=p.persist*(s[t-1]||0)+(S.alloc[p.id]||0);});
+    if(ev){
+      (ev.mods||[]).forEach(function(md){var eff=md.m;if(md.house&&(S.alloc.house||0)>0)eff=1+(md.m-1)/2;S.mods.push({o:md.o,eff:eff,perm:md.perm,year:t});});
+      if(ev.boost)for(var k in ev.boost)S.boosts[k]={m:ev.boost[k],year:t};
+    }
+    S.hist.push(JSON.parse(JSON.stringify(S.alloc)));S.lastAlloc=JSON.parse(JSON.stringify(S.alloc));
+    // board reaction
+    var head=function(tt){var o=OUT;return (tt===0?o[0].base:actual(o[0],tt))+(tt===0?o[1].base:actual(o[1],tt))/4+(tt===0?o[2].base:actual(o[2],tt))/20;};
+    var chg=(head(t-1)-head(t))/head(t-1)*100;
+    var delta=Math.max(-16,Math.min(16,chg*2.2))-3;
+    S.conf=Math.max(5,Math.min(100,S.conf+delta));
+    S.nextBudget=S.conf<35?8:S.conf>=80?11:10;
+    showResults(t,chg,delta);
+  }
+  function showResults(t,chg,delta){
+    var rows=OUT.map(function(o){var prev=t===1?o.base:actual(o,t-1),cur=actual(o,t),b=baseline(o,t);
+      var c=(cur-prev)/prev*100;
+      return '<tr><td>'+o.label+'</td><td>'+fmtVal(o,cur)+'</td><td style="color:'+(c>0.5?'var(--bad)':c<-0.5?'var(--good)':'var(--muted)')+'">'+(c>0?'+':'')+c.toFixed(1)+'%</td><td>'+fmtVal(o,b-cur)+'</td></tr>';}).join('');
+    var mood=delta>4?['The board is thrilled.','"These are the numbers we hoped for. Keep it up."']:
+             delta>-1?['The board is cautiously satisfied.','"Steady progress. We would love to see faster movement next year."']:
+             delta>-8?['The board is getting restless.','"We are not seeing results on the headline numbers. What is the plan?"']:
+             ['The board is alarmed.','"Overdoses and violence are still the story in the paper. We need wins."'];
+    var budgetNote=S.nextBudget<10?'<p style="color:var(--bad);font-weight:600;margin-bottom:12px">Low confidence: the board trims next year\'s budget to $'+S.nextBudget+'M.</p>':
+                   S.nextBudget>10?'<p style="color:var(--good);font-weight:600;margin-bottom:12px">High confidence: the board adds $1M to next year\'s budget.</p>':'';
+    var pending=PROGRAMS.filter(function(p){return p.lag>0&&(S.alloc[p.id]||0)>0&&t-p.lag<1;});
+    var pnote=pending.length?'<p class="note" style="margin-bottom:12px">Still maturing: '+pending.map(function(p){return p.name;}).join(', ')+'. These have not shown up in the numbers yet.</p>':'';
+    $('modalCard').innerHTML='<p class="eyebrow">End of year '+t+'</p><h2>'+mood[0]+'</h2><div class="quote">'+mood[1]+'</div>'+
+      '<table class="res"><tr><th>Outcome</th><th>This year</th><th>Change</th><th>Averted vs. no foundation</th></tr>'+rows+'</table>'+pnote+budgetNote+
+      '<button class="btn btn-primary" id="contBtn">'+(t<YEARS?'Start year '+(t+1):'See the final report')+'</button>';
+    $('modal').classList.remove('hidden');
+    $('contBtn').onclick=function(){$('modal').classList.add('hidden');S.year++;if(S.year>YEARS)finish();else startYear();};
+    $('contBtn').focus();
+  }
+  function finish(){
+    // project years 7-10 with the final plan
+    var last=S.hist[S.hist.length-1];
+    for(var t=YEARS+1;t<=PROJ;t++)PROGRAMS.forEach(function(p){var s=S.stock[p.id];s[t]=p.persist*s[t-1]+(last[p.id]||0);});
+    $('game').classList.add('hidden');$('end').classList.remove('hidden');
+    var imp=0,charts='';
+    OUT.forEach(function(o){
+      var r6=1-factor(o,YEARS),r10=1-factor(o,PROJ);imp+=0.6*r6+0.4*r10;
+      charts+='<div class="card"><h3>'+o.label+'</h3><p class="note">Year 6: '+fmtVal(o,actual(o,YEARS))+' vs. '+fmtVal(o,baseline(o,YEARS))+' without the foundation ('+Math.round(r6*100)+'% lower)</p>'+bigChart(o)+'</div>';
+    });
+    imp/=OUT.length;
+    var score=Math.min(100,Math.round(imp*300));
+    var tot={down:0,mid:0,up:0};S.hist.forEach(function(a){for(var k in a)tot[tierOf(k)]+=a[k];});
+    var all=tot.down+tot.mid+tot.up,mix='Over six years you put '+Math.round(tot.down/all*100)+'% downstream, '+Math.round(tot.mid/all*100)+'% midstream, and '+Math.round(tot.up/all*100)+'% upstream.';
+    var title=score>=85?'Systems Changer':score>=70?'Strategic Funder':score>=50?'Steady Grantmaker':'Firefighter';
+    var blurb=score>=85?'You balanced quick wins with patient capital, and Riverbend will feel it for a generation.':
+              score>=70?'A strong portfolio. Look at which outcomes still trail and where a longer bet might have paid off.':
+              score>=50?'You helped, but your dollars were concentrated. Try mixing tiers, and start upstream bets early.':
+              'You fought the fires in front of you. Next time, plant some trees in year one.';
+    $('score').textContent=score;$('endTitle').textContent=title;$('endText').textContent=blurb+' '+mix+' Final board confidence: '+Math.round(S.conf)+'.';
+    $('charts').innerHTML=charts;
+    $('hYear').textContent='Done';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function bigChart(o){
+    var W=460,H=170,L=44,R=10,T=10,B=26,t,a=[],b=[];
+    for(t=0;t<=PROJ;t++){a.push(t===0?o.base:actual(o,t));b.push(t===0?o.base:baseline(o,t));}
+    var all=a.concat(b),mn=Math.min.apply(null,all)*0.9,mx=Math.max.apply(null,all)*1.05;
+    var x=function(t){return L+t*(W-L-R)/PROJ;},y=function(v){return T+(1-(v-mn)/(mx-mn))*(H-T-B);};
+    var g='<svg viewBox="0 0 '+W+' '+H+'">';
+    g+='<rect x="'+x(YEARS)+'" y="'+T+'" width="'+(x(PROJ)-x(YEARS))+'" height="'+(H-T-B)+'" fill="#f1f5f9"/>';
+    g+='<text x="'+((x(YEARS)+x(PROJ))/2)+'" y="'+(T+14)+'" font-size="10" text-anchor="middle" fill="#55677d">projected</text>';
+    for(var i=0;i<=3;i++){var v=mn+(mx-mn)*i/3;g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e5ebf1"/><text x="'+(L-6)+'" y="'+(y(v)+3)+'" font-size="10" text-anchor="end" fill="#55677d">'+fmtVal(o,v)+'</text>';}
+    for(t=0;t<=PROJ;t+=2)g+='<text x="'+x(t)+'" y="'+(H-8)+'" font-size="10" text-anchor="middle" fill="#55677d">'+(t===0?'Start':'Yr '+t)+'</text>';
+    var p=function(arr){return arr.map(function(v,i){return(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');};
+    var fill=p(a)+' L'+x(PROJ)+' '+y(b[PROJ]);for(t=PROJ;t>=0;t--)fill+=' L'+x(t).toFixed(1)+' '+y(b[t]).toFixed(1);
+    g+='<path d="'+fill+' Z" fill="#2e8b6e" opacity=".12"/>';
+    g+='<path d="'+p(b)+'" fill="none" stroke="#9aa8b8" stroke-width="2" stroke-dasharray="5 4"/>';
+    g+='<path d="'+p(a)+'" fill="none" stroke="#0f2a4a" stroke-width="2.5"/>';
+    g+='<text x="'+(x(PROJ)-2)+'" y="'+(y(b[PROJ])-6)+'" font-size="10" text-anchor="end" fill="#55677d">no foundation</text>';
+    g+='</svg>';return g;
+  }
+
+  $('startBtn').onclick=function(){$('intro').classList.add('hidden');$('game').classList.remove('hidden');renderPrograms();startYear();};
+  $('fundBtn').onclick=fund;
+  $('repeatBtn').onclick=function(){
+    var a={},left=S.budget;
+    PROGRAMS.forEach(function(p){var v=Math.min(S.lastAlloc[p.id]||0,left);if(v){a[p.id]=v;left-=v;}});
+    S.alloc=a;refreshAlloc();
+  };
+})();
+</script>
+</body>
+</html>
