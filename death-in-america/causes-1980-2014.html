@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>35 Years of County Mortality</title>
+<meta name="description" content="Explore age-standardized county death rates for 25 causes of death in the United States, year by year from 1980 to 2014, from IHME estimates.">
+<link rel="stylesheet" href="explorer.css">
+</head>
+<body>
+<a class="back" href="../index.html">&larr; Back to adamtroy.net</a>
+<header class="hero"><div class="wrap">
+<p class="eyebrow">Death in America &middot; County explorer, 1980 to 2014</p>
+<h1>35 Years of Death in America, County by County</h1>
+<p class="standfirst">Pick a cause of death and press play. Every county&rsquo;s age-standardized death rate, every year from 1980 to 2014, from the Institute for Health Metrics and Evaluation (IHME) estimates that powered FiveThirtyEight&rsquo;s 2017 interactive.</p>
+<p class="meta">By Adam Troy. Companions: <a href="causes-2000-2019.html">the newer IHME series, 2000 to 2019</a>, <a href="index.html">national trends, 1999 to 2024</a>, and <a href="county-maps.html">heart disease and stroke, 2015 to 2024</a>.</p>
+</div></header>
+
+<div class="app">
+  <aside class="sidebar" aria-label="Causes of death">
+    <h2>Cause of death</h2>
+    <p class="hint" id="listHint"></p>
+    <ul class="cause-list" id="causeList"></ul>
+  </aside>
+  <section class="main" aria-label="County map">
+    <label class="small" for="causeSelect" style="display:none">Cause of death</label>
+    <select class="cause-select" id="causeSelect" aria-label="Cause of death"></select>
+    <div class="title-row"><h2 id="causeTitle">All causes</h2></div>
+    <p class="headline-stat" id="headline"></p>
+    <div class="controls">
+      <span class="year-big" id="yearBig" aria-live="polite"></span>
+      <button class="btn" id="btnPlay" type="button" aria-label="Play years">&#9654; Play</button>
+      <select id="speed" class="seg" aria-label="Playback speed" style="padding:5px 10px;font:inherit;font-size:13.5px;background:var(--surface);color:var(--ink)">
+        <option value="900">Slow</option><option value="500" selected>Normal</option><option value="250">Fast</option>
+      </select>
+      <div class="slider-row"><span id="yMin"></span><input type="range" id="yearSlider" step="1" aria-label="Year"><span id="yMax"></span></div>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Map shows">
+        <button type="button" id="modeRate" class="on">Death rate</button>
+        <button type="button" id="modeChange">Change since 1980</button>
+      </div>
+      <div class="search"><input id="search" list="countyList" placeholder="Find a county, e.g. Cook County, IL" aria-label="Find a county" autocomplete="off"><datalist id="countyList"></datalist></div>
+    </div>
+    <div class="map-card">
+      <svg class="map" id="map" aria-label="Map of US counties colored by death rate"></svg>
+      <div class="map-hint">Click a county to zoom in. Drag to pan; Ctrl + scroll to zoom.</div>
+      <div class="map-tools"><button id="zIn" type="button" aria-label="Zoom in">+</button><button id="zOut" type="button" aria-label="Zoom out">&minus;</button><button id="zReset" type="button" aria-label="Reset zoom" title="Reset zoom">&#8634;</button></div>
+      <div class="loading" id="loading">Loading county data&hellip;</div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <p class="stats" id="stats"></p>
+  </section>
+</div>
+
+<div class="lower">
+  <div class="card">
+    <h3 id="trendTitle"></h3>
+    <p class="sub" id="trendSub"></p>
+    <div class="chart-legend" id="trendLegend"></div>
+    <svg class="trend" id="trend" role="img" aria-label="Trend chart"></svg>
+  </div>
+  <div class="card">
+    <div class="seg rank-tabs" role="group" aria-label="Ranking"><button type="button" id="rankHigh" class="on">Highest</button><button type="button" id="rankLow">Lowest</button></div>
+    <h3 id="rankTitle"></h3>
+    <p class="sub">Deaths per 100,000, age-standardized. Click a row to find the county.</p>
+    <table class="rank" id="rankTable"></table>
+  </div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<article class="prose">
+<h2>What the maps show</h2>
+<p>Across these 35 years, the age-standardized death rate for the country fell from 1,113.8 per 100,000 in 1980 to 785.7 in 2014, a drop of about 29 percent. Most of that came from cardiovascular disease, whose national rate fell by half (507.4 to 252.7). Press play on &ldquo;Cardiovascular diseases&rdquo; and the whole map lightens, but not evenly, and its dark core moves. In 1980 the tenth of counties with the highest cardiovascular death rates was concentrated in Georgia, Mississippi, Kentucky, the Carolinas, Virginia, and Louisiana. By 2014 it centered on Mississippi, Oklahoma, Kentucky, Tennessee, and Arkansas. Only about a third of the counties in the top tenth in 1980 were still there in 2014.</p>
+<p>That unevenness is the larger story. In 1980 the county at the 90th percentile of all-cause mortality had a rate about 1.3 times the county at the 10th percentile (1,242 versus 962). By 2014 that ratio was about 1.6 (1,076.8 versus 690.7). Nearly every county improved, but the best-off counties improved fastest. In 88 counties the all-cause rate was higher in 2014 than in 1980. The lowest rates in 2014 were in Colorado mountain resort counties (Summit County, 323.3; Pitkin County, 331.4), and the highest were in Union County, Florida (1,633.9) and in Buffalo County and Oglala Lakota County, South Dakota (1,625.3 and 1,618.1).</p>
+<p>A few causes moved the other way. The national rate for mental and substance use disorders nearly tripled, from 4.6 to 13.4, with most of the rise after 2000; switch to &ldquo;Change since 1980&rdquo; to see where it concentrated. Chronic respiratory disease rose about 30 percent and neurological disorders about 19 percent. The &ldquo;Change since 1980&rdquo; view compares each county with its own 1980 rate, so it shows where a cause grew or shrank, regardless of its level.</p>
+
+<h2>How to read these numbers</h2>
+<p>These are modeled estimates, not raw counts divided by population. IHME combined death records from the National Vital Statistics System with population data and a small-area statistical model that borrows strength across neighboring counties, years, and age groups. That stabilizes rates for small counties, where a handful of deaths would otherwise swing the rate wildly, but it also means a small county&rsquo;s estimate can be pulled toward its neighbors. Each county&rsquo;s 95% uncertainty interval is in the tooltip and the rankings; it is often wide for small counties and rare causes.</p>
+<p>Rates are age-standardized, so a county does not look worse simply because its residents are older. Each cause is drawn on a single color scale that stays fixed across all 35 years, so a county that lightens over time really did see its rate fall. The scale breaks are set from the spread of all county-years for that cause (roughly the 10th, 25th, 50th, 75th, 90th, and 95th percentiles), so the darkest color marks the top 5 percent of county-years. The county medians and percentiles on this page are unweighted: a county of 1,000 people counts the same as Los Angeles County.</p>
+<p>The causes are IHME&rsquo;s Global Burden of Disease categories, not the National Center for Health Statistics leading-causes list, so they will not line up exactly with the CDC rankings on the national trends page. They are mutually exclusive: every death is assigned to one underlying cause. A few small counties and independent cities were estimated jointly with a neighbor because their boundaries changed during the period (for example, the Denver metro counties and Broomfield, several Virginia independent cities, and parts of Alaska); they share one rate, and the tooltip says so.</p>
+<p>FiveThirtyEight&rsquo;s version also let readers drill into individual cancer types. Those county series come from a separate IHME cancer file that is not used here, so this page shows neoplasms as one group.</p>
+<p>Do not compare these rates directly with the <a href="causes-2000-2019.html">2000 to 2019 page</a>. The newer estimates come from a later IHME model with a revised cause list, and for the years they share the national figures differ slightly (all causes in 2000: 938.1 here, 949.0 there). Compare trends within a page, not levels across pages.</p>
+
+<h2>Sources and coverage</h2>
+<table class="sources">
+<tr><th>Source</th><th>Coverage and notes</th></tr>
+<tr><td>Institute for Health Metrics and Evaluation (IHME). United States Mortality Rates by County 1980-2014. Seattle, United States: IHME, 2016. Global Health Data Exchange (GHDx).</td><td>Annual age-standardized mortality rates per 100,000 with 95% uncertainty intervals, both sexes, 1980 to 2014, for 3,142 counties (some estimated jointly as merged units), all 50 states, the District of Columbia, and the United States. 21 mutually exclusive causes plus all causes and three broad groups. Files: the state-by-state CSV release (Y2017M05D19). Study: Dwyer-Lindgren L, et al. US county-level trends in mortality rates for major causes of death, 1980-2014. JAMA. 2016;316(22):2385-2401.</td></tr>
+<tr><td>County and state boundaries: us-atlas 3.0.1 (US Census Bureau cartographic boundary files, 1:10,000,000)</td><td>Every county in the IHME file matches a boundary. Alaska and Hawaii are repositioned below the lower 48.</td></tr>
+<tr><td>FiveThirtyEight, &ldquo;35 Years of American Death&rdquo; (2017)</td><td>The model for this page: an animated county map of IHME&rsquo;s 1980 to 2014 cause-specific estimates.</td></tr>
+</table>
+<p class="small">IHME data are used under the IHME free-of-charge non-commercial user agreement. This page describes what the estimates show. It does not claim that any single factor caused a county&rsquo;s rate to be high or low.</p>
+</article>
+
+<footer class="wrap">
+<p class="small">Death in America. County explorer, 1980 to 2014. Data files: <a href="data/ihme-1980-2014/index.json">index and national series</a>, one file per cause in <code>data/ihme-1980-2014/</code>. Sources and processing notes: <a href="SOURCES.md">SOURCES.md</a>.</p>
+</footer>
+
+<script>window.EXPLORER = { dataDir: "data/ihme-1980-2014/", geo: "data/counties-10m.json", defaultCause: 294, defaultYear: 1980 };</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="explorer.js"></script>
+</body>
+</html>
