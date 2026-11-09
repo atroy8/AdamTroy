@@ -15,14 +15,14 @@
   const fmtPct = (p) => (p > 0 ? "+" : p < 0 ? "−" : "") + Math.abs(p).toFixed(0) + "%";
 
   // Palettes: sequential blue (light to dark), and blue/red diverging with a gray midpoint.
-  // Dark mode uses its own steps so that higher values read as brighter against the dark surface.
+  // The rate ramp runs white (lowest) to dark navy (highest) in both light and dark mode.
   const PAL = {
     light: {
-      seq: ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"],
+      seq: ["#ffffff", "#dbe9f8", "#a9cbf1", "#6da7ec", "#2a78d6", "#184f95", "#0a2a55"],
       div: ["#184f95", "#5598e7", "#b7d3f6", "#f0efec", "#f5c2bb", "#e6766b", "#b42b2a"],
     },
     dark: {
-      seq: ["#0d366b", "#104281", "#1c5cab", "#2a78d6", "#5598e7", "#86b6ef", "#cde2fb"],
+      seq: ["#ffffff", "#dbe9f8", "#a9cbf1", "#6da7ec", "#2a78d6", "#184f95", "#0a2a55"],
       div: ["#86b6ef", "#3987e5", "#1c4f8a", "#383835", "#8a2f2b", "#d0473f", "#f19a90"],
     },
   };
