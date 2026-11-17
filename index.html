@@ -229,7 +229,6 @@
     .nav-inner{position:relative}
   }
   @media (max-width:680px){
-    .hero-video{display:none}
     section{padding:68px 20px}
     #hero{padding:120px 20px 0}
     .grid-3,.grid-2,.stories,.contact-grid{grid-template-columns:1fr}
@@ -266,6 +265,7 @@
 <main>
 <section id="hero">
   <video class="hero-video" autoplay muted loop playsinline aria-hidden="true" poster="hero-stars-poster.jpg">
+    <source src="hero-stars-desert-mobile.mp4" type="video/mp4" media="(max-width: 680px)">
     <source src="hero-stars-desert.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay" aria-hidden="true"></div>
