@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#4b2a8c">
+    <title>Galactic Outbreak</title>
+    <meta name="description" content="Galactic Outbreak: the galaxy's last hope. Stop an alien-spread virus world by world with real public health tools.">
+    <meta name="apple-mobile-web-app-title" content="Galactic Outbreak">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237fd8a4' stroke='%231f7a4a' stroke-width='4'/%3E%3Ccircle cx='23' cy='27' r='4' fill='%23234'/%3E%3Ccircle cx='41' cy='27' r='4' fill='%23234'/%3E%3Cpath d='M21 39q11 9 22 0' fill='none' stroke='%23234' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script type="module" crossorigin src="./assets/index-kUERYq-o.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CCAbnD7W.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Notification Container -->
+        <div id="notification-container"></div>
+
+        <!-- Welcome Screen: looping video intro, holds until the player taps Start -->
+        <div id="welcome-screen" class="screen active">
+            <div class="intro-wrap">
+                <video id="intro-video" class="intro-video" autoplay muted loop playsinline></video>
+                <div class="intro-overlay">
+                    <h1>Epidemic Control Simulator</h1>
+                    <p class="menu-subtitle">An interactive simulation of epidemic control.</p>
+                    <button id="start-game-btn" class="btn btn--primary btn--lg">Start</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Level Select Screen: progression entry point (phase 1: functional
+             list grouped by region; world map UI arrives in phase 2) -->
+        <div id="menu-screen" class="screen">
+            <div class="container">
+                <div class="menu-header">
+                    <h1>Epidemic Control Simulator</h1>
+                    <p class="menu-subtitle">You are a field epidemiologist. Contain outbreaks, earn stars, save lives.</p>
+                    <div class="hud-bar">
+                        <span id="hud-stars" class="hud-item">⭐ 0</span>
+                        <span id="hud-funding" class="hud-item">💰 0</span>
+                        <span id="hud-lives" class="hud-item">❤️ 0</span>
+                    </div>
+                </div>
+                <div id="level-grid">
+                    <!-- Region groups and level cards render here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Briefing Screen -->
+        <div id="briefing-screen" class="screen">
+            <div class="briefing-content">
+                <h2 id="briefing-title"></h2>
+                <div class="lesson-card" id="briefing-lesson" hidden>
+                    <span class="lesson-kicker">Lesson</span>
+                    <strong class="lesson-title" id="briefing-lesson-title"></strong>
+                    <p class="lesson-text" id="briefing-lesson-text"></p>
+                </div>
+                <div class="briefing-description">
+                    <strong>Situation Briefing:</strong>
+                    <p id="briefing-description-text"></p>
+                </div>
+                <div class="toolkit-card" id="briefing-toolkit" role="note" hidden></div>
+                 <div class="disease-dynamics">
+                    <strong>Disease Profile:</strong>
+                    <div class="dynamics-grid">
+                        <div><strong>Disease:</strong> <span id="briefing-disease"></span></div>
+                        <div id="briefing-cfr-row"><strong>Real death rate:</strong> <span id="briefing-cfr"></span></div>
+                        <div><strong>Agent:</strong> <span id="briefing-agent"></span></div>
+                        <div><strong>Vector:</strong> <span id="briefing-vector"></span></div>
+                        <div id="briefing-real-r0-row"><strong>Real R₀:</strong> <span id="briefing-real-r0"></span></div>
+                        <div><strong>R₀ here:</strong> <span id="briefing-r0"></span></div>
+                    </div>
+                </div>
+                <div class="threat-box">
+                    <strong>Threat</strong>
+                    <div class="threat-meter" id="threat-meter" role="img" aria-label="Threat"></div>
+                    <p class="threat-line" id="threat-line"></p>
+                    <p class="star-goal" id="star-goal"></p>
+                </div>
+                <div class="briefing-actions">
+                    <button class="btn btn--secondary" id="back-to-menu">Back to map</button>
+                    <button class="btn btn--primary" id="start-simulation">Begin Containment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="r-card" id="r-card" role="dialog" aria-modal="false" aria-labelledby="r-card-headline" hidden></div>
+            <div class="game-layout">
+                <div class="game-header">
+                    <div class="game-topbar">
+                        <div class="game-info">
+                            <h4 id="game-scenario-name"></h4>
+                            <span id="current-difficulty-badge"></span>
+                        </div>
+                        <div class="game-icons">
+                            <button type="button" class="icon-btn" id="how-to-play" aria-label="How to play">
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M9 9a3 3 0 1 1 4.2 2.75c-.75.33-1.2 1-1.2 1.8V14"/><circle cx="12" cy="18" r="1.4" fill="currentColor"/></svg>
+                            </button>
+                            <button type="button" class="icon-btn" id="pause-game" aria-label="Pause">
+                                <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg>
+                                <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="game-stats">
+                        <div class="stat stat--day">
+                            <span class="stat-label">Day</span>
+                            <span class="stat-value" id="current-day">1</span>
+                        </div>
+                        <div class="stat case-meter" id="case-meter" title="Total cases so far. Reach the cap and the outbreak is out of control.">
+                            <span class="stat-label">Cases / cap</span>
+                            <span class="stat-value case-meter-value">0</span>
+                            <span class="case-meter-bar" aria-hidden="true"></span>
+                        </div>
+                        <button type="button" class="stat stat--r" id="r-stat" aria-haspopup="dialog" aria-controls="r-card" aria-label="R, new cases per sick person. Tap to learn what it means.">
+                            <span class="stat-label">R <span class="r-info" aria-hidden="true">?</span></span>
+                            <span class="stat-value" id="r-value">–</span>
+                        </button>
+                        <div class="stat stat--lost" id="lost-stat" hidden title="People who did not survive this outbreak.">
+                            <span class="stat-label">Lost</span>
+                            <span class="stat-value lost" id="deaths-count">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Actions</span>
+                            <span class="stat-value" id="actions-left">0</span>
+                        </div>
+                        <div class="stat stat--extra">
+                            <span class="stat-label">Sick now</span>
+                            <span class="stat-value infected" id="infected-count">0</span>
+                        </div>
+                        <div class="stat stat--extra">
+                            <span class="stat-label">Protected</span>
+                            <span class="stat-value protected" id="protected-count">0</span>
+                        </div>
+                        <div class="stat stat--extra">
+                            <span class="stat-label">Population</span>
+                            <span class="stat-value" id="population-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-area">
+                    <div class="panel network-container">
+                        <svg id="network-svg"></svg>
+                        <div class="tool-hint" id="tool-hint" aria-live="polite" hidden></div>
+                        <div class="day-banner" id="day-banner" aria-live="polite" hidden></div>
+                    </div>
+                    <aside class="care-box" id="care-box" aria-label="People out of the network"></aside>
+                </div>
+
+                <div class="panel tools-panel" id="tool-tray">
+                    <h4 class="tools-title">Tools</h4>
+                    <div class="tools-list" id="tools-list" role="toolbar" aria-label="Tools">
+                        <!-- Tools will be generated here -->
+                    </div>
+                    <div class="day-controls">
+                        <button type="button" class="btn btn--secondary hold-btn" id="hold-advance" hidden>Hold</button>
+                        <button type="button" class="btn btn--primary next-day-btn" id="next-day">Next day</button>
+                    </div>
+                </div>
+
+                <div class="game-footer" id="game-footer">
+                    <div class="pause-title">Paused</div>
+                    <label class="volume-control">
+                        <span class="volume-label">Volume</span>
+                        <input type="range" id="master-volume" min="0" max="1" step="0.05" value="0.3" aria-label="Volume">
+                    </label>
+                    <button type="button" class="btn btn--primary resume-btn" id="resume-game">Resume</button>
+                </div>
+            </div>
+            <div class="shop-sheet" id="shop-sheet" hidden>
+                <div class="shop-sheet-backdrop" data-shop-close></div>
+                <div class="shop-sheet-panel" role="dialog" aria-modal="true" aria-label="Power-up shop">
+                    <button type="button" class="icon-btn shop-sheet-x" data-shop-close aria-label="Close shop">&times;</button>
+                    <div id="shop-sheet-body"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen">
+             <div class="game-over-content">
+                    <h2 id="game-over-title"></h2>
+                    <div id="final-difficulty-badge"></div>
+                    <div class="tally" id="results-tally" hidden></div>
+                    <details class="final-stats-wrap" id="final-stats-wrap" open>
+                    <summary class="final-stats-summary">Outbreak numbers</summary>
+                    <div class="final-stats">
+                        <div class="final-stat">
+                            <span class="final-stat-label">Total Infected</span>
+                            <span class="stat-value infected" id="final-total-infected">0</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-stat-label">Total Deaths</span>
+                            <span class="stat-value" id="final-total-dead">0</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-stat-label">Total Recovered</span>
+                            <span class="stat-value" id="final-total-recovered">0</span>
+                        </div>
+                         <div class="final-stat">
+                            <span class="final-stat-label">Attack Rate</span>
+                            <span class="stat-value" id="final-attack-rate">0%</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-stat-label">Case Fatality Rate</span>
+                            <span class="stat-value" id="final-case-fatality">0%</span>
+                        </div>
+                         <div class="final-stat">
+                            <span class="final-stat-label">People Protected</span>
+                            <span class="stat-value protected" id="people-protected">0</span>
+                        </div>
+                    </div>
+                    </details>
+                    <p id="game-over-message" class="game-over-message"></p>
+                    <ul id="final-death-notes" class="final-death-notes" hidden></ul>
+                    <div class="averted" id="averted" role="status" hidden></div>
+                    <div class="lesson-card lesson-card--debrief" id="game-over-lesson" hidden>
+                        <span class="lesson-kicker">Lesson</span>
+                        <strong class="lesson-title" id="game-over-lesson-title"></strong>
+                        <p class="lesson-text" id="game-over-lesson-text"></p>
+                    </div>
+                    <div class="game-over-actions">
+                        <button class="btn btn--secondary" id="play-again">Replay Level</button>
+                        <button class="btn btn--primary" id="try-different-scenario">Back to map</button>
+                        <button class="btn btn--primary" id="next-level" hidden>Next level</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
