@@ -366,14 +366,6 @@
       <div><p class="eyebrow">Data Stories</p><h2 class="section-title">Interactive tools for public health learning.</h2><p class="lead">Data stories and essays that make complex public health ideas concrete.</p></div>
     </div>
     <div class="grid stories">
-      <a class="card story wide reveal" href="death-in-america/index.html">
-        <div class="thumb"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="132" fill="#0f2a4a"/><g stroke="#ffffff" stroke-opacity=".08"><path d="M0 33h400M0 66h400M0 99h400"/></g><path d="M0 40 C60 44 100 50 150 58 S250 70 300 62 S360 46 400 52" fill="none" stroke="#8fc0ea" stroke-width="3"/><path d="M0 80 C50 78 110 74 160 76 S260 92 310 98 S370 104 400 108" fill="none" stroke="#e6a46b" stroke-width="3"/><path d="M0 100 C70 102 130 96 190 90 S290 74 340 70 S385 66 400 64" fill="none" stroke="#9fe0c4" stroke-width="3"/></svg></div>
-        <div class="body"><span class="tag">Data Story</span><h3>Death in America: National Trends, 1999-2024</h3><p>Leading causes of death over time: interactive age-adjusted rates and ranked views by year, from CDC WONDER data, with a companion county map for heart disease and stroke.</p><span class="more">View the trends <span class="arr">&rarr;</span></span></div>
-      </a>
-      <a class="card story wide reveal" href="death-in-america/county-maps.html">
-        <div class="thumb"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="132" fill="#0f2a4a"/><g id="tiles"></g></svg></div>
-        <div class="body"><span class="tag">Data Story</span><h3>Death in America: County Maps</h3><p>Animated county-level maps of heart disease and stroke mortality, 2015-2024, for adults age 35 and older, from CDC Atlas data.</p><span class="more">View the maps <span class="arr">&rarr;</span></span></div>
-      </a>
       <a class="card story wide reveal" href="death-in-america/causes-1980-2014.html">
         <div class="thumb"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="132" fill="#0f2a4a"/><g fill="#8fc0ea"><rect x="40" y="30" width="22" height="18" opacity=".35"/><rect x="64" y="30" width="22" height="18" opacity=".55"/><rect x="88" y="30" width="22" height="18" opacity=".8"/><rect x="112" y="30" width="22" height="18" opacity=".45"/><rect x="40" y="50" width="22" height="18" opacity=".65"/><rect x="64" y="50" width="22" height="18" opacity=".9"/><rect x="88" y="50" width="22" height="18" opacity=".5"/><rect x="112" y="50" width="22" height="18" opacity=".7"/><rect x="40" y="70" width="22" height="18" opacity=".4"/><rect x="64" y="70" width="22" height="18" opacity=".6"/><rect x="88" y="70" width="22" height="18" opacity=".95"/><rect x="112" y="70" width="22" height="18" opacity=".55"/></g><path d="M170 96h190" stroke="#ffffff" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/><path d="M170 96h120" stroke="#8fc0ea" stroke-width="3" stroke-linecap="round"/><circle cx="290" cy="96" r="6" fill="#8fc0ea"/><path d="M170 40 C220 46 260 58 360 70" fill="none" stroke="#e6a46b" stroke-width="3"/></svg></div>
         <div class="body"><span class="tag">Interactive Tool</span><h3>Death in America: County Explorer, 1980-2014</h3><p>Pick any of 25 causes of death and watch every county&rsquo;s death rate change year by year from 1980 to 2014, after FiveThirtyEight&rsquo;s classic interactive, from IHME estimates.</p><span class="more">Explore 1980-2014 <span class="arr">&rarr;</span></span></div>
@@ -544,10 +536,6 @@
 
   // decorative thumbnails
   var NS='http://www.w3.org/2000/svg';
-  var tiles=document.getElementById('tiles');
-  if(tiles){var cols=['#1d4570','#2f6da3','#5d93c6','#8fc0ea','#e6a46b','#c4612d'];var s=7;
-    for(var y=0;y<7;y++)for(var x=0;x<20;x++){s=(s*9301+49297)%233280;var r=s/233280;var v=Math.min(5,Math.floor((r*0.6+(x/20)*0.25+(y/7)*0.25)*6));
-      var e=document.createElementNS(NS,'rect');e.setAttribute('x',8+x*19.6);e.setAttribute('y',6+y*17.6);e.setAttribute('width',17);e.setAttribute('height',15.5);e.setAttribute('rx',2.5);e.setAttribute('fill',cols[v]);tiles.appendChild(e);}}
   var bars=document.getElementById('bars');
   if(bars){for(var i=0;i<28;i++){var h1=30+18*Math.sin(i/3.2)+i*0.6,h2=22+10*Math.cos(i/2.5)+i*0.9;
       var a=document.createElementNS(NS,'rect');a.setAttribute('x',14+i*10);a.setAttribute('y',120-h1);a.setAttribute('width',7);a.setAttribute('height',h1);a.setAttribute('rx',1.5);a.setAttribute('fill','#8fc0ea');bars.appendChild(a);
