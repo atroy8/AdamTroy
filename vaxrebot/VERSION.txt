@@ -1,0 +1,4 @@
+Galactic Outbreak (VAXrebot) web build
+Source: github.com/atroy8/VAXrebot, branch nightly/2026-11-22, commit 3bb85cc (Round 50, Nov 21, 2026)
+Built with: npm ci && npm run build (copy of dist/)
+To update: build the newer VAXrebot commit and replace this folder with its dist/ output.
